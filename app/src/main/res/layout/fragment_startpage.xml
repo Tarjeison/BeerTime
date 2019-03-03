@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:id="@+id/clStartPage"
+    android:layout_width="match_parent"
+    android:background="@color/colorBackground"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/app_name"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        style="@style/TodoStyleText"
+        android:textSize="50sp"/>
+
+    <ImageView
+        android:id="@+id/ivBeer"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.10"
+        android:src="@drawable/ic_icon_beer"/>
+
+    <TextView
+        android:id="@+id/tvInfo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        style="@style/TodoStyleText"
+        app:layout_constraintTop_toBottomOf="@id/ivBeer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginStart="@dimen/margin_medium"
+        android:layout_marginEnd="@dimen/margin_medium"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:textAlignment="center"
+        android:text="@string/startpage"/>
+
+    <Button
+        android:id="@+id/bDrink"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvInfo"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/margin_extraLarge"
+        android:text="@string/start_drinking"/>
+
+    <Button
+        android:id="@+id/bProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@+id/bDrink"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintVertical_bias="0.0"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginTop="@dimen/margin_large"
+        android:text="@string/profile" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

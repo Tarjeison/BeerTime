@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:background="@color/colorBackground"
+    android:id="@+id/clProfile"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tvAge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginStart="@dimen/margin_medium"
+        style="@style/TodoStyleText"
+        android:text="@string/age"/>
+
+    <EditText
+        android:id="@+id/etAge"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:inputType="numberSigned"
+        app:layout_constraintStart_toStartOf="@id/tvAge"
+        app:layout_constraintTop_toTopOf="@id/tvAge"
+        app:layout_constraintBottom_toBottomOf="@id/tvAge"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/tvGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvAge"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_medium"
+        style="@style/TodoStyleText"
+        android:text="@string/gender"/>
+
+    <RadioGroup
+        android:id="@+id/rgGender"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tvGender"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvGender"
+        app:layout_constraintBottom_toBottomOf="@id/tvGender"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/rbFemale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/female" />
+
+        <RadioButton
+            android:id="@+id/rbMale"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/male"/>
+
+    </RadioGroup>
+
+    <TextView
+        android:id="@+id/tvWeight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/tvGender"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:layout_marginStart="@dimen/margin_medium"
+        style="@style/TodoStyleText"
+        android:text="@string/weight"/>
+
+    <EditText
+        android:id="@+id/etWeight"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="@id/tvWeight"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@id/tvWeight"
+        app:layout_constraintBottom_toBottomOf="@id/tvWeight"
+        android:inputType="numberDecimal"/>
+
+    <Button
+        android:id="@+id/bSave"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="@dimen/margin_medium"
+        android:visibility="visible"
+        android:text="@string/save"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

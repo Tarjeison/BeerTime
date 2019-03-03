@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/startpageFragment">
+
+    <fragment
+        android:id="@+id/profileFragment"
+        android:name="com.example.beertime.ProfileFragment"
+        android:label="Profile"
+        tools:layout="@layout/fragment_profile"/>
+    <fragment
+        android:id="@+id/startpageFragment"
+        android:name="com.example.beertime.StartPageFragment"
+        android:label="Start page ">
+        <action
+            android:id="@+id/action_startpageFragment_to_profileFragment"
+            app:destination="@id/profileFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+</navigation>
