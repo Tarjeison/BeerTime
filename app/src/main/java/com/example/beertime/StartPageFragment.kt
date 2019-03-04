@@ -26,7 +26,7 @@ class StartPageFragment: Fragment() {
 
         if (validProfile(profileViewModel, view.context)) {
             bDrink.setOnClickListener {
-                Snackbar.make(clStartPage, R.string.app_name, Snackbar.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.action_startpageFragment_to_countDownFragment)
             }
         } else {
             bDrink.setOnClickListener {

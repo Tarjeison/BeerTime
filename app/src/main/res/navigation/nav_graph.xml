@@ -21,5 +21,12 @@
             app:exitAnim="@anim/nav_default_exit_anim"
             app:popEnterAnim="@anim/nav_default_pop_enter_anim"
             app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+        <action
+            android:id="@+id/action_startpageFragment_to_countDownFragment"
+            app:destination="@id/countDownFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/countDownFragment"
+        android:name="com.example.beertime.CountDownFragment"
+        android:label="CountDownFragment" />
 </navigation>

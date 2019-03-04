@@ -16,4 +16,5 @@
     <string name="missing_profiles">You need to update you data on profile page before proceeding.</string>
     <string name="profile_error_age">You must be over 18 to use this app.</string>
     <string name="profile_error_weight">You should be over 40kg to drink alcohol.</string>
+    <string name="time_to_next_unit">Time to next unit:</string>
 </resources>
