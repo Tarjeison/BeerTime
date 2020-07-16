@@ -7,6 +7,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.example.beertime.models.AlcoholUnit
 import kotlinx.android.synthetic.main.fragment_timer.*
@@ -17,22 +19,23 @@ import java.util.concurrent.TimeUnit
 
 class CountDownFragment: Fragment() {
 
+    private lateinit var countDownTimer: CountDownTimer
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_timer, container, false)
     }
 
-    @RequiresApi(Build.VERSION_CODES.O)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         val profileViewModel = ProfileViewModel()
         val calculator = AlcoholCalculator(profileViewModel.getUserProfile(view.context)!!,
-            0.1f,
-            LocalDateTime.now().plusHours(3.toLong()),
+            1.55f,
+            LocalDateTime.now().plusHours(1.toLong()),
                 AlcoholUnit.BIG_BEER)
         val calc = calculator.calculateDrinkingTimes()
         val d = calc.d
         val n = calc.num
         print(calc)
-        countDown(view, d, n)
+        countDownTimer = countDown(view, d, n)
     }
 
     private fun countDown(view: View, d: Duration, num: Int): CountDownTimer{
@@ -46,7 +49,7 @@ class CountDownFragment: Fragment() {
                 if (num > 0) {
                     countDown(view, d, num-1)
                 } else {
-                    tvTimeToNext.text = "FINISH"
+                    tvTimeToNext.text = view.context.getText(R.string.timer_finished_text)
                 }
             }
         }.start()
@@ -72,5 +75,10 @@ class CountDownFragment: Fragment() {
             "%02d:%02d",
             minutes,seconds
         )
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        countDownTimer.cancel()
     }
 }

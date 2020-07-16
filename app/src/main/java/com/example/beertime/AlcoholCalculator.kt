@@ -18,12 +18,15 @@ class AlcoholCalculator(private val userProfile: UserProfile,
             Gender.MALE -> 0.68
             Gender.FEMALE -> 0.55
         }
-        val neededGrams = (userProfile.weight*genderConst*100)/wantedBloodLevel
+
+        val dTime = Duration.between(LocalDateTime.now(), peakTime)
+
+        val neededGrams = (wantedBloodLevel + 0.15*dTime.toHours())*((userProfile.weight*genderConst))
         var i = 1
         while (preferredUnit.gramPerUnit()*i < neededGrams) {
             i++
         }
-        val dTime = Duration.between(LocalDateTime.now(), peakTime)
+
 
         return DrinkingCalculation(dTime.dividedBy(i.toLong()), i)
     }
