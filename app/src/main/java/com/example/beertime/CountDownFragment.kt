@@ -10,6 +10,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
 import com.example.beertime.models.AlcoholUnit
 import kotlinx.android.synthetic.main.fragment_timer.*
+import org.koin.android.ext.android.inject
 import java.time.Duration
 import java.time.LocalDateTime
 import java.util.*
@@ -18,6 +19,7 @@ import java.util.concurrent.TimeUnit
 class CountDownFragment : Fragment() {
 
     private lateinit var countDownTimer: CountDownTimer
+    private val notificationBuilder: NotificationCompat.Builder by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -31,14 +33,13 @@ class CountDownFragment : Fragment() {
         val profileViewModel = ProfileViewModel()
         val calculator = AlcoholCalculator(
             profileViewModel.getUserProfile(view.context)!!,
-            1.55f,
+            6f,
             LocalDateTime.now().plusHours(1.toLong()),
             AlcoholUnit.BIG_BEER
         )
         val calc = calculator.calculateDrinkingTimes()
         val d = calc.d
         val n = calc.num
-        print(calc)
         countDownTimer = countDown(view, d, n)
     }
 
@@ -61,15 +62,9 @@ class CountDownFragment : Fragment() {
     }
 
     private fun createNotification() {
-        val builder = NotificationCompat.Builder(activity!!, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_icon_beer)
-            .setContentTitle("Drink")
-            .setContentText("Time to drink")
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
         with(NotificationManagerCompat.from(activity!!)) {
             // notificationId is a unique int for each notification that you must define
-            notify(Random().nextInt(), builder.build())
+            notify(Random().nextInt(), notificationBuilder.build())
         }
     }
 
