@@ -48,11 +48,25 @@ class CountDownFragment: Fragment() {
             override fun onFinish() {
                 if (num > 0) {
                     countDown(view, d, num-1)
+                    createNotification()
                 } else {
                     tvTimeToNext.text = view.context.getText(R.string.timer_finished_text)
                 }
             }
         }.start()
+    }
+
+    private fun createNotification() {
+        val builder = NotificationCompat.Builder(activity!!, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_icon_beer)
+            .setContentTitle("Drink")
+            .setContentText("Time to drink")
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+        with(NotificationManagerCompat.from(activity!!)) {
+            // notificationId is a unique int for each notification that you must define
+            notify(Random().nextInt(), builder.build())
+        }
     }
 
     // Method to get days hours minutes seconds from milliseconds

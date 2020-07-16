@@ -17,4 +17,7 @@
     <string name="profile_error_age">You must be over 18 to use this app.</string>
     <string name="profile_error_weight">You should be over 40kg to drink alcohol.</string>
     <string name="time_to_next_unit">Time to next unit:</string>
+    <string name="channel_name">beertime_notification_channel</string>
+    <string name="channel_description">Channel for BeerTime app</string>
+    <string name="timer_finished_text">Finished!</string>
 </resources>
