@@ -16,7 +16,7 @@ val beerTimeModules = module {
 private fun createNotificationBuilder(context: Context): NotificationCompat.Builder {
     return NotificationCompat.Builder(context, CHANNEL_ID)
         .setSmallIcon(R.drawable.ic_icon_beer)
-        .setContentTitle("Drink")
-        .setContentText("Time to drink")
+        .setContentTitle(context.getText(R.string.notification_title))
+        .setContentText(context.getString(R.string.notification_text))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
 }
