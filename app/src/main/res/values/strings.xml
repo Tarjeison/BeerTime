@@ -22,4 +22,6 @@
     <string name="timer_finished_text">Finished!</string>
     <string name="notification_title">BeerTime</string>
     <string name="notification_text">You may have another one, if you wish!</string>
+    <string name="home">Home</string>
+    <string name="settings">Setttings</string>
 </resources>

@@ -29,4 +29,13 @@
         android:id="@+id/countDownFragment"
         android:name="com.example.beertime.CountDownFragment"
         android:label="CountDownFragment" />
+    <action
+        android:id="@+id/action_global_startpageFragment"
+        app:destination="@id/startpageFragment" />
+    <action
+        android:id="@+id/action_global_countDownFragment"
+        app:destination="@id/countDownFragment" />
+    <action
+        android:id="@+id/action_global_profileFragment"
+        app:destination="@id/profileFragment" />
 </navigation>

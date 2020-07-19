@@ -12,6 +12,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 
 import kotlinx.android.synthetic.main.activity_main.*
+import nl.joery.animatedbottombar.AnimatedBottomBar
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
@@ -19,6 +20,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
+        setUpBottomBar()
         createNotificationChannel()
     }
 
@@ -47,6 +49,25 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         super.onStop()
         findNavController(R.id.nav_host_fragment).removeOnDestinationChangedListener(this)
 
+    }
+
+    private fun setUpBottomBar() {
+        bottom_bar.setOnTabSelectListener(object: AnimatedBottomBar.OnTabSelectListener {
+            override fun onTabSelected(
+                lastIndex: Int,
+                lastTab: AnimatedBottomBar.Tab?,
+                newIndex: Int,
+                newTab: AnimatedBottomBar.Tab
+            ) {
+                when (newTab.id) {
+                    R.id.tab_home -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_startpageFragment)
+                    R.id.tab_settings -> findNavController(R.id.nav_host_fragment).navigate(R.id.countDownFragment)
+                    R.id.tab_profile -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_profileFragment)
+                    else -> throw ClassNotFoundException()
+                }
+            }
+
+        })
     }
 
     private fun createNotificationChannel() {

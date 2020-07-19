@@ -90,8 +90,8 @@ class CountDownFragment : Fragment() {
         )
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
+    override fun onPause() {
+        super.onPause()
         countDownTimer.cancel()
     }
 }
