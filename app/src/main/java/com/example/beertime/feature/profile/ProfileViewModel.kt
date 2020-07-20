@@ -1,4 +1,4 @@
-package com.example.beertime
+package com.example.beertime.feature.profile
 
 import android.content.Context
 import android.util.Log

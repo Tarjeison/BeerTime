@@ -1,4 +1,4 @@
-package com.example.beertime
+package com.example.beertime.util
 
 import com.example.beertime.models.AlcoholUnit
 import com.example.beertime.models.DrinkingCalculation

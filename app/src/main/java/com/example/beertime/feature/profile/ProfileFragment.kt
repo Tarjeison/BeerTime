@@ -1,10 +1,11 @@
-package com.example.beertime
+package com.example.beertime.feature.profile
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.beertime.R
 import com.example.beertime.models.Gender
 import com.example.beertime.models.UserProfile
 import com.google.android.material.snackbar.Snackbar

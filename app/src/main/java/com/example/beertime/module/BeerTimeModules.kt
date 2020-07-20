@@ -2,7 +2,7 @@ package com.example.beertime.module
 
 import android.content.Context
 import androidx.core.app.NotificationCompat
-import com.example.beertime.CHANNEL_ID
+import com.example.beertime.util.CHANNEL_ID
 import com.example.beertime.R
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module

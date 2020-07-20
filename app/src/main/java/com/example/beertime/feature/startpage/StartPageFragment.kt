@@ -1,4 +1,4 @@
-package com.example.beertime
+package com.example.beertime.feature.startpage
 
 import android.content.Context
 import android.os.Bundle
@@ -7,6 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
+import com.example.beertime.R
+import com.example.beertime.feature.profile.ProfileViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_startpage.*
 

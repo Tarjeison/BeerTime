@@ -1,4 +1,4 @@
-package com.example.beertime
+package com.example.beertime.feature.countdown
 
 import android.os.Bundle
 import android.os.CountDownTimer
@@ -8,6 +8,9 @@ import android.view.ViewGroup
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.fragment.app.Fragment
+import com.example.beertime.util.AlcoholCalculator
+import com.example.beertime.R
+import com.example.beertime.feature.profile.ProfileViewModel
 import com.example.beertime.models.AlcoholUnit
 import kotlinx.android.synthetic.main.fragment_timer.*
 import org.koin.android.ext.android.inject

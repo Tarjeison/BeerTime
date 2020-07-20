@@ -10,6 +10,7 @@ import android.view.MenuItem
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import com.example.beertime.util.CHANNEL_ID
 
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar

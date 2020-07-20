@@ -7,12 +7,12 @@
 
     <fragment
         android:id="@+id/profileFragment"
-        android:name="com.example.beertime.ProfileFragment"
+        android:name="com.example.beertime.feature.profile.ProfileFragment"
         android:label="Profile"
         tools:layout="@layout/fragment_profile"/>
     <fragment
         android:id="@+id/startpageFragment"
-        android:name="com.example.beertime.StartPageFragment"
+        android:name="com.example.beertime.feature.startpage.StartPageFragment"
         android:label="Start page ">
         <action
             android:id="@+id/action_startpageFragment_to_profileFragment"
@@ -27,7 +27,7 @@
     </fragment>
     <fragment
         android:id="@+id/countDownFragment"
-        android:name="com.example.beertime.CountDownFragment"
+        android:name="com.example.beertime.feature.countdown.CountDownFragment"
         android:label="CountDownFragment" />
     <action
         android:id="@+id/action_global_startpageFragment"
