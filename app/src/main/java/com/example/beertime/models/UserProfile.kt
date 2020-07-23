@@ -4,7 +4,7 @@ import java.lang.Exception
 
 data class UserProfile(var age: Int,
                        var gender: Gender,
-                       var weight: Float) {
+                       var weight: Int) {
     fun validAge(): Boolean {
         return age >= 18
     }
@@ -20,8 +20,8 @@ enum class Gender {
     companion object {
         fun stringToGender(s: String): Gender {
             return when (s) {
-                "MALE" -> Gender.MALE
-                "FEMALE" -> Gender.FEMALE
+                "MALE" -> MALE
+                "FEMALE" -> FEMALE
                 else -> throw (Exception("No gender found in string"))
             }
         }

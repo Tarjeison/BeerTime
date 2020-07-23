@@ -2,6 +2,7 @@ package com.example.beertime.feature.profile
 
 import android.content.Context
 import android.util.Log
+import androidx.annotation.StringRes
 import androidx.lifecycle.ViewModel
 import com.example.beertime.models.Gender
 import com.example.beertime.models.UserProfile
@@ -20,16 +21,19 @@ class ProfileViewModel: ViewModel(){
     fun getUserProfile(context: Context): UserProfile? {
         return try {
             val age = String(context.openFileInput(FILE_AGE).readBytes(), Charset.defaultCharset()).toInt()
-            val weight = String(context.openFileInput(FILE_WEIGHT).readBytes(), Charset.defaultCharset()).toFloat()
+            val weight = String(context.openFileInput(FILE_WEIGHT).readBytes(), Charset.defaultCharset()).toInt()
             val gender = Gender.stringToGender(String(context.openFileInput(FILE_GENDER).readBytes(),Charset.defaultCharset()))
             UserProfile(age, gender, weight)
         } catch (error: FileNotFoundException) {
-            Log.d(MODEL_TAG, error.message)
+            Log.d(MODEL_TAG, error.message ?: "UserProfileLoadError")
             null
         }
     }
 
-    fun saveUserProfile(context: Context, userProfile: UserProfile) {
+    fun saveUserProfile(context: Context?, userProfile: UserProfile) {
+        if (context == null) {
+            return
+        }
         context.openFileOutput(FILE_AGE, Context.MODE_PRIVATE).use {
             it.write(userProfile.age.toString().toByteArray(Charset.defaultCharset()))
         }

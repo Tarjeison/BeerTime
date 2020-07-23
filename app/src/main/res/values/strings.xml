@@ -24,4 +24,8 @@
     <string name="notification_text">You may have another one, if you wish!</string>
     <string name="home">Home</string>
     <string name="settings">Setttings</string>
+    <string name="select_alcohol_level">Select wanted blood alcohol level (%)</string>
+    <string name="select_hours_to_drink">How many hours will you be drinking?</string>
+    <string name="profile_blank_age">Age field cannot be empty</string>
+    <string name="profile_blank_weight">Weight field cannt be empty</string>
 </resources>
