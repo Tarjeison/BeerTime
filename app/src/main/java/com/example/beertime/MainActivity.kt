@@ -5,24 +5,37 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import com.example.beertime.feature.countdown.CountDownController
 import com.example.beertime.util.CHANNEL_ID
 
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar
+import org.koin.android.ext.android.inject
+import java.util.*
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
+
+    private var notificationBuilder: NotificationCompat.Builder? = null
+    private val countDownController: CountDownController by inject()
+
+    private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setUpBottomBar()
-        createNotificationChannel()
+        notificationBuilder = createNotificationChannel()
+        observeNotificationLiveData()
     }
 
     /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -53,7 +66,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     }
 
     private fun setUpBottomBar() {
-        bottom_bar.setOnTabSelectListener(object: AnimatedBottomBar.OnTabSelectListener {
+        bottom_bar.setOnTabSelectListener(object : AnimatedBottomBar.OnTabSelectListener {
             override fun onTabSelected(
                 lastIndex: Int,
                 lastTab: AnimatedBottomBar.Tab?,
@@ -61,7 +74,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 newTab: AnimatedBottomBar.Tab
             ) {
                 when (newTab.id) {
-                    R.id.tab_home -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_startpageFragment)
+                    R.id.tab_home -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_startDrinkingFragment)
                     R.id.tab_settings -> findNavController(R.id.nav_host_fragment).navigate(R.id.countDownFragment)
                     R.id.tab_profile -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_profileFragment)
                     else -> throw ClassNotFoundException()
@@ -71,7 +84,13 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         })
     }
 
-    private fun createNotificationChannel() {
+    private fun observeNotificationLiveData() {
+        countDownController.getNotificationLiveData().observe(this, androidx.lifecycle.Observer {
+            createNotification()
+        })
+    }
+
+    private fun createNotificationChannel(): NotificationCompat.Builder? {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -86,9 +105,30 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
+
+        return NotificationCompat.Builder(this, CHANNEL_ID)
+            .setSmallIcon(R.drawable.ic_icon_beer)
+            .setContentTitle(this.getText(R.string.notification_title))
+            .setContentText(this.getString(R.string.notification_text))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     }
 
-    override fun onDestinationChanged(controller: NavController, destination: NavDestination, arguments: Bundle?) {
+    private fun createNotification() {
+        Log.d("MAIN", "Not1")
+        notificationBuilder?.let {
+            Log.d("MAIN", "Not2")
+            with(NotificationManagerCompat.from(this)) {
+                // notificationId is a unique int for each notification that you must define
+                notify(Random().nextInt(), it.build())
+            }
+        }
+    }
+
+    override fun onDestinationChanged(
+        controller: NavController,
+        destination: NavDestination,
+        arguments: Bundle?
+    ) {
         toolbar.title = destination.label
     }
 }

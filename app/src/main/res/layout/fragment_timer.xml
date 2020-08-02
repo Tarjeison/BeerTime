@@ -17,8 +17,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="@dimen/margin_large"/>
 
-    <TextClock
+    <TextView
         android:id="@+id/tcClock"
+        android:textColor="@color/colorBlack"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="70sp"

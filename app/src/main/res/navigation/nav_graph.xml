@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/startpageFragment">
+    app:startDestination="@id/startDrinkingFragment">
 
     <fragment
         android:id="@+id/profileFragment"
@@ -38,4 +38,12 @@
     <action
         android:id="@+id/action_global_profileFragment"
         app:destination="@id/profileFragment" />
+    <fragment
+        android:id="@+id/startDrinkingFragment"
+        android:name="com.example.beertime.feature.startdrinking.StartDrinkingFragment"
+        android:label="StartDrinkingFragment" >
+        <action
+            android:id="@+id/action_startDrinkingFragment_to_countDownFragment"
+            app:destination="@id/countDownFragment" />
+    </fragment><action android:id="@+id/action_global_startDrinkingFragment" app:destination="@id/startDrinkingFragment"/>
 </navigation>
