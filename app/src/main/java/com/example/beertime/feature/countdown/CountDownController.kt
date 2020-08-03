@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.beertime.R
 import com.example.beertime.models.AlcoholUnit
+import com.example.beertime.models.DrinkingCalculation
 import com.example.beertime.models.UserProfile
 import com.example.beertime.util.AlcoholCalculator
 import java.time.LocalDateTime
@@ -25,7 +26,8 @@ class CountDownController {
 
     fun setAlcoholCalculator(
         userProfile: UserProfile, wantedBloodLevel: Float,
-        peakTime: LocalDateTime, alcoholUnit: AlcoholUnit, nConsumed: Int = 0) {
+        peakTime: LocalDateTime, alcoholUnit: AlcoholUnit, nConsumed: Int = 0
+    ) {
 
         drinkingStarted = true
         numberOfUnitsConsumed = nConsumed
@@ -38,31 +40,38 @@ class CountDownController {
             alcoholUnit
         )
 
-        createCountDownTimer()
+        if (this::countDownTimer.isInitialized) {
+            countDownTimer.cancel()
+        }
 
+        val calculation = alcoholCalculator?.calculateDrinkingTimes()
+        calculation?.let {
+            createCountDownTimer(calculation)
+        }
     }
 
-    private fun createCountDownTimer() {
-        alcoholCalculator?.let {
-            Log.d("COUNTODWN", "calculator: exists")
-            val duration = it.calculateDrinkingTimes()
-            if (this::countDownTimer.isInitialized) {
-                countDownTimer.cancel()
+    private fun createCountDownTimer(calculation: DrinkingCalculation) {
+
+
+        countDownTimer = object : CountDownTimer(calculation.d.toMillis(), 1000) {
+            override fun onFinish() {
+                numberOfUnitsConsumed++
+                notifierLiveData.postValue(numberOfUnitsConsumed)
+
+                if (calculation.num > 0) {
+                    calculation.num--
+                    createCountDownTimer(calculation)
+                }
+
             }
 
-            countDownTimer = object : CountDownTimer(duration.d.toMillis(), 1000) {
-                override fun onFinish() {
-                    numberOfUnitsConsumed++
-                    notifierLiveData.postValue(numberOfUnitsConsumed)
-                }
+            override fun onTick(millisUntilFinsihed: Long) {
+                Log.d("COUNTODWN", millisUntilFinsihed.toString())
+                countDownLiveData.postValue(timeString(millisUntilFinsihed))
+            }
 
-                override fun onTick(millisUntilFinsihed: Long) {
-                    Log.d("COUNTODWN", millisUntilFinsihed.toString())
-                    countDownLiveData.postValue(timeString(millisUntilFinsihed))
-                }
+        }.start()
 
-            }.start()
-        }
     }
 
     // Method to get days hours minutes seconds from milliseconds
