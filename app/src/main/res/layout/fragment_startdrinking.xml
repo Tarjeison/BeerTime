@@ -99,13 +99,13 @@
         tools:text="12h"/>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvAlcoholUnit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvHoursValue"
         android:layout_margin="@dimen/margin_large"
-        app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         tools:listitem="@layout/item_drink"
         tools:itemCount="2"
         />
@@ -119,6 +119,7 @@
         android:background="@color/colorGreen"
         android:text="@string/save"
         android:textColor="@color/colorWhite"
+        app:layout_constraintTop_toBottomOf="@+id/rvAlcoholUnit"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

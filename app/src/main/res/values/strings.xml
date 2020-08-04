@@ -33,4 +33,5 @@
     <string name="error_no_user_profile_found">An error occured getting your user profile. Try setting it in the \"Profile\" page.</string>
     <string name="error_startdrinking_wanted_level_0">You\'ll have to set the blood level to something else than one to drink...</string>
     <string name="error_startdrinking_hours_drinking_0">You can\'t possibly drink that in 0 hours?!</string>
+    <string name="error_startdrinking_select_unit">You cannot possibly drink without selecting an alcohol type?</string>
 </resources>

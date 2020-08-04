@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.beertime.R
 import com.example.beertime.feature.countdown.CountDownController
 import com.example.beertime.feature.profile.ProfileViewModel
@@ -16,13 +18,17 @@ import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDateTime
 
-class StartDrinkingFragment : Fragment() {
+class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
 
     private var wantedBloodLevel = 0f
     private var hoursDrinking: Int = 0
+    private var preferredAlcoholUnit: AlcoholUnit? = null
 
     private val countDownController: CountDownController by inject()
     private val profileViewModel: ProfileViewModel by viewModel()
+
+    private lateinit var alcoholAdapter: AlcoholAdapter
+    private lateinit var startDrinkingViewModel: StartDrinkingViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +41,13 @@ class StartDrinkingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        startDrinkingViewModel = StartDrinkingViewModel()
+        alcoholAdapter = AlcoholAdapter(startDrinkingViewModel.getAlcoholUnits(), this)
+        rvAlcoholUnit.layoutManager =
+            GridLayoutManager(view.context, 4)
+        rvAlcoholUnit.adapter = alcoholAdapter
+        alcoholAdapter.notifyDataSetChanged()
+
         initSeekBars()
         initStartDrinkingButton()
     }
@@ -89,6 +102,14 @@ class StartDrinkingFragment : Fragment() {
                 ).show()
                 return false
             }
+            preferredAlcoholUnit == null -> {
+                Snackbar.make(
+                    clStartDrinking,
+                    R.string.error_startdrinking_select_unit,
+                    Snackbar.LENGTH_LONG
+                ).show()
+                return false
+            }
             else -> {
                 return true
             }
@@ -112,11 +133,25 @@ class StartDrinkingFragment : Fragment() {
                             profile,
                             wantedBloodLevel,
                             LocalDateTime.now().plusHours(hoursDrinking.toLong()),
-                            AlcoholUnit.SMALL_BEER
+                            AlcoholUnit("Test", 500*0.047*0.7, R.drawable.ic_icon_beer)
                         )
                     }
                 }
             }
         }
+    }
+
+    override fun onItemSelected(name: String) {
+        val test = startDrinkingViewModel.getAlcoholUnits().apply {
+            this.forEach {
+                if (it.name == name) {
+                    preferredAlcoholUnit = it
+                    it.isSelected = true
+                } else {
+                    it.isSelected = false
+                }
+            }
+        }.toList()
+        alcoholAdapter.setData(test)
     }
 }

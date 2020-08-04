@@ -26,7 +26,7 @@ class AlcoholCalculator(
         val neededGrams =
             (wantedBloodLevel + 0.15 * dTime.toHours()) * ((userProfile.weight * genderConst))
         var numberOfUnitsToDrink = 1
-        while (preferredUnit.gramPerUnit() * numberOfUnitsToDrink < neededGrams) {
+        while (preferredUnit.gramPerUnit * numberOfUnitsToDrink < neededGrams) {
             numberOfUnitsToDrink++
         }
         return DrinkingCalculation(dTime.dividedBy(numberOfUnitsToDrink.toLong()), numberOfUnitsToDrink)
