@@ -15,6 +15,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.example.beertime.feature.countdown.CountDownController
+import com.example.beertime.models.DrinkingCalculation
 import com.example.beertime.util.CHANNEL_ID
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -86,8 +87,31 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     private fun observeNotificationLiveData() {
         countDownController.getNotificationLiveData().observe(this, androidx.lifecycle.Observer {
-            createNotification()
+            createCountDownTimer(it)
         })
+    }
+
+    private fun createCountDownTimer(calculation: DrinkingCalculation) {
+
+
+        countDownTimer = object : CountDownTimer(calculation.d.toMillis(), 1000) {
+            override fun onFinish() {
+                createNotification()
+
+                if (calculation.num > 0) {
+                    calculation.num--
+                    createCountDownTimer(calculation)
+                }
+
+            }
+
+            override fun onTick(millisUntilFinsihed: Long) {
+                Log.d("COUNTODWN", millisUntilFinsihed.toString())
+                countDownController.getCountDownLiveData().postValue(countDownController.timeString(millisUntilFinsihed))
+            }
+
+        }.start()
+
     }
 
     private fun createNotificationChannel(): NotificationCompat.Builder? {
@@ -119,6 +143,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             Log.d("MAIN", "Not2")
             with(NotificationManagerCompat.from(this)) {
                 // notificationId is a unique int for each notification that you must define
+                it.setWhen(System.currentTimeMillis())
                 notify(Random().nextInt(), it.build())
             }
         }

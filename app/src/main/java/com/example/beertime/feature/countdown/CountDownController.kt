@@ -20,9 +20,9 @@ class CountDownController {
     private var errorMessage = R.string.error_drinking_not_started
 
     private val countDownLiveData = MutableLiveData<String>()
-    private val notifierLiveData = MutableLiveData<Int>()
+    private val notifierLiveData = MutableLiveData<DrinkingCalculation>()
 
-    private var numberOfUnitsConsumed = 0
+    var numberOfUnitsConsumed = 0
 
     fun setAlcoholCalculator(
         userProfile: UserProfile, wantedBloodLevel: Float,
@@ -46,32 +46,8 @@ class CountDownController {
 
         val calculation = alcoholCalculator?.calculateDrinkingTimes()
         calculation?.let {
-            createCountDownTimer(calculation)
+            notifierLiveData.postValue(it)
         }
-    }
-
-    private fun createCountDownTimer(calculation: DrinkingCalculation) {
-
-
-        countDownTimer = object : CountDownTimer(calculation.d.toMillis(), 1000) {
-            override fun onFinish() {
-                numberOfUnitsConsumed++
-                notifierLiveData.postValue(numberOfUnitsConsumed)
-
-                if (calculation.num > 0) {
-                    calculation.num--
-                    createCountDownTimer(calculation)
-                }
-
-            }
-
-            override fun onTick(millisUntilFinsihed: Long) {
-                Log.d("COUNTODWN", millisUntilFinsihed.toString())
-                countDownLiveData.postValue(timeString(millisUntilFinsihed))
-            }
-
-        }.start()
-
     }
 
     // Method to get days hours minutes seconds from milliseconds
@@ -100,7 +76,7 @@ class CountDownController {
         return countDownLiveData
     }
 
-    fun getNotificationLiveData(): MutableLiveData<Int> {
+    fun getNotificationLiveData(): MutableLiveData<DrinkingCalculation> {
         return notifierLiveData
     }
 }
