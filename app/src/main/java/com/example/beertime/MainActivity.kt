@@ -155,6 +155,11 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         destination: NavDestination,
         arguments: Bundle?
     ) {
+        when (destination.id) {
+            R.id.countDownFragment -> bottom_bar.selectTabById(R.id.tab_settings)
+            R.id.startDrinkingFragment -> bottom_bar.selectTabById(R.id.tab_home)
+            R.id.profileFragment -> bottom_bar.selectTabById(R.id.tab_profile)
+        }
         toolbar.title = destination.label
     }
 }
