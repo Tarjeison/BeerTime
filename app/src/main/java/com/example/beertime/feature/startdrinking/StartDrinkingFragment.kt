@@ -1,13 +1,14 @@
 package com.example.beertime.feature.startdrinking
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.beertime.R
 import com.example.beertime.feature.countdown.CountDownController
 import com.example.beertime.feature.profile.ProfileViewModel
@@ -120,25 +121,44 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
     private fun initStartDrinkingButton() {
         bStartDrinking.setOnClickListener {
             if (validateValues()) {
-                this.context?.let {
-                    val profile = profileViewModel.getUserProfile(it)
-                    if (profile == null) {
-                        Snackbar.make(
-                            clStartDrinking,
-                            R.string.error_no_user_profile_found,
-                            Snackbar.LENGTH_LONG
-                        ).show()
-                    } else {
-                        countDownController.setAlcoholCalculator(
-                            profile,
-                            wantedBloodLevel,
-                            LocalDateTime.now().plusHours(hoursDrinking.toLong()),
-                            AlcoholUnit("Test", 500*0.047*0.7, R.drawable.ic_icon_beer)
-                        )
-                    }
+                if (countDownController.isDrinkng()) {
+                    alertAlreadyDrinking()
+                } else {
+                    startDrinking()
                 }
             }
         }
+    }
+
+    private fun startDrinking() {
+        this.context?.let {
+            val profile = profileViewModel.getUserProfile(it)
+            if (profile == null) {
+                Snackbar.make(
+                    clStartDrinking,
+                    R.string.error_no_user_profile_found,
+                    Snackbar.LENGTH_LONG
+                ).show()
+            } else {
+                countDownController.setAlcoholCalculator(
+                    profile,
+                    wantedBloodLevel,
+                    LocalDateTime.now().plusHours(hoursDrinking.toLong()),
+                    AlcoholUnit("Test", 500*0.047*0.7, R.drawable.ic_icon_beer)
+                )
+                findNavController().navigate(R.id.action_startDrinkingFragment_to_countDownFragment)
+            }
+        }
+    }
+
+    private fun alertAlreadyDrinking() {
+        AlertDialog.Builder(this.context)
+            .setTitle(R.string.startdrinking_are_you_sure)
+            .setMessage(R.string.startdrinking_already_drinking)
+            .setPositiveButton(R.string.yes
+            ) { _, _ -> startDrinking() }
+            .setNegativeButton(R.string.no, null)
+            .show()
     }
 
     override fun onItemSelected(name: String) {

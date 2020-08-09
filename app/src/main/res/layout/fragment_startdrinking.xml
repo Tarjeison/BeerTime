@@ -1,127 +1,128 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:id="@+id/clStartDrinking"
-    android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/ivBloodLevel"
-        android:layout_width="62dp"
-        android:layout_height="62dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:layout_margin="@dimen/margin_medium"
-        android:src="@drawable/ic_student"
-        />
-
-    <SeekBar
-        android:id="@+id/sbBloodLevel"
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/clStartDrinking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/ivBloodLevel"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/margin_medium"
-        android:max="10000"
-        android:thumbTint="@color/colorGreen"
-        tools:progress="50"
-        />
+        android:layout_gravity="center_horizontal"
+        android:background="@color/colorBackground">
 
-    <TextView
-        android:id="@+id/tvBloodLevel"
-        app:layout_constraintTop_toBottomOf="@id/sbBloodLevel"
-        app:layout_constraintStart_toStartOf="@id/sbBloodLevel"
-        app:layout_constraintEnd_toEndOf="@id/sbBloodLevel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TodoStyleText"
-        android:text="@string/blood_alcohol_level"
-        app:layout_constraintHorizontal_bias="0.2"
-        />
+        <ImageView
+            android:id="@+id/ivBloodLevel"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_margin="@dimen/margin_medium"
+            android:src="@drawable/ic_student"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvBloodLevelValue"
-        android:layout_width="wrap_content"
-        style="@style/TodoStyleTextLarge"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/sbBloodLevel"
-        app:layout_constraintStart_toEndOf="@id/tvBloodLevel"
-        app:layout_constraintEnd_toEndOf="@id/sbBloodLevel"
-        tools:text="0.6%"/>
+        <SeekBar
+            android:id="@+id/sbBloodLevel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:max="10000"
+            android:thumbTint="@color/colorGreen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivBloodLevel"
+            tools:progress="50" />
 
-    <ImageView
-        android:id="@+id/ivHourglass"
-        android:layout_width="62dp"
-        android:layout_height="62dp"
-        app:layout_constraintTop_toBottomOf="@id/tvBloodLevelValue"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/margin_medium"
-        android:src="@drawable/ic_hourglass"
-        />
+        <TextView
+            android:id="@+id/tvBloodLevel"
+            style="@style/TodoStyleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/blood_alcohol_level"
+            app:layout_constraintEnd_toEndOf="@id/sbBloodLevel"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="@id/sbBloodLevel"
+            app:layout_constraintTop_toBottomOf="@id/sbBloodLevel" />
 
-    <SeekBar
-        android:id="@+id/sbHours"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@+id/ivHourglass"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="@dimen/margin_medium"
-        android:max="12"
-        android:thumbTint="@color/colorGreen"
-        tools:progress="12"
-        />
+        <TextView
+            android:id="@+id/tvBloodLevelValue"
+            style="@style/TodoStyleTextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/sbBloodLevel"
+            app:layout_constraintStart_toEndOf="@id/tvBloodLevel"
+            app:layout_constraintTop_toBottomOf="@id/sbBloodLevel"
+            tools:text="0.6%" />
 
-    <TextView
-        android:id="@+id/tvHours"
-        app:layout_constraintTop_toBottomOf="@id/sbHours"
-        app:layout_constraintStart_toStartOf="@id/sbHours"
-        app:layout_constraintEnd_toEndOf="@id/sbHours"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/TodoStyleText"
-        android:text="@string/select_hours_to_drink"
-        app:layout_constraintHorizontal_bias="0.2"
-        />
+        <ImageView
+            android:id="@+id/ivHourglass"
+            android:layout_width="62dp"
+            android:layout_height="62dp"
+            android:layout_margin="@dimen/margin_medium"
+            android:src="@drawable/ic_hourglass"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvBloodLevelValue" />
 
-    <TextView
-        android:id="@+id/tvHoursValue"
-        android:layout_width="wrap_content"
-        style="@style/TodoStyleTextLarge"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/sbHours"
-        app:layout_constraintStart_toEndOf="@id/tvHours"
-        app:layout_constraintEnd_toEndOf="@id/sbHours"
-        tools:text="12h"/>
+        <SeekBar
+            android:id="@+id/sbHours"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_medium"
+            android:max="12"
+            android:thumbTint="@color/colorGreen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/ivHourglass"
+            tools:progress="12" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvAlcoholUnit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tvHoursValue"
-        android:layout_margin="@dimen/margin_large"
-        tools:listitem="@layout/item_drink"
-        tools:itemCount="2"
-        />
+        <TextView
+            android:id="@+id/tvHours"
+            style="@style/TodoStyleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/select_hours_to_drink"
+            app:layout_constraintEnd_toEndOf="@id/sbHours"
+            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintStart_toStartOf="@id/sbHours"
+            app:layout_constraintTop_toBottomOf="@id/sbHours" />
+
+        <TextView
+            android:id="@+id/tvHoursValue"
+            style="@style/TodoStyleTextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/sbHours"
+            app:layout_constraintStart_toEndOf="@id/tvHours"
+            app:layout_constraintTop_toBottomOf="@id/sbHours"
+            tools:text="12h" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvAlcoholUnit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/margin_large"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:foregroundGravity="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tvHoursValue"
+            tools:itemCount="2"
+            tools:listitem="@layout/item_drink" />
 
 
-    <Button
-        android:id="@+id/bStartDrinking"
-        android:layout_width="128dp"
-        android:layout_height="64dp"
-        android:layout_margin="@dimen/margin_extraLarge"
-        android:background="@color/colorGreen"
-        android:text="@string/save"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintTop_toBottomOf="@+id/rvAlcoholUnit"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        <Button
+            android:id="@+id/bStartDrinking"
+            android:layout_width="128dp"
+            android:layout_height="64dp"
+            android:layout_margin="@dimen/margin_extraLarge"
+            android:background="@color/colorGreen"
+            android:text="@string/start_drinking"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rvAlcoholUnit" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</ScrollView>

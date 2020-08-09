@@ -87,13 +87,14 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     private fun observeNotificationLiveData() {
         countDownController.getNotificationLiveData().observe(this, androidx.lifecycle.Observer {
+            if (this::countDownTimer.isInitialized) {
+                countDownTimer.cancel()
+            }
             createCountDownTimer(it)
         })
     }
 
     private fun createCountDownTimer(calculation: DrinkingCalculation) {
-
-
         countDownTimer = object : CountDownTimer(calculation.d.toMillis(), 1000) {
             override fun onFinish() {
                 createNotification()

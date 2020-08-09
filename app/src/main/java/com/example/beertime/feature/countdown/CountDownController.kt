@@ -24,6 +24,10 @@ class CountDownController {
 
     var numberOfUnitsConsumed = 0
 
+    fun isDrinkng(): Boolean {
+        return drinkingStarted
+    }
+
     fun setAlcoholCalculator(
         userProfile: UserProfile, wantedBloodLevel: Float,
         peakTime: LocalDateTime, alcoholUnit: AlcoholUnit, nConsumed: Int = 0

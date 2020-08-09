@@ -34,4 +34,8 @@
     <string name="error_startdrinking_wanted_level_0">You\'ll have to set the blood level to something else than one to drink...</string>
     <string name="error_startdrinking_hours_drinking_0">You can\'t possibly drink that in 0 hours?!</string>
     <string name="error_startdrinking_select_unit">You cannot possibly drink without selecting an alcohol type?</string>
+    <string name="startdrinking_are_you_sure">Are you sure?</string>
+    <string name="startdrinking_already_drinking">You are already current drinking, aren\'t you? This will reset your current progress. Press \"Yes\" to start a new drinking session.</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
 </resources>

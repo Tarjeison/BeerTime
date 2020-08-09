@@ -20,6 +20,12 @@
         <item name="android:lineSpacingExtra">5sp</item>
     </style>
 
+    <style name="TodoStyleTextSmall">
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:lineSpacingExtra">5sp</item>
+    </style>
+
     <style name="TodoStyleTextLarge">
         <item name="android:textSize">32sp</item>
         <item name="android:textColor">@color/colorBlack</item>
