@@ -101,6 +101,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
                 if (calculation.num > 0) {
                     calculation.num--
+                    countDownController.onUnitConsumed()
                     createCountDownTimer(calculation)
                 }
 

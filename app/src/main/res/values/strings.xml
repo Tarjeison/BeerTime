@@ -16,7 +16,7 @@
     <string name="missing_profiles">You need to update you data on profile page before proceeding.</string>
     <string name="profile_error_age">You must be over 18 to use this app.</string>
     <string name="profile_error_weight">You should be over 40kg to drink alcohol.</string>
-    <string name="time_to_next_unit">Time to next unit:</string>
+    <string name="time_to_next_unit">Until next drink</string>
     <string name="channel_name">beertime_notification_channel</string>
     <string name="channel_description">Channel for BeerTime app</string>
     <string name="timer_finished_text">Finished!</string>
@@ -38,4 +38,8 @@
     <string name="startdrinking_already_drinking">You are already current drinking, aren\'t you? This will reset your current progress. Press \"Yes\" to start a new drinking session.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
+    <string name="countdown_not_started_drinking">Start a drinking session to get started!</string>
+    <string name="countdown_drinks_so_far">You shoud\'ve had...</string>
+    <string name="countdown_n_so_far">...so far</string>
+    <string name="countdown_enjoy_first">Enjoy your first drink! I\'ll let you know when it\'s time for more</string>
 </resources>

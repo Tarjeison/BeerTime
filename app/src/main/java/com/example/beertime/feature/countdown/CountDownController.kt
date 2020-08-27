@@ -21,8 +21,10 @@ class CountDownController {
 
     private val countDownLiveData = MutableLiveData<String>()
     private val notifierLiveData = MutableLiveData<DrinkingCalculation>()
+    private val unitConsumedLiveData = MutableLiveData<List<AlcoholUnit>>()
 
-    var numberOfUnitsConsumed = 0
+    private var drinkingUnit: AlcoholUnit? = null
+    private var numberOfUnitsConsumed = mutableListOf<AlcoholUnit>()
 
     fun isDrinkng(): Boolean {
         return drinkingStarted
@@ -34,7 +36,9 @@ class CountDownController {
     ) {
 
         drinkingStarted = true
-        numberOfUnitsConsumed = nConsumed
+        drinkingUnit = alcoholUnit
+        numberOfUnitsConsumed.clear()
+        unitConsumedLiveData.postValue(numberOfUnitsConsumed)
 
         Log.d("COUNTDOWN", "Drinking started")
         alcoholCalculator = AlcoholCalculator(
@@ -74,6 +78,18 @@ class CountDownController {
             "%02d:%02d",
             minutes, seconds
         )
+    }
+
+    fun onUnitConsumed() {
+        drinkingUnit?.let {
+            numberOfUnitsConsumed.add(it)
+        }
+        unitConsumedLiveData.postValue(numberOfUnitsConsumed)
+
+    }
+
+    fun getNumberOfUnitsConsumedLiveData(): MutableLiveData<List<AlcoholUnit>> {
+        return unitConsumedLiveData
     }
 
     fun getCountDownLiveData(): MutableLiveData<String> {
