@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.example.beertime.R
 import com.example.beertime.models.AlcoholUnit
-import com.example.beertime.models.DrinkingCalculation
 import com.example.beertime.models.UserProfile
 import com.example.beertime.util.AlcoholCalculator
 import java.time.LocalDateTime
@@ -20,7 +19,6 @@ class CountDownController {
     private var errorMessage = R.string.error_drinking_not_started
 
     private val countDownLiveData = MutableLiveData<String>()
-    private val notifierLiveData = MutableLiveData<DrinkingCalculation>()
     private val unitConsumedLiveData = MutableLiveData<List<AlcoholUnit>>()
 
     private var drinkingUnit: AlcoholUnit? = null
@@ -52,10 +50,8 @@ class CountDownController {
             countDownTimer.cancel()
         }
 
-        val calculation = alcoholCalculator?.calculateDrinkingTimes()
-        calculation?.let {
-            notifierLiveData.postValue(it)
-        }
+        val drinkingTimes = alcoholCalculator?.calculateDrinkingTimes()
+
     }
 
     // Method to get days hours minutes seconds from milliseconds
@@ -71,13 +67,19 @@ class CountDownController {
         millisUntilFinished -= TimeUnit.MINUTES.toMillis(minutes)
 
         val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)
-
-        // Format the string
-        return String.format(
-            Locale.getDefault(),
-            "%02d:%02d",
-            minutes, seconds
-        )
+        return if (days != 0L) {
+            String.format(
+                Locale.getDefault(),
+                "%02d:%02d:%02d",
+                hours, minutes, seconds
+            )
+        } else {
+            String.format(
+                Locale.getDefault(),
+                "%02d:%02d",
+                minutes, seconds
+            )
+        }
     }
 
     fun onUnitConsumed() {
@@ -96,7 +98,4 @@ class CountDownController {
         return countDownLiveData
     }
 
-    fun getNotificationLiveData(): MutableLiveData<DrinkingCalculation> {
-        return notifierLiveData
-    }
 }

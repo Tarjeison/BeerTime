@@ -15,7 +15,6 @@ import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
 import com.example.beertime.feature.countdown.CountDownController
-import com.example.beertime.models.DrinkingCalculation
 import com.example.beertime.util.CHANNEL_ID
 
 import kotlinx.android.synthetic.main.activity_main.*
@@ -26,17 +25,14 @@ import java.util.*
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     private var notificationBuilder: NotificationCompat.Builder? = null
-    private val countDownController: CountDownController by inject()
-
-    private lateinit var countDownTimer: CountDownTimer
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setUpBottomBar()
-        notificationBuilder = createNotificationChannel()
-        observeNotificationLiveData()
+        createNotificationChannel()
+        // observeNotificationLiveData()
     }
 
     /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -85,38 +81,38 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         })
     }
 
-    private fun observeNotificationLiveData() {
-        countDownController.getNotificationLiveData().observe(this, androidx.lifecycle.Observer {
-            if (this::countDownTimer.isInitialized) {
-                countDownTimer.cancel()
-            }
-            createCountDownTimer(it)
-        })
-    }
+//    private fun observeNotificationLiveData() {
+//        countDownController.getNotificationLiveData().observe(this, androidx.lifecycle.Observer {
+//            if (this::countDownTimer.isInitialized) {
+//                countDownTimer.cancel()
+//            }
+//            createCountDownTimer(it)
+//        })
+//    }
+//
+//    private fun createCountDownTimer(calculation: DrinkingCalculation) {
+//        countDownTimer = object : CountDownTimer(calculation.d.toMillis(), 1000) {
+//            override fun onFinish() {
+//                createNotification()
+//
+//                if (calculation.num > 0) {
+//                    calculation.num--
+//                    countDownController.onUnitConsumed()
+//                    createCountDownTimer(calculation)
+//                }
+//
+//            }
+//
+//            override fun onTick(millisUntilFinsihed: Long) {
+//                Log.d("COUNTODWN", millisUntilFinsihed.toString())
+//                countDownController.getCountDownLiveData().postValue(countDownController.timeString(millisUntilFinsihed))
+//            }
+//
+//        }.start()
+//
+//    }
 
-    private fun createCountDownTimer(calculation: DrinkingCalculation) {
-        countDownTimer = object : CountDownTimer(calculation.d.toMillis(), 1000) {
-            override fun onFinish() {
-                createNotification()
-
-                if (calculation.num > 0) {
-                    calculation.num--
-                    countDownController.onUnitConsumed()
-                    createCountDownTimer(calculation)
-                }
-
-            }
-
-            override fun onTick(millisUntilFinsihed: Long) {
-                Log.d("COUNTODWN", millisUntilFinsihed.toString())
-                countDownController.getCountDownLiveData().postValue(countDownController.timeString(millisUntilFinsihed))
-            }
-
-        }.start()
-
-    }
-
-    private fun createNotificationChannel(): NotificationCompat.Builder? {
+    private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -131,12 +127,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
-
-        return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(R.drawable.ic_icon_beer)
-            .setContentTitle(this.getText(R.string.notification_title))
-            .setContentText(this.getString(R.string.notification_text))
-            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
     }
 
     private fun createNotification() {
