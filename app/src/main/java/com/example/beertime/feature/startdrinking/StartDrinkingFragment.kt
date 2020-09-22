@@ -1,13 +1,7 @@
 package com.example.beertime.feature.startdrinking
 
-import android.app.AlarmManager
 import android.app.AlertDialog
-import android.app.PendingIntent
-import android.content.Context
-import android.content.Context.ALARM_SERVICE
-import android.content.Intent
 import android.os.Bundle
-import android.os.SystemClock
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,20 +9,14 @@ import android.widget.SeekBar
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
-import com.example.beertime.MainActivity
-import com.example.beertime.NotificationBroadcast
 import com.example.beertime.R
-import com.example.beertime.feature.countdown.CountDownController
 import com.example.beertime.feature.profile.ProfileViewModel
 import com.example.beertime.models.AlcoholUnit
+import com.example.beertime.util.AlarmUtils
 import com.example.beertime.util.AlcoholCalculator
-import com.example.beertime.util.SHARED_PREF_BEER_TIME
-import com.example.beertime.util.SHARED_PREF_DRINKING_TIMES
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_startdrinking.*
-import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-import java.time.Duration
 import java.time.LocalDateTime
 
 class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
@@ -155,55 +143,32 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
                     profile,
                     wantedBloodLevel,
                     LocalDateTime.now().plusHours(hoursDrinking.toLong()),
-                    AlcoholUnit("Test", 500*0.047*0.7, R.drawable.ic_icon_beer)
+                    AlcoholUnit("Test", 500 * 0.047 * 0.7, R.drawable.ic_icon_beer)
                 ).calculateDrinkingTimes()
 
-                saveDrinkingTimesToSharePreferences(drinkingTimes)
-                createNotificationAlarms(drinkingTimes)
+                val alarmUtils = AlarmUtils(it)
+                alarmUtils.deleteExistingAlarms()
+                alarmUtils.setAlarmsAndStoreTimesToSharedPref(drinkingTimes)
                 findNavController().navigate(R.id.action_startDrinkingFragment_to_countDownFragment)
             }
         }
-    }
-
-    private fun createNotificationAlarms(drinkingTimes: MutableList<LocalDateTime>) {
-        val intent = Intent(context, NotificationBroadcast::class.java)
-        val pendingIntent = PendingIntent.getBroadcast(context, 0, intent, 0)
-
-        val alarmManager = context?.getSystemService(ALARM_SERVICE) as AlarmManager?
-        alarmManager?.let { aManager ->
-
-            val now = LocalDateTime.now()
-            val nowMillis = System.currentTimeMillis()
-            drinkingTimes.forEach {
-                val duration = Duration.between(now, it)
-                aManager.set(AlarmManager.RTC_WAKEUP, nowMillis + duration.toMillis(), pendingIntent)
-            }
-        }
-    }
-
-    private fun saveDrinkingTimesToSharePreferences(drinkingTimes: List<LocalDateTime>) {
-        val sharedPref =
-            requireContext().getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-        with (sharedPref.edit()) {
-            putString(SHARED_PREF_DRINKING_TIMES, drinkingTimes.toString())
-        }.apply()
     }
 
     private fun alertAlreadyDrinking() {
         AlertDialog.Builder(this.context)
             .setTitle(R.string.startdrinking_are_you_sure)
             .setMessage(R.string.startdrinking_already_drinking)
-            .setPositiveButton(R.string.yes
+            .setPositiveButton(
+                R.string.yes
             ) { _, _ -> startDrinking() }
             .setNegativeButton(R.string.no, null)
             .show()
     }
 
     private fun isDrinking(): Boolean {
-        val sharedPref =
-            requireContext().getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-        return (sharedPref.getString(SHARED_PREF_DRINKING_TIMES, null) !=
-                null)
+        return context?.let {
+            AlarmUtils(it).getExistingDrinkTimesFromSharedPref() != null
+        } ?: false
     }
 
     override fun onItemSelected(name: String) {

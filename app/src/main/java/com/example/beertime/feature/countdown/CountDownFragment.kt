@@ -1,6 +1,5 @@
 package com.example.beertime.feature.countdown
 
-import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -9,8 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.example.beertime.R
-import com.example.beertime.util.SHARED_PREF_BEER_TIME
-import com.example.beertime.util.SHARED_PREF_DRINKING_TIMES
+import com.example.beertime.util.AlarmUtils
 import kotlinx.android.synthetic.main.fragment_timer.*
 import java.time.Duration
 import java.time.LocalDateTime
@@ -32,20 +30,13 @@ class CountDownFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        super.onViewCreated(view, savedInstanceState)
         imageAdapter =
             ImageAdapter(mutableListOf())
         rvAlcoholCount.layoutManager =
             GridLayoutManager(view.context, 5)
         rvAlcoholCount.adapter = imageAdapter
 
-        getDrinkingTimesSharedPref()
-        if (drinkingTimes == null) {
-            tvTimeToNext.text = this.getText(R.string.countdown_not_started_drinking)
-        } else {
-            refreshViews()
-            setupCountDownTimer()
-        }
     }
 
     private fun refreshViews() {
@@ -56,6 +47,7 @@ class CountDownFragment : Fragment() {
             }.size
 
             if (pastUnits > 0) {
+                tvAlcoholCountBottom.visibility = View.VISIBLE
                 imageAdapter.setData(MutableList(pastUnits) { R.drawable.ic_icon_beer })
             } else {
                 setNoUnitsConsumed()
@@ -65,9 +57,13 @@ class CountDownFragment : Fragment() {
 
     private fun setupCountDownTimer() {
         val duration = getDurationToNextDateTime() ?: return
+        if (this::countDownTimer.isInitialized) {
+            countDownTimer.cancel()
+        }
         countDownTimer = object : CountDownTimer(duration.toMillis(), 1000) {
             override fun onFinish() {
                 setupCountDownTimer()
+                refreshViews()
             }
 
             override fun onTick(millisUntilFinsihed: Long) {
@@ -75,7 +71,6 @@ class CountDownFragment : Fragment() {
             }
 
         }.start()
-
     }
 
     private fun getDurationToNextDateTime(): Duration? {
@@ -117,19 +112,6 @@ class CountDownFragment : Fragment() {
         }
     }
 
-    private fun getDrinkingTimesSharedPref() {
-        val sharedPref =
-            requireContext().getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-        sharedPref.getString(SHARED_PREF_DRINKING_TIMES, null)?.let {
-            var drinkingTimesString = it.trim('[', ']')
-            drinkingTimesString = drinkingTimesString.replace(" ", "")
-            val drinkingTimesStringArray = drinkingTimesString.split(",")
-            drinkingTimes = drinkingTimesStringArray.map { drinkingTimeString ->
-                LocalDateTime.parse(drinkingTimeString)
-            }
-        }
-    }
-
     private fun setNoUnitsConsumed() {
         tvAlcoholCountBottom.visibility = View.GONE
         tvAlcoholCount.text = getString(R.string.countdown_enjoy_first)
@@ -137,16 +119,23 @@ class CountDownFragment : Fragment() {
 
     override fun onPause() {
         super.onPause()
-        countDownTimer.cancel()
+        if (this::countDownTimer.isInitialized) {
+            countDownTimer.cancel()
+        }
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onStart() {
+        super.onStart()
+        context?.let {
+            drinkingTimes = AlarmUtils(it).getExistingDrinkTimesFromSharedPref()
+        }
+
         if (drinkingTimes == null) {
             tvTimeToNext.text = this.getText(R.string.countdown_not_started_drinking)
         } else {
             refreshViews()
             setupCountDownTimer()
         }
+
     }
 }

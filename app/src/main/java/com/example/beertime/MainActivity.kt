@@ -5,26 +5,17 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.os.Bundle
-import android.os.CountDownTimer
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
-import com.example.beertime.feature.countdown.CountDownController
+import com.example.beertime.util.AlarmUtils
 import com.example.beertime.util.CHANNEL_ID
-
 import kotlinx.android.synthetic.main.activity_main.*
 import nl.joery.animatedbottombar.AnimatedBottomBar
-import org.koin.android.ext.android.inject
-import java.util.*
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
-
-    private var notificationBuilder: NotificationCompat.Builder? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,7 +23,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setSupportActionBar(toolbar)
         setUpBottomBar()
         createNotificationChannel()
-        // observeNotificationLiveData()
     }
 
     /*override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -54,6 +44,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     override fun onStart() {
         super.onStart()
         findNavController(R.id.nav_host_fragment).addOnDestinationChangedListener(this)
+        if (AlarmUtils(this).getExistingDrinkTimesFromSharedPref() != null) {
+            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_countDownFragment)
+        }
     }
 
     override fun onStop() {
@@ -81,37 +74,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         })
     }
 
-//    private fun observeNotificationLiveData() {
-//        countDownController.getNotificationLiveData().observe(this, androidx.lifecycle.Observer {
-//            if (this::countDownTimer.isInitialized) {
-//                countDownTimer.cancel()
-//            }
-//            createCountDownTimer(it)
-//        })
-//    }
-//
-//    private fun createCountDownTimer(calculation: DrinkingCalculation) {
-//        countDownTimer = object : CountDownTimer(calculation.d.toMillis(), 1000) {
-//            override fun onFinish() {
-//                createNotification()
-//
-//                if (calculation.num > 0) {
-//                    calculation.num--
-//                    countDownController.onUnitConsumed()
-//                    createCountDownTimer(calculation)
-//                }
-//
-//            }
-//
-//            override fun onTick(millisUntilFinsihed: Long) {
-//                Log.d("COUNTODWN", millisUntilFinsihed.toString())
-//                countDownController.getCountDownLiveData().postValue(countDownController.timeString(millisUntilFinsihed))
-//            }
-//
-//        }.start()
-//
-//    }
-
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -129,17 +91,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         }
     }
 
-    private fun createNotification() {
-        Log.d("MAIN", "Not1")
-        notificationBuilder?.let {
-            Log.d("MAIN", "Not2")
-            with(NotificationManagerCompat.from(this)) {
-                // notificationId is a unique int for each notification that you must define
-                it.setWhen(System.currentTimeMillis())
-                notify(Random().nextInt(), it.build())
-            }
-        }
-    }
 
     override fun onDestinationChanged(
         controller: NavController,
