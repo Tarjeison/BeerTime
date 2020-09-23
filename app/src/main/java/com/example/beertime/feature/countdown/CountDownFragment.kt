@@ -135,8 +135,8 @@ class CountDownFragment : Fragment() {
         }
     }
 
-    override fun onStart() {
-        super.onStart()
+    override fun onResume() {
+        super.onResume()
         context?.let {
             drinkingTimes = AlarmUtils(it).getExistingDrinkTimesFromSharedPref()
         }
