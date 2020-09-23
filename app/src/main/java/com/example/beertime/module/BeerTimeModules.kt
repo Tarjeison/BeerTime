@@ -18,8 +18,11 @@ val beerTimeModules = module {
     }
 
     factory {
-        ProfileViewModel()
         InfoViewModel(androidContext())
+    }
+
+    factory {
+        ProfileViewModel()
     }
 }
 
