@@ -38,13 +38,13 @@
             android:id="@+id/ivCountDownPineapple"
             android:layout_width="128dp"
             android:layout_height="128dp"
-            android:layout_margin="@dimen/margin_small"
+            android:layout_marginStart="@dimen/margin_large"
             android:src="@drawable/ic_pineapple_smile"
-            app:layout_constraintBottom_toBottomOf="@id/tvTimeToNext"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/tvTimeToNext" />
+            app:layout_constraintTop_toBottomOf="@id/tcClock" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/clNumOfUnits"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/margin_large"

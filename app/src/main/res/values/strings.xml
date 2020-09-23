@@ -38,7 +38,7 @@
     <string name="startdrinking_already_drinking">You are already current drinking, aren\'t you? This will reset your current progress. Press \"Yes\" to start a new drinking session.</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-    <string name="countdown_not_started_drinking">Start a drinking session to get started!</string>
+    <string name="countdown_not_started_drinking">Not started</string>
     <string name="countdown_drinks_so_far">You shoud\'ve had…</string>
     <string name="countdown_n_so_far">…so far</string>
     <string name="countdown_enjoy_first">Enjoy your first drink! I\'ll let you know when it\'s time for more</string>
@@ -52,4 +52,5 @@
     <string name="info_custom_drinks_text">Sure! Go to Profile and you can add as many drinks as you want. When selecting the metrics for alcohol, make sure you don’t count the volume of non-alcohol beverages such as soda.</string>
     <string name="info_why_not_more_title">Why does the Blood Alcohol Content bar stop at 0.15%?</string>
     <string name="info_why_not_more_text">Legal reason? Moral reasons? Nah, really, if you want to get drunk I bet you won’t need app for that. This app it to help out those looking for more controlled fun.</string>
+    <string name="countdown_drinking_clock_not_started">00:00</string>
 </resources>

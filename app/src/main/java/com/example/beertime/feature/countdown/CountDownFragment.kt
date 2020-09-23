@@ -39,8 +39,12 @@ class CountDownFragment : Fragment() {
 
     }
 
-    private fun refreshViews() {
+    private fun setViewsDrinkingStarted() {
         drinkingTimes?.let {
+            ivCountDownPineapple.setImageDrawable(context?.getDrawable(R.drawable.ic_pineapple_smile))
+            ivCountDownPineapple.visibility = View.VISIBLE
+            clNumOfUnits.visibility = View.VISIBLE
+
             val now = LocalDateTime.now()
             val pastUnits = it.filter { drinkTime ->
                 drinkTime < now
@@ -63,7 +67,7 @@ class CountDownFragment : Fragment() {
         countDownTimer = object : CountDownTimer(duration.toMillis(), 1000) {
             override fun onFinish() {
                 setupCountDownTimer()
-                refreshViews()
+                setViewsDrinkingStarted()
             }
 
             override fun onTick(millisUntilFinsihed: Long) {
@@ -112,6 +116,13 @@ class CountDownFragment : Fragment() {
         }
     }
 
+    private fun setViewsDrinkingNotStarted() {
+        tvTimeToNext.text = getText(R.string.countdown_not_started_drinking)
+        tcClock.text = getString(R.string.countdown_drinking_clock_not_started)
+        ivCountDownPineapple.setImageDrawable(context?.getDrawable(R.drawable.ic_pineapple_sleeping))
+        clNumOfUnits.visibility = View.INVISIBLE
+    }
+
     private fun setNoUnitsConsumed() {
         tvAlcoholCountBottom.visibility = View.GONE
         tvAlcoholCount.text = getString(R.string.countdown_enjoy_first)
@@ -129,13 +140,11 @@ class CountDownFragment : Fragment() {
         context?.let {
             drinkingTimes = AlarmUtils(it).getExistingDrinkTimesFromSharedPref()
         }
-
         if (drinkingTimes == null) {
-            tvTimeToNext.text = this.getText(R.string.countdown_not_started_drinking)
+            setViewsDrinkingNotStarted()
         } else {
-            refreshViews()
+            setViewsDrinkingStarted()
             setupCountDownTimer()
         }
-
     }
 }
