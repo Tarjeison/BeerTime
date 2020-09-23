@@ -5,7 +5,9 @@ import androidx.core.app.NotificationCompat
 import com.example.beertime.util.CHANNEL_ID
 import com.example.beertime.R
 import com.example.beertime.feature.countdown.CountDownController
+import com.example.beertime.feature.info.InfoViewModel
 import com.example.beertime.feature.profile.ProfileViewModel
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 
@@ -17,6 +19,7 @@ val beerTimeModules = module {
 
     factory {
         ProfileViewModel()
+        InfoViewModel(androidContext())
     }
 }
 

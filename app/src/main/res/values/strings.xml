@@ -23,15 +23,15 @@
     <string name="notification_title">BeerTime</string>
     <string name="notification_text">You may have another one, if you wish!</string>
     <string name="home">Home</string>
-    <string name="settings">Setttings</string>
+    <string name="settings">Settings</string>
     <string name="select_alcohol_level">Select wanted blood alcohol level (%)</string>
     <string name="select_hours_to_drink">How many hours will you be drinking?</string>
     <string name="profile_blank_age">Age field cannot be empty</string>
     <string name="profile_blank_weight">Weight field cannt be empty</string>
     <string name="blood_alcohol_level">Blood alcohol level</string>
     <string name="error_drinking_not_started">Start a drinking sessions in the \"Home\" page</string>
-    <string name="error_no_user_profile_found">An error occured getting your user profile. Try setting it in the \"Profile\" page.</string>
-    <string name="error_startdrinking_wanted_level_0">You\'ll have to set the blood level to something else than one to drink...</string>
+    <string name="error_no_user_profile_found">An error occurred getting your user profile. Try setting it in the \"Profile\" page.</string>
+    <string name="error_startdrinking_wanted_level_0">You\'ll have to set the blood level to something else than one to drink…</string>
     <string name="error_startdrinking_hours_drinking_0">You can\'t possibly drink that in 0 hours?!</string>
     <string name="error_startdrinking_select_unit">You cannot possibly drink without selecting an alcohol type?</string>
     <string name="startdrinking_are_you_sure">Are you sure?</string>
@@ -39,7 +39,17 @@
     <string name="yes">Yes</string>
     <string name="no">No</string>
     <string name="countdown_not_started_drinking">Start a drinking session to get started!</string>
-    <string name="countdown_drinks_so_far">You shoud\'ve had...</string>
-    <string name="countdown_n_so_far">...so far</string>
+    <string name="countdown_drinks_so_far">You shoud\'ve had…</string>
+    <string name="countdown_n_so_far">…so far</string>
     <string name="countdown_enjoy_first">Enjoy your first drink! I\'ll let you know when it\'s time for more</string>
+
+    <string name="action_info">Info</string>
+    <string name="info_what_is_bac_title">What is Blood Alcohol Content (BAC)?</string>
+    <string name="info_what_is_bac_text">BAC is a measurement of the alcohol percentage present in 100mL of blood. A BAC of 0.10% indicates that a person has 0.10g per 100mL of blood. BAC is usually measured in percent or permille depening on the country. This app uses percent and 0.01% = 1‰. \n \n https://en.wikipedia.org/wiki/Blood_alcohol_content</string>
+    <string name="info_how_calculator_title">How does the calculator work?</string>
+    <string name="info_how_calculator_text">The number of grams of alcohol needed to achieve a certain blood alcohol content (BAC) can be calculated by using ones biological gender and weight. This app uses the Widmark-Forumla as the basis for the computation, solving for the number of units needed based on wanted BAC and estimated time. \n\n This gives the following equation:\n Needed Grams = (BAC + 0.015*Hours)*(Weight*GenderConstant) \n The amount of alcohol in your selected unit will then be used to see how many units will give the closest value, below or equal, to the grams calculated in the formula above. \n\n https://www.wikihow.com/Calculate-Blood-Alcohol-Content-(Widmark-Formula)</string>
+    <string name="info_custom_drinks_title">Can I add my favorite drinks to the app?</string>
+    <string name="info_custom_drinks_text">Sure! Go to Profile and you can add as many drinks as you want. When selecting the metrics for alcohol, make sure you don’t count the volume of non-alcohol beverages such as soda.</string>
+    <string name="info_why_not_more_title">Why does the Blood Alcohol Content bar stop at 0.15%?</string>
+    <string name="info_why_not_more_text">Legal reason? Moral reasons? Nah, really, if you want to get drunk I bet you won’t need app for that. This app it to help out those looking for more controlled fun.</string>
 </resources>

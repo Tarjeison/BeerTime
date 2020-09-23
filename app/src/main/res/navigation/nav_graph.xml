@@ -46,4 +46,15 @@
             android:id="@+id/action_startDrinkingFragment_to_countDownFragment"
             app:destination="@id/countDownFragment" />
     </fragment><action android:id="@+id/action_global_startDrinkingFragment" app:destination="@id/startDrinkingFragment"/>
+    <fragment
+        android:id="@+id/infoFragment"
+        android:name="com.example.beertime.feature.info.InfoFragment"
+        android:label="InfoFragment" />
+    <action
+        android:id="@+id/action_global_infoFragment"
+        app:destination="@id/infoFragment"
+        app:enterAnim="@anim/nav_default_enter_anim"
+        app:exitAnim="@anim/nav_default_exit_anim"
+        app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+        app:popExitAnim="@anim/nav_default_pop_exit_anim" />
 </navigation>
