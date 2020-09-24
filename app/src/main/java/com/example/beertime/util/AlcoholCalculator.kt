@@ -5,6 +5,7 @@ import com.example.beertime.models.Gender
 import com.example.beertime.models.UserProfile
 import java.time.Duration
 import java.time.LocalDateTime
+import kotlin.math.roundToInt
 
 class AlcoholCalculator(
     private val userProfile: UserProfile,
@@ -24,11 +25,8 @@ class AlcoholCalculator(
         val dTime = Duration.between(startTime, peakTime)
 
         val neededGrams =
-            (wantedBloodLevel + 0.15 * dTime.toHours()) * ((userProfile.weight * genderConst))
-        var numberOfUnitsToDrink = 1
-        while (preferredUnit.gramPerUnit * numberOfUnitsToDrink < neededGrams) {
-            numberOfUnitsToDrink++
-        }
+            ((wantedBloodLevel + 0.015 * dTime.toHours()) * ((userProfile.weight * 1000 * genderConst)))/100
+        val numberOfUnitsToDrink = (neededGrams/preferredUnit.gramPerUnit).roundToInt()
 
         val dDuration = dTime.dividedBy(numberOfUnitsToDrink.toLong())
         val drinkingTimes = mutableListOf<LocalDateTime>()
