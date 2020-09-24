@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/clStartDrinking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,14 +19,15 @@
             android:src="@drawable/ic_student"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="ContentDescription" />
 
         <SeekBar
             android:id="@+id/sbBloodLevel"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
-            android:max="10000"
+            android:max="200"
             android:thumbTint="@color/colorGreen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -62,7 +63,8 @@
             android:src="@drawable/ic_hourglass"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvBloodLevelValue" />
+            app:layout_constraintTop_toBottomOf="@id/tvBloodLevelValue"
+            tools:ignore="ContentDescription" />
 
         <SeekBar
             android:id="@+id/sbHours"

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SeekBar
+import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
@@ -57,7 +58,8 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 // TODO: Proper strings
                 wantedBloodLevel = (p1.toFloat() / 1000)
-                tvBloodLevelValue.text = wantedBloodLevel.toString() + "%"
+                tvBloodLevelValue.text = String.format(getString(R.string.startdrinking_percentage),
+                    wantedBloodLevel.toString())
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -72,7 +74,8 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 // TODO: Proper strings
                 hoursDrinking = p1
-                tvHoursValue.text = hoursDrinking.toString() + "h"
+                tvHoursValue.text = String.format(getString(R.string.startdrinking_hour),
+                    hoursDrinking.toString())
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -84,83 +87,78 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
         })
     }
 
-    private fun validateValues(): Boolean {
-        when {
-            wantedBloodLevel == 0f -> {
-                Snackbar.make(
-                    clStartDrinking,
-                    R.string.error_startdrinking_wanted_level_0,
-                    Snackbar.LENGTH_LONG
-                ).show()
-                return false
-            }
-            hoursDrinking == 0 -> {
-                Snackbar.make(
-                    clStartDrinking,
-                    R.string.error_startdrinking_hours_drinking_0,
-                    Snackbar.LENGTH_LONG
-                ).show()
-                return false
-            }
-            preferredAlcoholUnit == null -> {
-                Snackbar.make(
-                    clStartDrinking,
-                    R.string.error_startdrinking_select_unit,
-                    Snackbar.LENGTH_LONG
-                ).show()
-                return false
-            }
-            else -> {
-                return true
-            }
+    private fun validateValuesAndCreateCalculation(): AlcoholCalculator? {
+
+        val selectedBloodLevel = if (wantedBloodLevel != 0f) {
+            wantedBloodLevel
+        } else {
+            createSnackBar(R.string.error_startdrinking_wanted_level_0)
+            return null
         }
 
+        val selectedHoursDrinking = if (hoursDrinking != 0) {
+            hoursDrinking
+        } else {
+            createSnackBar(R.string.error_startdrinking_hours_drinking_0)
+            return null
+        }
+
+        val selectedPreferredAlcoholUnit = preferredAlcoholUnit ?: kotlin.run {
+            createSnackBar(R.string.error_startdrinking_select_unit)
+            return null
+        }
+
+        val profile = profileViewModel.getUserProfile() ?: kotlin.run {
+            createSnackBar(R.string.error_no_user_profile_found)
+            return null
+        }
+
+        return AlcoholCalculator(profile,
+            selectedBloodLevel,
+            LocalDateTime.now().plusHours(selectedHoursDrinking.toLong()),
+            selectedPreferredAlcoholUnit
+        )
+
+    }
+
+    private fun createSnackBar(@StringRes resId: Int) {
+        Snackbar.make(
+            clStartDrinking,
+            resId,
+            Snackbar.LENGTH_LONG
+        ).show()
     }
 
     private fun initStartDrinkingButton() {
         bStartDrinking.setOnClickListener {
-            if (validateValues()) {
+            val calculation = validateValuesAndCreateCalculation()
+            calculation?.let {
                 if (isDrinking()) {
-                    alertAlreadyDrinking()
+                    alertAlreadyDrinking(it)
                 } else {
-                    startDrinking()
+                    startDrinking(it)
                 }
             }
         }
     }
 
-    private fun startDrinking() {
-        this.context?.let {
-            val profile = profileViewModel.getUserProfile(it)
-            if (profile == null) {
-                Snackbar.make(
-                    clStartDrinking,
-                    R.string.error_no_user_profile_found,
-                    Snackbar.LENGTH_LONG
-                ).show()
-            } else {
-                val drinkingTimes = AlcoholCalculator(
-                    profile,
-                    wantedBloodLevel,
-                    LocalDateTime.now().plusHours(hoursDrinking.toLong()),
-                    AlcoholUnit("Test", 500 * 0.047 * 0.7, R.drawable.ic_icon_beer)
-                ).calculateDrinkingTimes()
-
-                val alarmUtils = AlarmUtils(it)
-                alarmUtils.deleteExistingAlarms()
-                alarmUtils.setAlarmsAndStoreTimesToSharedPref(drinkingTimes)
-                findNavController().navigate(R.id.action_startDrinkingFragment_to_countDownFragment)
-            }
+    private fun startDrinking(calculator: AlcoholCalculator) {
+        context?.let {
+            val drinkingTimes = calculator.calculateDrinkingTimes()
+            val alarmUtils = AlarmUtils(it)
+            alarmUtils.deleteExistingAlarms()
+            alarmUtils.setAlarmsAndStoreTimesToSharedPref(drinkingTimes)
+            findNavController().navigate(R.id.action_startDrinkingFragment_to_countDownFragment)
         }
     }
 
-    private fun alertAlreadyDrinking() {
+    private fun alertAlreadyDrinking(calculator: AlcoholCalculator) {
         AlertDialog.Builder(this.context)
             .setTitle(R.string.startdrinking_are_you_sure)
             .setMessage(R.string.startdrinking_already_drinking)
             .setPositiveButton(
                 R.string.yes
-            ) { _, _ -> startDrinking() }
+            ) { _, _ -> startDrinking(calculator) }
             .setNegativeButton(R.string.no, null)
             .show()
     }

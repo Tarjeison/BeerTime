@@ -11,10 +11,11 @@ import com.example.beertime.models.Gender
 import com.example.beertime.models.UserProfile
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment() {
 
-    private val profileViewModel = ProfileViewModel()
+    private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +26,7 @@ class ProfileFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val userProfile = profileViewModel.getUserProfile(view.context)
+        val userProfile = profileViewModel.getUserProfile()
         userProfile?.let {
             etAge.setText(it.age.toString())
             etWeight.setText(it.weight.toString())

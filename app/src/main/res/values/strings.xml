@@ -7,6 +7,9 @@
     <string name="female">Female</string>
     <string name="weight">Weight</string>
     <string name="save">Save</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+
     <string name="profile_error_age_weight">Age must be over 18 and weight over 45.</string>
     <string name="profile_updated">Profile updated</string>
     <string name="profile_error_no_gender">You must select a gender</string>
@@ -36,8 +39,9 @@
     <string name="error_startdrinking_select_unit">You cannot possibly drink without selecting an alcohol type?</string>
     <string name="startdrinking_are_you_sure">Are you sure?</string>
     <string name="startdrinking_already_drinking">You are already current drinking, aren\'t you? This will reset your current progress. Press \"Yes\" to start a new drinking session.</string>
-    <string name="yes">Yes</string>
-    <string name="no">No</string>
+    <string name="startdrinking_percentage">%1$s\%%</string>
+    <string name="startdrinking_hour">%1$sh</string>
+
     <string name="countdown_not_started_drinking">Not started</string>
     <string name="countdown_drinks_so_far">You shoud\'ve had…</string>
     <string name="countdown_n_so_far">…so far</string>

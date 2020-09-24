@@ -11,27 +11,9 @@
         android:label="Profile"
         tools:layout="@layout/fragment_profile"/>
     <fragment
-        android:id="@+id/startpageFragment"
-        android:name="com.example.beertime.feature.startpage.StartPageFragment"
-        android:label="Start page ">
-        <action
-            android:id="@+id/action_startpageFragment_to_profileFragment"
-            app:destination="@id/profileFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
-        <action
-            android:id="@+id/action_startpageFragment_to_countDownFragment"
-            app:destination="@id/countDownFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/countDownFragment"
         android:name="com.example.beertime.feature.countdown.CountDownFragment"
         android:label="CountDownFragment" />
-    <action
-        android:id="@+id/action_global_startpageFragment"
-        app:destination="@id/startpageFragment" />
     <action
         android:id="@+id/action_global_countDownFragment"
         app:destination="@id/countDownFragment" />

@@ -1,15 +1,17 @@
 package com.example.beertime.feature.profile
 
+import android.app.Application
 import android.content.Context
 import android.util.Log
 import androidx.annotation.StringRes
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import com.example.beertime.models.Gender
 import com.example.beertime.models.UserProfile
 import java.io.FileNotFoundException
 import java.nio.charset.Charset
 
-class ProfileViewModel: ViewModel(){
+class ProfileViewModel (application: Application): AndroidViewModel(application){
 
     companion object {
         const val MODEL_TAG = "ProfileViewModel"
@@ -18,11 +20,13 @@ class ProfileViewModel: ViewModel(){
         const val FILE_GENDER = "gender"
     }
 
-    fun getUserProfile(context: Context): UserProfile? {
+    private val appContext = getApplication<Application>().applicationContext
+
+    fun getUserProfile(): UserProfile? {
         return try {
-            val age = String(context.openFileInput(FILE_AGE).readBytes(), Charset.defaultCharset()).toInt()
-            val weight = String(context.openFileInput(FILE_WEIGHT).readBytes(), Charset.defaultCharset()).toInt()
-            val gender = Gender.stringToGender(String(context.openFileInput(FILE_GENDER).readBytes(),Charset.defaultCharset()))
+            val age = String(appContext.openFileInput(FILE_AGE).readBytes(), Charset.defaultCharset()).toInt()
+            val weight = String(appContext.openFileInput(FILE_WEIGHT).readBytes(), Charset.defaultCharset()).toInt()
+            val gender = Gender.stringToGender(String(appContext.openFileInput(FILE_GENDER).readBytes(),Charset.defaultCharset()))
             UserProfile(age, gender, weight)
         } catch (error: FileNotFoundException) {
             Log.d(MODEL_TAG, error.message ?: "UserProfileLoadError")
