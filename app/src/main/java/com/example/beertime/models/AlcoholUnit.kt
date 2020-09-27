@@ -4,10 +4,13 @@ import androidx.annotation.DrawableRes
 
 data class AlcoholUnit(
     val name: String,
-    val gramPerUnit: Double,
+    val volume: Float,
+    val percentage: Float,
     @DrawableRes val iconId: Int,
     var isSelected: Boolean = false
-)
+) {
+    val gramPerUnit = volume * 1000 * percentage * 0.789
+}
 
 //enum class AlcoholUnit {
 //    BIG_BEER {

@@ -10,6 +10,7 @@ import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.beertime.R
 import com.example.beertime.feature.profile.ProfileViewModel
 import com.example.beertime.models.AlcoholUnit
@@ -20,7 +21,7 @@ import kotlinx.android.synthetic.main.fragment_startdrinking.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDateTime
 
-class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
+class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
 
     private var wantedBloodLevel = 0f
     private var hoursDrinking: Int = 0
@@ -28,7 +29,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
 
     private val profileViewModel: ProfileViewModel by viewModel()
 
-    private lateinit var alcoholAdapter: AlcoholAdapter
+    private lateinit var alcoholAdapter: AlcoholAdapterV2
     private lateinit var startDrinkingViewModel: StartDrinkingViewModel
 
     override fun onCreateView(
@@ -43,9 +44,8 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterCallback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         startDrinkingViewModel = StartDrinkingViewModel()
-        alcoholAdapter = AlcoholAdapter(startDrinkingViewModel.getAlcoholUnits(), this)
-        rvAlcoholUnit.layoutManager =
-            GridLayoutManager(view.context, 4)
+        alcoholAdapter = AlcoholAdapterV2(startDrinkingViewModel.getAlcoholUnits(), this)
+        rvAlcoholUnit.layoutManager = LinearLayoutManager(context)
         rvAlcoholUnit.adapter = alcoholAdapter
         alcoholAdapter.notifyDataSetChanged()
 

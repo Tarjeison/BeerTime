@@ -31,7 +31,7 @@
     <string name="select_hours_to_drink">How many hours will you be drinking?</string>
     <string name="profile_blank_age">Age field cannot be empty</string>
     <string name="profile_blank_weight">Weight field cannt be empty</string>
-    <string name="blood_alcohol_level">Blood alcohol level</string>
+    <string name="blood_alcohol_level">Blood alcohol content</string>
     <string name="error_drinking_not_started">Start a drinking sessions in the \"Home\" page</string>
     <string name="error_no_user_profile_found">An error occurred getting your user profile. Try setting it in the \"Profile\" page.</string>
     <string name="error_startdrinking_wanted_level_0">You\'ll have to set the blood level to something else than one to drink…</string>
@@ -41,6 +41,7 @@
     <string name="startdrinking_already_drinking">You are already current drinking, aren\'t you? This will reset your current progress. Press \"Yes\" to start a new drinking session.</string>
     <string name="startdrinking_percentage">%1$s\%%</string>
     <string name="startdrinking_hour">%1$sh</string>
+    <string name="startdrinking_percent_volume_drink">%1$s\%%, %2$sL</string>
 
     <string name="countdown_not_started_drinking">Not started</string>
     <string name="countdown_drinks_so_far">You shoud\'ve had…</string>
@@ -57,4 +58,6 @@
     <string name="info_why_not_more_title">Why does the Blood Alcohol Content bar stop at 0.15%?</string>
     <string name="info_why_not_more_text">Legal reason? Moral reasons? Nah, really, if you want to get drunk I bet you won’t need app for that. This app it to help out those looking for more controlled fun.</string>
     <string name="countdown_drinking_clock_not_started">00:00</string>
+    <string name="profile_update">Update profile</string>
+    <string name="startdrinking_what_will_you_drink">What will you be drinking?</string>
 </resources>

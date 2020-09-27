@@ -40,8 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/blood_alcohol_level"
+            android:layout_marginStart="@dimen/margin_medium"
             app:layout_constraintEnd_toEndOf="@id/sbBloodLevel"
-            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/sbBloodLevel"
             app:layout_constraintTop_toBottomOf="@id/sbBloodLevel" />
 
@@ -81,11 +82,12 @@
         <TextView
             android:id="@+id/tvHours"
             style="@style/TodoStyleText"
+            android:layout_marginStart="@dimen/margin_medium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/select_hours_to_drink"
             app:layout_constraintEnd_toEndOf="@id/sbHours"
-            app:layout_constraintHorizontal_bias="0.2"
+            app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/sbHours"
             app:layout_constraintTop_toBottomOf="@id/sbHours" />
 
@@ -99,15 +101,28 @@
             app:layout_constraintTop_toBottomOf="@id/sbHours"
             tools:text="12h" />
 
+        <TextView
+            android:id="@+id/tvWhatUnit"
+            style="@style/TodoStyleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@+id/tvHours"
+            app:layout_constraintStart_toStartOf="@id/tvHours"
+            android:layout_marginTop="@dimen/margin_extraLarge"
+            android:text="@string/startdrinking_what_will_you_drink"
+            />
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvAlcoholUnit"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_large"
+            android:layout_marginEnd="@dimen/margin_large"
+            android:layout_marginTop="@dimen/margin_small"
             app:layout_constraintEnd_toEndOf="parent"
             android:foregroundGravity="center"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvHoursValue"
+            app:layout_constraintTop_toBottomOf="@id/tvWhatUnit"
             tools:itemCount="2"
             tools:listitem="@layout/item_drink" />
 
