@@ -82,7 +82,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             ) {
                 when (newTab.id) {
                     R.id.tab_home -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_startDrinkingFragment)
-                    R.id.tab_settings -> findNavController(R.id.nav_host_fragment).navigate(R.id.countDownFragment)
+                    R.id.tab_timer -> findNavController(R.id.nav_host_fragment).navigate(R.id.countDownFragment)
                     R.id.tab_profile -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_profileFragment)
                     else -> throw ClassNotFoundException()
                 }
@@ -120,7 +120,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
         this.menu?.findItem(R.id.action_info)?.isVisible = true
         when (destination.id) {
-            R.id.countDownFragment -> bottom_bar.selectTabById(R.id.tab_settings)
+            R.id.countDownFragment -> bottom_bar.selectTabById(R.id.tab_timer)
             R.id.startDrinkingFragment -> bottom_bar.selectTabById(R.id.tab_home)
             R.id.profileFragment -> bottom_bar.selectTabById(R.id.tab_profile)
             R.id.infoFragment -> {

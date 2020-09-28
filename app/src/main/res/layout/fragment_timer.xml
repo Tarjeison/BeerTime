@@ -57,7 +57,6 @@
 
             <TextView
                 android:id="@+id/tvAlcoholCount"
-
                 style="@style/TodoStyleText"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -73,29 +72,6 @@
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rvAlcoholCount"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_large"
-                android:layout_marginTop="@dimen/margin_small"
-                android:layout_marginEnd="@dimen/margin_large"
-                android:layout_marginBottom="@dimen/margin_small"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tvAlcoholCount" />
-
-            <TextView
-                android:id="@+id/tvAlcoholCountBottom"
-                style="@style/TodoStyleText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/margin_medium"
-                android:layout_marginEnd="@dimen/margin_extraLarge"
-                android:paddingBottom="@dimen/margin_medium"
-                android:text="@string/countdown_n_so_far"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rvAlcoholCount" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

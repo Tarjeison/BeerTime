@@ -17,7 +17,6 @@ import java.util.concurrent.TimeUnit
 
 class CountDownFragment : Fragment() {
 
-    private lateinit var imageAdapter: ImageAdapter
     private lateinit var countDownTimer: CountDownTimer
     private var drinkingTimes: List<LocalDateTime>? = null
 
@@ -31,12 +30,6 @@ class CountDownFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        imageAdapter =
-            ImageAdapter(mutableListOf())
-        rvAlcoholCount.layoutManager =
-            GridLayoutManager(view.context, 5)
-        rvAlcoholCount.adapter = imageAdapter
-
     }
 
     private fun setViewsDrinkingStarted() {
@@ -51,8 +44,10 @@ class CountDownFragment : Fragment() {
             }.size
 
             if (pastUnits > 0) {
-                tvAlcoholCountBottom.visibility = View.VISIBLE
-                imageAdapter.setData(MutableList(pastUnits) { R.drawable.ic_icon_beer })
+                tvAlcoholCount.text = String.format(
+                    getString(R.string.countdown_drinks_so_far),
+                    pastUnits
+                )
             } else {
                 setNoUnitsConsumed()
             }
@@ -103,13 +98,11 @@ class CountDownFragment : Fragment() {
         val seconds = TimeUnit.MILLISECONDS.toSeconds(millisUntilFinished)
         return if (hours != 0L) {
             String.format(
-                Locale.getDefault(),
                 "%02d:%02d:%02d",
                 hours, minutes, seconds
             )
         } else {
             String.format(
-                Locale.getDefault(),
                 "%02d:%02d",
                 minutes, seconds
             )
@@ -124,7 +117,6 @@ class CountDownFragment : Fragment() {
     }
 
     private fun setNoUnitsConsumed() {
-        tvAlcoholCountBottom.visibility = View.GONE
         tvAlcoholCount.text = getString(R.string.countdown_enjoy_first)
     }
 

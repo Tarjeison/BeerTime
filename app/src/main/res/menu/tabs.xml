@@ -5,9 +5,9 @@
         android:icon="@drawable/ic_icon_beer"
         android:title="@string/home" />
     <item
-        android:id="@+id/tab_settings"
-        android:icon="@drawable/ic_settings_24px_outlined"
-        android:title="@string/settings" />
+        android:id="@+id/tab_timer"
+        android:icon="@drawable/ic_counter"
+        android:title="@string/timer" />
     <item
         android:id="@+id/tab_profile"
         android:icon="@drawable/ic_account_circle_24px_outlined"
