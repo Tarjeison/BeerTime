@@ -42,6 +42,9 @@ class AlcoholAdapterV2(private val alcoholUnits: ArrayList<AlcoholUnit>, private
                 (alcoholUnit.percentage*100).toString(),
                 alcoholUnit.volume.toString()
             )
+            itemView.rbDrinkSelect.setOnClickListener {
+                alcoholAdapterCallback.onItemSelected(alcoholUnit.name)
+            }
             itemView.setOnClickListener {
                 alcoholAdapterCallback.onItemSelected(alcoholUnit.name)
             }
