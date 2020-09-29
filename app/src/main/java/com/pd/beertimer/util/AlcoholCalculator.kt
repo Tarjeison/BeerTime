@@ -11,7 +11,7 @@ class AlcoholCalculator(
     private val userProfile: UserProfile,
     private val wantedBloodLevel: Float,
     private val peakTime: LocalDateTime,
-    private val preferredUnit: AlcoholUnit
+    val preferredUnit: AlcoholUnit
 ) {
 
 
@@ -35,5 +35,8 @@ class AlcoholCalculator(
         }
 
         return drinkingTimes
+    }
+
+    fun changeDuration(previousDrinkingTimes: List<LocalDateTime>) {
     }
 }

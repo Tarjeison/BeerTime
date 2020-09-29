@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pd.beertimer.R
+import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.util.AlarmUtils
 import kotlinx.android.synthetic.main.fragment_timer.*
 import java.time.Duration
@@ -19,6 +20,7 @@ class CountDownFragment : Fragment() {
 
     private lateinit var countDownTimer: CountDownTimer
     private var drinkingTimes: List<LocalDateTime>? = null
+    private var currentlyDrinkingUnit: AlcoholUnit? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -34,6 +36,9 @@ class CountDownFragment : Fragment() {
 
     private fun setViewsDrinkingStarted() {
         drinkingTimes?.let {
+            currentlyDrinkingUnit?.let { unit ->
+                ivCurrentlyDrinking.setImageDrawable(context?.getDrawable(unit.iconId))
+            }
             ivCountDownPineapple.setImageDrawable(context?.getDrawable(R.drawable.ic_pineapple_smile))
             ivCountDownPineapple.visibility = View.VISIBLE
             clNumOfUnits.visibility = View.VISIBLE
@@ -130,7 +135,9 @@ class CountDownFragment : Fragment() {
     override fun onResume() {
         super.onResume()
         context?.let {
-            drinkingTimes = AlarmUtils(it).getExistingDrinkTimesFromSharedPref()
+            val alarmUtils = AlarmUtils(it)
+            drinkingTimes = alarmUtils.getExistingDrinkTimesFromSharedPref()
+            currentlyDrinkingUnit = alarmUtils.getCurrentlyDrinkingAlcoholUnitSharedPref()
         }
         if (drinkingTimes == null) {
             setViewsDrinkingNotStarted()

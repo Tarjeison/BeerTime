@@ -5,14 +5,18 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
+import com.fasterxml.jackson.module.kotlin.readValue
 import com.pd.beertimer.NotificationBroadcast
+import com.pd.beertimer.models.AlcoholUnit
 import java.time.LocalDateTime
 import java.time.ZoneId
 
 class AlarmUtils(context: Context) : ContextWrapper(context) {
 
-    fun setAlarmsAndStoreTimesToSharedPref(localDateTimes: List<LocalDateTime>) {
+    fun setAlarmsAndStoreTimesToSharedPref(localDateTimes: List<LocalDateTime>, alcoholUnit: AlcoholUnit) {
         saveTimesToSharedPref(localDateTimes)
+        saveAlcoholUnitToSharedPref(alcoholUnit)
         val aManagers =
             List(localDateTimes.size) { baseContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager }
         for (i in aManagers.indices) {
@@ -71,11 +75,30 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
         return null
     }
 
+    fun getCurrentlyDrinkingAlcoholUnitSharedPref(): AlcoholUnit? {
+        val sharedPref =
+            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
+        sharedPref.getString(SHARED_PREF_DRINKING_UNIT, null)?.let {
+            return jacksonObjectMapper().readValue<AlcoholUnit>(it)
+        }
+        return null
+    }
+
     private fun saveTimesToSharedPref(drinkingTimes: List<LocalDateTime>) {
         val sharedPref =
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString(SHARED_PREF_DRINKING_TIMES, drinkingTimes.toString())
         }.apply()
+    }
+
+    private fun saveAlcoholUnitToSharedPref(alcoholUnit: AlcoholUnit) {
+        val unitAsJson = jacksonObjectMapper().writeValueAsString(alcoholUnit)
+        val sharedPref =
+            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            putString(SHARED_PREF_DRINKING_UNIT, unitAsJson)
+        }.apply()
+
     }
 }

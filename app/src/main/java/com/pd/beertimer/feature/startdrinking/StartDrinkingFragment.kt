@@ -157,7 +157,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             val drinkingTimes = calculator.calculateDrinkingTimes()
             val alarmUtils = AlarmUtils(it)
             alarmUtils.deleteExistingAlarms()
-            alarmUtils.setAlarmsAndStoreTimesToSharedPref(drinkingTimes)
+            alarmUtils.setAlarmsAndStoreTimesToSharedPref(drinkingTimes, calculator.preferredUnit)
             firebaseAnalytics.logEvent("started_drinking") {
                 param("drinking_start_time", drinkingTimes.first().toString())
                 param("drinking_end_time", drinkingTimes.last().toString())
