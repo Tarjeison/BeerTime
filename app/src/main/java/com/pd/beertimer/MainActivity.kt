@@ -23,11 +23,18 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
         setUpBottomBar()
         createNotificationChannel()
         setupToolbar()
+
+        if (savedInstanceState == null) {
+            if (AlarmUtils(this).getExistingDrinkTimesFromSharedPref() != null) {
+                findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_countDownFragment)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -54,9 +61,6 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     override fun onStart() {
         super.onStart()
         findNavController(R.id.nav_host_fragment).addOnDestinationChangedListener(this)
-        if (AlarmUtils(this).getExistingDrinkTimesFromSharedPref() != null) {
-            findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_countDownFragment)
-        }
     }
 
     override fun onStop() {
