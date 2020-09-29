@@ -7,19 +7,18 @@ import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
-class AlcoholCalculator(
-    private val userProfile: UserProfile,
-    private val wantedBloodLevel: Float,
-    private val peakTime: LocalDateTime,
+class DrinkingCalculator(
+    val userProfile: UserProfile,
+    val wantedBloodLevel: Float,
+    val peakTime: LocalDateTime,
     val preferredUnit: AlcoholUnit
 ) {
-
+    private val genderConst = when (userProfile.gender) {
+        Gender.MALE -> 0.68
+        Gender.FEMALE -> 0.55
+    }
 
     fun calculateDrinkingTimes(): MutableList<LocalDateTime> {
-        val genderConst = when (userProfile.gender) {
-            Gender.MALE -> 0.68
-            Gender.FEMALE -> 0.55
-        }
 
         val startTime = LocalDateTime.now()
         val dTime = Duration.between(startTime, peakTime)
@@ -30,7 +29,7 @@ class AlcoholCalculator(
 
         val dDuration = dTime.dividedBy(numberOfUnitsToDrink.toLong())
         val drinkingTimes = mutableListOf<LocalDateTime>()
-        for (i in 1..numberOfUnitsToDrink) {
+        for (i in 0..numberOfUnitsToDrink) {
             drinkingTimes.add(startTime.plus(dDuration.multipliedBy(i.toLong())))
         }
 

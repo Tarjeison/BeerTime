@@ -14,7 +14,7 @@ import com.pd.beertimer.R
 import com.pd.beertimer.feature.profile.ProfileViewModel
 import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.util.AlarmUtils
-import com.pd.beertimer.util.AlcoholCalculator
+import com.pd.beertimer.util.DrinkingCalculator
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
@@ -61,8 +61,10 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 // TODO: Proper strings
                 wantedBloodLevel = (p1.toFloat() / 1000)
-                tvBloodLevelValue.text = String.format(getString(R.string.startdrinking_percentage),
-                    wantedBloodLevel.toString())
+                tvBloodLevelValue.text = String.format(
+                    getString(R.string.startdrinking_percentage),
+                    wantedBloodLevel.toString()
+                )
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -77,8 +79,10 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 // TODO: Proper strings
                 hoursDrinking = p1
-                tvHoursValue.text = String.format(getString(R.string.startdrinking_hour),
-                    hoursDrinking.toString())
+                tvHoursValue.text = String.format(
+                    getString(R.string.startdrinking_hour),
+                    hoursDrinking.toString()
+                )
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -90,7 +94,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
         })
     }
 
-    private fun validateValuesAndCreateCalculation(): AlcoholCalculator? {
+    private fun validateValuesAndCreateCalculation(): DrinkingCalculator? {
 
         val selectedBloodLevel = if (wantedBloodLevel != 0f) {
             wantedBloodLevel
@@ -123,7 +127,8 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             param("profile", profile.toString())
         }
 
-        return AlcoholCalculator(profile,
+        return DrinkingCalculator(
+            profile,
             selectedBloodLevel,
             LocalDateTime.now().plusHours(selectedHoursDrinking.toLong()),
             selectedPreferredAlcoholUnit
@@ -152,12 +157,16 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
         }
     }
 
-    private fun startDrinking(calculator: AlcoholCalculator) {
+    private fun startDrinking(calculator: DrinkingCalculator) {
         context?.let {
             val drinkingTimes = calculator.calculateDrinkingTimes()
             val alarmUtils = AlarmUtils(it)
             alarmUtils.deleteExistingAlarms()
-            alarmUtils.setAlarmsAndStoreTimesToSharedPref(drinkingTimes, calculator.preferredUnit)
+            alarmUtils.setAlarmsAndStoreTimesToSharedPref(
+                drinkingTimes,
+                calculator.preferredUnit,
+                calculator.wantedBloodLevel
+            )
             firebaseAnalytics.logEvent("started_drinking") {
                 param("drinking_start_time", drinkingTimes.first().toString())
                 param("drinking_end_time", drinkingTimes.last().toString())
@@ -166,7 +175,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
         }
     }
 
-    private fun alertAlreadyDrinking(calculator: AlcoholCalculator) {
+    private fun alertAlreadyDrinking(calculator: DrinkingCalculator) {
         AlertDialog.Builder(this.context)
             .setTitle(R.string.startdrinking_are_you_sure)
             .setMessage(R.string.startdrinking_already_drinking)

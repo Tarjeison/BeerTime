@@ -6,14 +6,14 @@ import androidx.lifecycle.MutableLiveData
 import com.pd.beertimer.R
 import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.models.UserProfile
-import com.pd.beertimer.util.AlcoholCalculator
+import com.pd.beertimer.util.DrinkingCalculator
 import java.time.LocalDateTime
 import java.util.*
 import java.util.concurrent.TimeUnit
 
 class CountDownController {
 
-    private var alcoholCalculator: AlcoholCalculator? = null
+    private var alcoholCalculator: DrinkingCalculator? = null
     private lateinit var countDownTimer: CountDownTimer
     private var drinkingStarted = false
     private var errorMessage = R.string.error_drinking_not_started
@@ -39,7 +39,7 @@ class CountDownController {
         unitConsumedLiveData.postValue(numberOfUnitsConsumed)
 
         Log.d("COUNTDOWN", "Drinking started")
-        alcoholCalculator = AlcoholCalculator(
+        alcoholCalculator = DrinkingCalculator(
             userProfile,
             wantedBloodLevel,
             peakTime,
