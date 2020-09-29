@@ -39,14 +39,15 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
             if (localDateTimes[i] > now) {
                 val millisTriggerTime =
                     localDateTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-                val alarmIntent = Intent(applicationContext, NotificationBroadcast::class.java).let { intent ->
-                    PendingIntent.getBroadcast(
-                        baseContext,
-                        millisTriggerTime.toInt(),
-                        intent,
-                        PendingIntent.FLAG_CANCEL_CURRENT
-                    )
-                }
+                val alarmIntent =
+                    Intent(applicationContext, NotificationBroadcast::class.java).let { intent ->
+                        PendingIntent.getBroadcast(
+                            baseContext,
+                            millisTriggerTime.toInt(),
+                            intent,
+                            PendingIntent.FLAG_CANCEL_CURRENT
+                        )
+                    }
                 aManagers[i].cancel(alarmIntent)
             }
         }
@@ -73,7 +74,7 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
     private fun saveTimesToSharedPref(drinkingTimes: List<LocalDateTime>) {
         val sharedPref =
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-        with (sharedPref.edit()) {
+        with(sharedPref.edit()) {
             putString(SHARED_PREF_DRINKING_TIMES, drinkingTimes.toString())
         }.apply()
     }
