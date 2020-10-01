@@ -44,7 +44,7 @@
     <string name="startdrinking_percent_volume_drink">%1$s\%%, %2$sL</string>
 
     <string name="countdown_not_started_drinking">Not started</string>
-    <string name="countdown_drinks_so_far">You shoud\'ve had %1$s by now…</string>
+    <string name="countdown_drinks_so_far">Enjoy your %1$s drink!</string>
     <string name="countdown_n_so_far">…so far</string>
     <string name="countdown_enjoy_first">Enjoy your first drink! I\'ll let you know when it\'s time for more</string>
 

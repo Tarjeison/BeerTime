@@ -19,6 +19,7 @@ import com.pd.beertimer.models.UserProfile
 import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.DrinkingCalculator
 import com.pd.beertimer.util.ifLet
+import com.pd.beertimer.util.ordinal
 import kotlinx.android.synthetic.main.fragment_timer.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Duration
@@ -61,9 +62,10 @@ class CountDownFragment : Fragment() {
             }.size
 
             if (pastUnits > 0) {
+                val stringOrdinal = ordinal(pastUnits)
                 tvAlcoholCount.text = String.format(
                     getString(R.string.countdown_drinks_so_far),
-                    pastUnits
+                    stringOrdinal
                 )
             } else {
                 setNoUnitsConsumed()
