@@ -24,12 +24,12 @@ class DrinkingCalculator(
         val dTime = Duration.between(startTime, peakTime)
 
         val neededGrams =
-            ((wantedBloodLevel + 0.015 * dTime.toHours()) * ((userProfile.weight * 1000 * genderConst))) / 100
-        val numberOfUnitsToDrink = (neededGrams / preferredUnit.gramPerUnit).toInt()
+            ((wantedBloodLevel + 0.015 * dTime.toMinutes()/60f) * ((userProfile.weight * 1000 * genderConst))) / 100
+        val numberOfUnitsToDrink = (neededGrams / preferredUnit.gramPerUnit).roundToInt()
 
         val dDuration = dTime.dividedBy(numberOfUnitsToDrink.toLong())
         val drinkingTimes = mutableListOf<LocalDateTime>()
-        for (i in 0..numberOfUnitsToDrink) {
+        for (i in 0 until numberOfUnitsToDrink) {
             drinkingTimes.add(startTime.plus(dDuration.multipliedBy(i.toLong())))
         }
 
@@ -66,7 +66,7 @@ class DrinkingCalculator(
     }
 
     private fun calculateBac(duration: Duration, nConsumed: Int): Float {
-        return ((preferredUnit.gramPerUnit*nConsumed / (userProfile.weight * 1000 * genderConst)) * 100 - duration.toHours() * 0.015).toFloat()
+        return ((preferredUnit.gramPerUnit*nConsumed / (userProfile.weight * 1000 * genderConst)) * 100 - (duration.toMinutes()/60f) * 0.015).toFloat()
     }
 
     fun changeDuration(previousDrinkingTimes: List<LocalDateTime>, numConsumed: Int) {
