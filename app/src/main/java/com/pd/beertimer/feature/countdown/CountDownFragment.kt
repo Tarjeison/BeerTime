@@ -1,6 +1,5 @@
 package com.pd.beertimer.feature.countdown
 
-import android.graphics.Color
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
@@ -8,14 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.github.mikephil.charting.components.LimitLine
-import com.github.mikephil.charting.components.LimitLine.LimitLabelPosition
 import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IFillFormatter
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.pd.beertimer.R
+import com.pd.beertimer.feature.countdown.charts.ChartHelper
 import com.pd.beertimer.feature.profile.ProfileViewModel
 import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.models.UserProfile
@@ -137,13 +134,15 @@ class CountDownFragment : Fragment() {
             drinkingTimes,
             currentlyDrinkingUnit
         ) { (profile, wantedLevel, dTimes, alcoholUnit) ->
+
             val bacEstimates = DrinkingCalculator(
                 profile as UserProfile,
                 wantedLevel as Float,
                 (dTimes as List<LocalDateTime>).last(),
                 alcoholUnit as AlcoholUnit
             ).generateBACPrediction(dTimes as List<LocalDateTime>)
-            bacEstimates?.let { estimates->
+
+            bacEstimates?.let { estimates ->
                 val bac: List<Entry> = estimates.map {
                     if (estimates.indexOf(it) == estimates.lastIndex) {
 
@@ -160,82 +159,44 @@ class CountDownFragment : Fragment() {
                         )
 
                     }
-                    //Entry(estimates.indexOf(it).toFloat(), it.first, requireContext().getDrawable(alcoholUnit.iconId))
-                    //, requireContext().getDrawable(alcoholUnit.iconId)
                 }
                 val set1 = LineDataSet(bac, "")
+                val chartHelper = ChartHelper()
 
-                set1.mode = LineDataSet.Mode.CUBIC_BEZIER
-                set1.cubicIntensity = 0.15f
-                set1.setDrawFilled(true)
-                set1.setDrawCircles(false)
-                set1.lineWidth = 1f
-//                set1.circleHoleColor = Color.BLACK
-//                set1.circleRadius = 1.5f
-//                set1.setCircleColor(Color.WHITE)
-//                set1.highLightColor = Color.rgb(244, 117, 117)
-                set1.color = Color.BLACK
-                set1.fillColor = Color.WHITE
-                set1.fillAlpha = 100
-                set1.setDrawHorizontalHighlightIndicator(false)
+                chartHelper.setLineDataSetAttributes(set1)
 
-
-                // draw selection line as dashed
-                set1.enableDashedHighlightLine(10f, 5f, 0f)
-
-
-                // customize legend entry
-                set1.setDrawVerticalHighlightIndicator(false)
-                set1.fillFormatter = IFillFormatter { _, _ ->
-                    chartBac.axisLeft.axisMinimum
-                }
-
-                // LimitLine
-                val ll1 = LimitLine(wantedLevel as Float)
-                ll1.lineWidth = 1f
-                ll1.enableDashedLine(5f, 5f, 0f)
-                ll1.labelPosition = LimitLabelPosition.RIGHT_TOP
-                ll1.textSize = 10f
-                chartBac.axisLeft.addLimitLine(ll1)
-
-                val xAxisTimeStamps = bacEstimates.map {
-                    val minute = if (it.second.minute > 9) {
-                        "${it.second.minute}"
-                    } else {
-                        "0${it.second.minute}"
-                    }
-
-                    val hour = if (it.second.hour > 9) {
-                        "${it.second.hour}"
-                    } else {
-                        "0${it.second.hour}"
-                    }
-                    "${hour}:${minute}"
-                }
-                chartBac.xAxis.valueFormatter = IndexAxisValueFormatter(xAxisTimeStamps)
-                chartBac.xAxis.granularity = 1f
-
-                // drawables only supported on api level 18 and above
                 val drawable =
                     ContextCompat.getDrawable(requireContext(), R.drawable.fade_orange)
                 set1.fillDrawable = drawable
 
-                // create a data object with the data sets
+                set1.fillFormatter = IFillFormatter { _, _ ->
+                    chartBac.axisLeft.axisMinimum
+                }
+
+                val axisFormatter = chartHelper.createAxisLabelFormatterFromLocalDateTimeList(
+                    bacEstimates.map {
+                        it.second
+                    }
+                )
+
+                chartBac.xAxis.valueFormatter = axisFormatter
+                chartBac.xAxis.granularity = 1f
+                chartBac.axisLeft.addLimitLine(chartHelper.createLimitLine(wantedLevel as Float))
+                chartBac.axisLeft.axisMinimum = 0f
+                chartBac.axisLeft.axisMaximum = (wantedLevel as Float) + 0.01f
+                chartBac.axisRight.setDrawGridLines(false)
+                chartBac.axisRight.setDrawLabels(false)
+                chartBac.description.isEnabled = false
+                chartBac.legend.isEnabled = false
+                chartBac.animateX(250)
+
                 val data = LineData(set1)
-                // data.setValueTypeface(tfLight)
                 data.setValueTextSize(9f)
                 data.setDrawValues(false)
 
-
-                // no description text
-                chartBac.description.isEnabled = false
-
-                // draw points over time
-                chartBac.animateX(250)
                 chartBac.data = data
                 chartBac.invalidate()
             }
-
         }
     }
 
