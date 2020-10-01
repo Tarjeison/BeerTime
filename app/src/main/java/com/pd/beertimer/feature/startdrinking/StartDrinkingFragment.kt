@@ -60,7 +60,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
         sbBloodLevel.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 // TODO: Proper strings
-                wantedBloodLevel = (p1.toFloat() / 1000)
+                wantedBloodLevel = (p1.toFloat() / 100)
                 tvBloodLevelValue.text = String.format(
                     getString(R.string.startdrinking_percentage),
                     wantedBloodLevel.toString()
