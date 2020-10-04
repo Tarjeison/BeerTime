@@ -50,7 +50,7 @@
 
     <string name="action_info">Info</string>
     <string name="info_what_is_bac_title">What is Blood Alcohol Content (BAC)?</string>
-    <string name="info_what_is_bac_text">BAC is a measurement of the alcohol percentage present in 100mL of blood. A BAC of 0.10% indicates that a person has 0.10g per 100mL of blood. BAC is usually measured in percent or permille depening on the country. This app uses percent and 0.01% = 1‰. \n \n https://en.wikipedia.org/wiki/Blood_alcohol_content</string>
+    <string name="info_what_is_bac_text">BAC is a measurement of the alcohol percentage present in 100mL of blood. A BAC of 0.10% indicates that a person has 0.10g per 100mL of blood. BAC is usually measured in percent or permille depening on the country. This app uses percent and 0.1% = 1‰. \n \n https://en.wikipedia.org/wiki/Blood_alcohol_content</string>
     <string name="info_how_calculator_title">How does the calculator work?</string>
     <string name="info_how_calculator_text">The number of grams of alcohol needed to achieve a certain blood alcohol content (BAC) can be calculated by using ones biological gender and weight. This app uses the Widmark-Forumla as the basis for the computation, solving for the number of units needed based on wanted BAC and estimated time. \n\n This gives the following equation:\n Needed Grams = (BAC + 0.015*Hours)*(Weight*GenderConstant) \n The amount of alcohol in your selected unit will then be used to see how many units will give the closest value, below or equal, to the grams calculated in the formula above. \n\n https://www.wikihow.com/Calculate-Blood-Alcohol-Content-(Widmark-Formula)</string>
     <string name="info_custom_drinks_title">Can I add my favorite drinks to the app?</string>
