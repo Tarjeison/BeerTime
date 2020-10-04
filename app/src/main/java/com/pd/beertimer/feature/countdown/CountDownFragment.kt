@@ -185,7 +185,7 @@ class CountDownFragment : Fragment() {
                 chartBac.xAxis.granularity = 1f
                 chartBac.axisLeft.addLimitLine(chartHelper.createLimitLine(wantedLevel as Float))
                 chartBac.axisLeft.axisMinimum = 0f
-                chartBac.axisLeft.axisMaximum = (wantedLevel as Float) + 0.01f
+                chartBac.axisLeft.axisMaximum = (wantedLevel as Float) + 0.02f
                 chartBac.axisRight.setDrawGridLines(false)
                 chartBac.axisRight.setDrawLabels(false)
                 chartBac.description.isEnabled = false
