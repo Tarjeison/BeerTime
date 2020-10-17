@@ -5,6 +5,7 @@ import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
+import com.pd.beertimer.util.toHourMinuteString
 import kotlinx.android.synthetic.main.fragment_timer.*
 import java.time.LocalDateTime
 
@@ -45,20 +46,8 @@ class ChartHelper {
 
     fun createAxisLabelFormatterFromLocalDateTimeList(list: List<LocalDateTime>): IndexAxisValueFormatter {
         val labels = list.map {
-            val minute = if (it.minute > 9) {
-                "${it.minute}"
-            } else {
-                "0${it.minute}"
-            }
-
-            val hour = if (it.hour > 9) {
-                "${it.hour}"
-            } else {
-                "0${it.hour}"
-            }
-            "${hour}:${minute}"
+            it.toHourMinuteString()
         }
-
         return IndexAxisValueFormatter(labels)
     }
 }

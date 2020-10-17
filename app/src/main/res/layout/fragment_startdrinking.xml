@@ -72,7 +72,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
-            android:max="12"
+            android:max="720"
             android:thumbTint="@color/colorGreen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -101,12 +101,49 @@
             app:layout_constraintTop_toBottomOf="@id/sbHours"
             tools:text="12h" />
 
+        <SeekBar
+            android:id="@+id/sbPeak"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_large"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_marginEnd="@dimen/margin_medium"
+            android:max="720"
+            android:thumbTint="@color/colorGreen"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tvHours"
+            tools:progress="12" />
+
+        <TextView
+            android:id="@+id/tvPeak"
+            style="@style/TodoStyleText"
+            android:layout_marginStart="@dimen/margin_medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/startdrinking_peak_time"
+            app:layout_constraintEnd_toEndOf="@id/sbPeak"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintStart_toStartOf="@id/sbPeak"
+            app:layout_constraintTop_toBottomOf="@id/sbPeak" />
+
+        <TextView
+            android:id="@+id/tvPeakValue"
+            style="@style/TodoStyleTextLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="@id/sbPeak"
+            app:layout_constraintStart_toEndOf="@id/tvPeak"
+            app:layout_constraintTop_toBottomOf="@id/sbPeak"
+            tools:text="12h" />
+
+
         <TextView
             android:id="@+id/tvWhatUnit"
             style="@style/TodoStyleText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:layout_constraintTop_toBottomOf="@+id/tvHours"
+            app:layout_constraintTop_toBottomOf="@+id/tvPeak"
             app:layout_constraintStart_toStartOf="@id/tvHours"
             android:layout_marginTop="@dimen/margin_extraLarge"
             android:text="@string/startdrinking_what_will_you_drink"

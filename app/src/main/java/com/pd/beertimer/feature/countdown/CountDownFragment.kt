@@ -31,8 +31,7 @@ class CountDownFragment : Fragment() {
 
     private lateinit var countDownTimer: CountDownTimer
     private var drinkingTimes: List<LocalDateTime>? = null
-    private var currentlyDrinkingUnit: AlcoholUnit? = null
-    private var wantedBloodLevel: Float? = null
+    private var drinkingCalculator: DrinkingCalculator? = null
     private val profileViewModel: ProfileViewModel by viewModel()
 
     override fun onCreateView(
@@ -49,7 +48,7 @@ class CountDownFragment : Fragment() {
 
     private fun setViewsDrinkingStarted() {
         drinkingTimes?.let {
-            currentlyDrinkingUnit?.let { unit ->
+            drinkingCalculator?.preferredUnit?.let { unit ->
                 ivCurrentlyDrinking.setImageDrawable(context?.getDrawable(unit.iconId))
             }
             ivCountDownPineapple.setImageDrawable(context?.getDrawable(R.drawable.ic_pineapple_smile))
@@ -132,17 +131,12 @@ class CountDownFragment : Fragment() {
         val profile = profileViewModel.getUserProfile()
         ifLet(
             profile,
-            wantedBloodLevel,
-            drinkingTimes,
-            currentlyDrinkingUnit
-        ) { (profile, wantedLevel, dTimes, alcoholUnit) ->
+            drinkingCalculator,
+            drinkingTimes
+        ) { (profile, drinkingCalculator, dTimes) ->
 
-            val bacEstimates = DrinkingCalculator(
-                profile as UserProfile,
-                wantedLevel as Float,
-                (dTimes as List<LocalDateTime>).last(),
-                alcoholUnit as AlcoholUnit
-            ).generateBACPrediction(dTimes as List<LocalDateTime>)
+            val bacEstimates =
+                (drinkingCalculator as DrinkingCalculator).generateBACPrediction(dTimes as List<LocalDateTime>)
 
             bacEstimates?.let { estimates ->
                 val bac: List<Entry> = estimates.map {
@@ -157,7 +151,7 @@ class CountDownFragment : Fragment() {
                         Entry(
                             estimates.indexOf(it).toFloat(),
                             it.first,
-                            requireContext().getDrawable(alcoholUnit.iconId)
+                            requireContext().getDrawable(drinkingCalculator.preferredUnit.iconId)
                         )
 
                     }
@@ -183,9 +177,9 @@ class CountDownFragment : Fragment() {
 
                 chartBac.xAxis.valueFormatter = axisFormatter
                 chartBac.xAxis.granularity = 1f
-                chartBac.axisLeft.addLimitLine(chartHelper.createLimitLine(wantedLevel as Float))
+                chartBac.axisLeft.addLimitLine(chartHelper.createLimitLine(drinkingCalculator.wantedBloodLevel))
                 chartBac.axisLeft.axisMinimum = 0f
-                chartBac.axisLeft.axisMaximum = (wantedLevel as Float) + 0.02f
+                chartBac.axisLeft.axisMaximum = (drinkingCalculator.wantedBloodLevel) + 0.02f
                 chartBac.axisRight.setDrawGridLines(false)
                 chartBac.axisRight.setDrawLabels(false)
                 chartBac.description.isEnabled = false
@@ -225,8 +219,7 @@ class CountDownFragment : Fragment() {
         context?.let {
             val alarmUtils = AlarmUtils(it)
             drinkingTimes = alarmUtils.getExistingDrinkTimesFromSharedPref()
-            currentlyDrinkingUnit = alarmUtils.getCurrentlyDrinkingAlcoholUnitSharedPref()
-            wantedBloodLevel = alarmUtils.getWantedBloodLevelSharedPref()
+            drinkingCalculator = alarmUtils.getDrinkingCalculatorSharedPref()
         }
         if (drinkingTimes == null) {
             setViewsDrinkingNotStarted()

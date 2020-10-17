@@ -5,20 +5,23 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.pd.beertimer.NotificationBroadcast
 import com.pd.beertimer.models.AlcoholUnit
+import java.text.DateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
+import java.time.format.DateTimeFormatter
 
 class AlarmUtils(context: Context) : ContextWrapper(context) {
 
     fun setAlarmsAndStoreTimesToSharedPref(
         localDateTimes: List<LocalDateTime>,
-        alcoholUnit: AlcoholUnit, wantedBloodLevel: Float
+        calculator: DrinkingCalculator
     ) {
-        saveDrinkingValuesToSharedPref(localDateTimes, alcoholUnit, wantedBloodLevel)
+        saveDrinkingValuesToSharedPref(localDateTimes, calculator)
         val alarmTimes = localDateTimes.slice(1..localDateTimes.lastIndex)
         val aManagers =
             List(alarmTimes.size) { baseContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager }
@@ -80,38 +83,47 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
         return null
     }
 
-    fun getCurrentlyDrinkingAlcoholUnitSharedPref(): AlcoholUnit? {
-        val sharedPref =
-            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-        sharedPref.getString(SHARED_PREF_DRINKING_UNIT, null)?.let {
-            return jacksonObjectMapper().readValue<AlcoholUnit>(it)
-        }
-        return null
-    }
+//    fun getCurrentlyDrinkingAlcoholUnitSharedPref(): AlcoholUnit? {
+//        val sharedPref =
+//            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
+//        sharedPref.getString(SHARED_PREF_DRINKING_UNIT, null)?.let {
+//            return jacksonObjectMapper().readValue<AlcoholUnit>(it)
+//        }
+//        return null
+//    }
+//
+//    fun getWantedBloodLevelSharedPref(): Float? {
+//        val sharedPref =
+//            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
+//        sharedPref.getFloat(SHARED_PREF_DRINKING_WANTED_BLOOD_LEVEL, -1F).let {
+//            if (it != -1F) {
+//                return it
+//            }
+//        }
+//        return null
+//    }
 
-    fun getWantedBloodLevelSharedPref(): Float? {
+    fun getDrinkingCalculatorSharedPref(): DrinkingCalculator? {
         val sharedPref =
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-        sharedPref.getFloat(SHARED_PREF_DRINKING_WANTED_BLOOD_LEVEL, -1F).let {
-            if (it != -1F) {
-                return it
-            }
+        sharedPref.getString(SHARED_PREF_DRINKING_CALCULATOR, null)?.let {
+            return jacksonObjectMapper().registerModule(JavaTimeModule()).readValue<DrinkingCalculator>(it)
         }
         return null
     }
 
     private fun saveDrinkingValuesToSharedPref(
         drinkingTimes: List<LocalDateTime>,
-        alcoholUnit: AlcoholUnit,
-        wantedBloodLevel: Float
+        calculator: DrinkingCalculator
     ) {
-        val unitAsJson = jacksonObjectMapper().writeValueAsString(alcoholUnit)
+        val mapper = jacksonObjectMapper()
+        mapper.registerModule(JavaTimeModule())
+        val calculatorAsJson = jacksonObjectMapper().writeValueAsString(calculator)
         val sharedPref =
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString(SHARED_PREF_DRINKING_TIMES, drinkingTimes.toString())
-            putString(SHARED_PREF_DRINKING_UNIT, unitAsJson)
-            putFloat(SHARED_PREF_DRINKING_WANTED_BLOOD_LEVEL, wantedBloodLevel)
+            putString(SHARED_PREF_DRINKING_CALCULATOR, calculatorAsJson)
         }.apply()
     }
 }

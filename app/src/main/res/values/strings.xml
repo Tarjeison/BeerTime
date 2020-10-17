@@ -28,7 +28,7 @@
     <string name="home">Home</string>
     <string name="settings">Settings</string>
     <string name="select_alcohol_level">Select wanted blood alcohol level (%)</string>
-    <string name="select_hours_to_drink">How many hours will you be drinking?</string>
+    <string name="select_hours_to_drink">How long will you be drinking?</string>
     <string name="profile_blank_age">Age field cannot be empty</string>
     <string name="profile_blank_weight">Weight field cannt be empty</string>
     <string name="blood_alcohol_level">Blood alcohol content</string>
@@ -62,4 +62,5 @@
     <string name="startdrinking_what_will_you_drink">What will you be drinking?</string>
     <string name="timer">Timer</string>
     <string name="countdown_estimated_bac">Estimated BAC during your night</string>
+    <string name="startdrinking_peak_time">Wanted BAC will be reached at</string>
 </resources>

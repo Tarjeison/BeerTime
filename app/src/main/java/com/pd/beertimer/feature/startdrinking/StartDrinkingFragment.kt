@@ -18,6 +18,7 @@ import com.pd.beertimer.util.DrinkingCalculator
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.pd.beertimer.util.toHourMinuteString
 import kotlinx.android.synthetic.main.fragment_startdrinking.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -26,8 +27,9 @@ import java.time.LocalDateTime
 class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
 
     private var wantedBloodLevel = 0f
-    private var hoursDrinking: Int = 0
+    private var finishDrinkingInHoursMinutes: Pair<Int, Int> = Pair(0, 0)
     private var preferredAlcoholUnit: AlcoholUnit? = null
+    private var peakInHoursMinutes: Pair<Int, Int> = Pair(0, 0)
 
     private val profileViewModel: ProfileViewModel by viewModel()
     private val firebaseAnalytics: FirebaseAnalytics by inject()
@@ -78,11 +80,32 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
         sbHours.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
                 // TODO: Proper strings
-                hoursDrinking = p1
-                tvHoursValue.text = String.format(
-                    getString(R.string.startdrinking_hour),
-                    hoursDrinking.toString()
-                )
+                val hoursDrinking = (p1 / 60)
+                val minutesDrinking = (p1 - (hoursDrinking * 60))
+                sbPeak.max = p1
+                finishDrinkingInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
+                tvHoursValue.text =
+                    LocalDateTime.now().plusHours(hoursDrinking.toLong())
+                        .plusMinutes(minutesDrinking.toLong()).toHourMinuteString()
+            }
+
+            override fun onStartTrackingTouch(p0: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(p0: SeekBar?) {
+            }
+
+        })
+
+        sbPeak.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                // TODO: Proper strings
+                val hoursDrinking = (p1 / 60)
+                val minutesDrinking = (p1 - (hoursDrinking * 60))
+                peakInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
+                tvPeakValue.text =
+                    LocalDateTime.now().plusHours(hoursDrinking.toLong())
+                        .plusMinutes(minutesDrinking.toLong()).toHourMinuteString()
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
@@ -103,8 +126,15 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             return null
         }
 
-        val selectedHoursDrinking = if (hoursDrinking != 0) {
-            hoursDrinking
+        val selectedHoursDrinking = if (finishDrinkingInHoursMinutes.first != 0) {
+            finishDrinkingInHoursMinutes
+        } else {
+            createSnackBar(R.string.error_startdrinking_hours_drinking_0)
+            return null
+        }
+
+        val selectedPeakHour = if (peakInHoursMinutes.first != 0) {
+            peakInHoursMinutes
         } else {
             createSnackBar(R.string.error_startdrinking_hours_drinking_0)
             return null
@@ -122,16 +152,19 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
 
         firebaseAnalytics.logEvent("pressed_start_drinking") {
             param("bac", selectedBloodLevel.toDouble())
-            param("hours", selectedHoursDrinking.toDouble())
+            param("hours", selectedHoursDrinking.first.toDouble())
             param("unit", selectedPreferredAlcoholUnit.toString())
             param("profile", profile.toString())
         }
 
         return DrinkingCalculator(
-            profile,
-            selectedBloodLevel,
-            LocalDateTime.now().plusHours(selectedHoursDrinking.toLong()),
-            selectedPreferredAlcoholUnit
+            userProfile = profile,
+            wantedBloodLevel = selectedBloodLevel,
+            endTime = LocalDateTime.now().plusHours(selectedHoursDrinking.first.toLong())
+                .plusMinutes(selectedHoursDrinking.second.toLong()),
+            peakTime = LocalDateTime.now().plusHours(selectedPeakHour.first.toLong())
+                .plusMinutes(selectedPeakHour.second.toLong()),
+            preferredUnit = selectedPreferredAlcoholUnit
         )
 
     }
@@ -164,8 +197,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             alarmUtils.deleteExistingAlarms()
             alarmUtils.setAlarmsAndStoreTimesToSharedPref(
                 drinkingTimes,
-                calculator.preferredUnit,
-                calculator.wantedBloodLevel
+                calculator
             )
             firebaseAnalytics.logEvent("started_drinking") {
                 param("drinking_start_time", drinkingTimes.first().toString())

@@ -1,5 +1,10 @@
 package com.pd.beertimer.util
 
+import com.fasterxml.jackson.annotation.JsonFormat
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize
+import com.fasterxml.jackson.databind.annotation.JsonSerialize
+import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
+import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.models.Gender
 import com.pd.beertimer.models.UserProfile
@@ -7,10 +12,15 @@ import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
-class DrinkingCalculator(
+data class DrinkingCalculator(
     val userProfile: UserProfile,
     val wantedBloodLevel: Float,
+    @JsonSerialize(using = LocalDateTimeSerializer::class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
     val peakTime: LocalDateTime,
+    @JsonSerialize(using = LocalDateTimeSerializer::class)
+    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
+    val endTime: LocalDateTime,
     val preferredUnit: AlcoholUnit
 ) {
     private val genderConst = when (userProfile.gender) {
@@ -21,18 +31,29 @@ class DrinkingCalculator(
     fun calculateDrinkingTimes(): MutableList<LocalDateTime> {
 
         val startTime = LocalDateTime.now()
-        val dTime = Duration.between(startTime, peakTime)
+        val drinkingTimes = mutableListOf<LocalDateTime>()
+        drinkingTimes.addAll(calculateDrinkInterval(startTime, peakTime, wantedBloodLevel))
 
+        if (Duration.between(peakTime, endTime).toMinutes() > 30F) {
+            drinkingTimes.addAll(calculateDrinkInterval(peakTime, endTime, 0F))
+        }
+
+        return drinkingTimes
+    }
+
+    private fun calculateDrinkInterval(
+        startTime: LocalDateTime, endTime: LocalDateTime, wantedBloodLevel: Float
+    ): MutableList<LocalDateTime> {
+        val drinkingDuration = Duration.between(startTime, endTime)
         val neededGrams =
-            ((wantedBloodLevel + 0.015 * dTime.toMinutes()/60f) * ((userProfile.weight * 1000 * genderConst))) / 100
+            ((wantedBloodLevel + 0.015 * drinkingDuration.toMinutes() / 60f) * ((userProfile.weight * 1000 * genderConst))) / 100
         val numberOfUnitsToDrink = (neededGrams / preferredUnit.gramPerUnit).roundToInt()
 
-        val dDuration = dTime.dividedBy(numberOfUnitsToDrink.toLong())
+        val dDuration = drinkingDuration.dividedBy(numberOfUnitsToDrink.toLong())
         val drinkingTimes = mutableListOf<LocalDateTime>()
         for (i in 0 until numberOfUnitsToDrink) {
             drinkingTimes.add(startTime.plus(dDuration.multipliedBy(i.toLong())))
         }
-
         return drinkingTimes
     }
 
@@ -49,24 +70,24 @@ class DrinkingCalculator(
             } else {
                 bacEstimations.add(
                     Pair(
-                        calculateBac(Duration.between(startTime, drinkingTimes[i]), i), drinkingTimes[i]
+                        calculateBac(Duration.between(startTime, drinkingTimes[i]), i),
+                        drinkingTimes[i]
                     )
                 )
             }
         }
-        // Need to add the last time, which will be one interval from the last notification
-        val intervalDuration = Duration.between(drinkingTimes[0], drinkingTimes[1])
-        val lastDateTime = drinkingTimes.last().plus(intervalDuration)
+        val lastDateTime = endTime
         bacEstimations.add(
             Pair(
-                calculateBac(Duration.between(startTime, lastDateTime), drinkingTimes.size), lastDateTime
+                calculateBac(Duration.between(startTime, lastDateTime), drinkingTimes.size),
+                lastDateTime
             )
         )
         return bacEstimations
     }
 
     private fun calculateBac(duration: Duration, nConsumed: Int): Float {
-        return ((preferredUnit.gramPerUnit*nConsumed / (userProfile.weight * 1000 * genderConst)) * 100 - (duration.toMinutes()/60f) * 0.015).toFloat()
+        return ((preferredUnit.gramPerUnit * nConsumed / (userProfile.weight * 1000 * genderConst)) * 100 - (duration.toMinutes() / 60f) * 0.015).toFloat()
     }
 
     fun changeDuration(previousDrinkingTimes: List<LocalDateTime>, numConsumed: Int) {
