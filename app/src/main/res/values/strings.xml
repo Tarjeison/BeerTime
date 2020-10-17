@@ -63,4 +63,6 @@
     <string name="timer">Timer</string>
     <string name="countdown_estimated_bac">Estimated BAC during your night</string>
     <string name="startdrinking_peak_time">Wanted BAC will be reached at</string>
+    <string name="stop_drinking">Stop drinking</string>
+    <string name="countdown_stopdrinking_toast">You will lose your current progress and all alarms will be deleted</string>
 </resources>

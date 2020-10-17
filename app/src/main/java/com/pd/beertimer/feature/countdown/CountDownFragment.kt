@@ -1,10 +1,12 @@
 package com.pd.beertimer.feature.countdown
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.data.Entry
@@ -21,6 +23,7 @@ import com.pd.beertimer.util.DrinkingCalculator
 import com.pd.beertimer.util.ifLet
 import com.pd.beertimer.util.ordinal
 import kotlinx.android.synthetic.main.fragment_timer.*
+import kotlinx.android.synthetic.main.item_drink_v2.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Duration
 import java.time.LocalDateTime
@@ -69,6 +72,21 @@ class CountDownFragment : Fragment() {
             } else {
                 setNoUnitsConsumed()
             }
+        }
+
+        bStopDrinking.visibility = View.VISIBLE
+        bStopDrinking.setOnClickListener {
+            AlertDialog.Builder(this.context)
+                .setTitle(R.string.startdrinking_are_you_sure)
+                .setMessage(R.string.countdown_stopdrinking_toast)
+                .setPositiveButton(
+                    R.string.yes
+                ) { _, _ ->
+                    AlarmUtils(requireContext()).deleteExistingAlarms()
+                    setViewsDrinkingNotStarted()
+                }
+                .setNegativeButton(R.string.no, null)
+                .show()
         }
     }
 
@@ -199,6 +217,12 @@ class CountDownFragment : Fragment() {
     private fun setViewsDrinkingNotStarted() {
         tvTimeToNext.text = getText(R.string.countdown_not_started_drinking)
         tcClock.text = getString(R.string.countdown_drinking_clock_not_started)
+        if (this::countDownTimer.isInitialized) {
+            countDownTimer.cancel()
+        }
+        ivCurrentlyDrinking.visibility = View.GONE
+        chartBac.visibility = View.GONE
+        bStopDrinking.visibility = View.GONE
         ivCountDownPineapple.setImageDrawable(context?.getDrawable(R.drawable.ic_pineapple_sleeping))
         clNumOfUnits.visibility = View.INVISIBLE
     }

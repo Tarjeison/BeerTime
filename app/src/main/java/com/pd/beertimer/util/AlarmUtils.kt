@@ -63,6 +63,7 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
                 aManagers[i].cancel(alarmIntent)
             }
         }
+        clearDrinkingValuesSharedPref()
         return true
     }
 
@@ -107,9 +108,19 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
         val sharedPref =
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
         sharedPref.getString(SHARED_PREF_DRINKING_CALCULATOR, null)?.let {
-            return jacksonObjectMapper().registerModule(JavaTimeModule()).readValue<DrinkingCalculator>(it)
+            return jacksonObjectMapper().registerModule(JavaTimeModule())
+                .readValue<DrinkingCalculator>(it)
         }
         return null
+    }
+
+    private fun clearDrinkingValuesSharedPref() {
+        val sharedPref =
+            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
+        with(sharedPref.edit()) {
+            remove(SHARED_PREF_DRINKING_TIMES)
+            remove(SHARED_PREF_DRINKING_CALCULATOR)
+        }.apply()
     }
 
     private fun saveDrinkingValuesToSharedPref(
