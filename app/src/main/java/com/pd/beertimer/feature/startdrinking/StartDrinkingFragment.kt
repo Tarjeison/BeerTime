@@ -34,6 +34,8 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
     private val profileViewModel: ProfileViewModel by viewModel()
     private val firebaseAnalytics: FirebaseAnalytics by inject()
 
+    private var hasSetPeakTime = false
+
     private lateinit var alcoholAdapter: AlcoholAdapterV2
     private lateinit var startDrinkingViewModel: StartDrinkingViewModel
 
@@ -84,6 +86,13 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
                 val minutesDrinking = (p1 - (hoursDrinking * 60))
                 sbPeak.max = p1
                 finishDrinkingInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
+                if (!hasSetPeakTime) {
+                    peakInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
+                    sbPeak.progress = p1
+                    tvPeakValue.text =
+                        LocalDateTime.now().plusHours(hoursDrinking.toLong())
+                            .plusMinutes(minutesDrinking.toLong()).toHourMinuteString()
+                }
                 tvHoursValue.text =
                     LocalDateTime.now().plusHours(hoursDrinking.toLong())
                         .plusMinutes(minutesDrinking.toLong()).toHourMinuteString()
@@ -109,6 +118,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             }
 
             override fun onStartTrackingTouch(p0: SeekBar?) {
+                hasSetPeakTime = true
             }
 
             override fun onStopTrackingTouch(p0: SeekBar?) {
