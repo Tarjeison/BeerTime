@@ -3,16 +3,14 @@ package com.pd.beertimer.feature.startdrinking
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pd.beertimer.R
 import com.pd.beertimer.models.AlcoholUnit
 import kotlinx.android.synthetic.main.item_drink_v2.view.*
 
-interface AlcoholAdapterV2Callback {
-    fun onItemSelected(name: String)
-}
 
-class AlcoholAdapterV2(private val alcoholUnits: ArrayList<AlcoholUnit>, private val alcoholAdapterCallback: AlcoholAdapterV2Callback) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AlcoholAdapterV2(private val alcoholUnits: MutableList<AlcoholUnit>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return AlcoholViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_drink_v2, parent, false )
@@ -22,7 +20,7 @@ class AlcoholAdapterV2(private val alcoholUnits: ArrayList<AlcoholUnit>, private
     override fun getItemCount(): Int = alcoholUnits.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        return (holder as AlcoholViewHolder).bind(alcoholUnits[position], alcoholAdapterCallback)
+        return (holder as AlcoholViewHolder).bind(alcoholUnits[position])
     }
 
     fun setData(newAlcoholUnits: List<AlcoholUnit>) {
@@ -31,10 +29,23 @@ class AlcoholAdapterV2(private val alcoholUnits: ArrayList<AlcoholUnit>, private
         this.notifyDataSetChanged()
     }
 
-    class AlcoholViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    fun getSelectedUnit(): AlcoholUnit? {
+        return alcoholUnits.firstOrNull { it.isSelected }
+    }
 
-        fun bind(alcoholUnit: AlcoholUnit, alcoholAdapterCallback: AlcoholAdapterV2Callback) {
-            itemView.icDrink.setImageDrawable(itemView.context.getDrawable(alcoholUnit.iconId))
+    private fun setItemSelected(selectedAlcoholUnit: AlcoholUnit) {
+        alcoholUnits.forEach {
+            it.isSelected = it == selectedAlcoholUnit
+        }
+        this.notifyDataSetChanged()
+    }
+
+    inner class AlcoholViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        fun bind(alcoholUnit: AlcoholUnit) {
+            itemView.icDrink.setImageDrawable(
+                ContextCompat.getDrawable(itemView.context, alcoholUnit.iconId)
+            )
             itemView.tvDrinkName.text = alcoholUnit.name
             itemView.rbDrinkSelect.isChecked = alcoholUnit.isSelected
             itemView.tvPercentAndVolume.text = String.format(
@@ -43,10 +54,10 @@ class AlcoholAdapterV2(private val alcoholUnits: ArrayList<AlcoholUnit>, private
                 alcoholUnit.volume.toString()
             )
             itemView.rbDrinkSelect.setOnClickListener {
-                alcoholAdapterCallback.onItemSelected(alcoholUnit.name)
+                setItemSelected(alcoholUnit)
             }
             itemView.setOnClickListener {
-                alcoholAdapterCallback.onItemSelected(alcoholUnit.name)
+                setItemSelected(alcoholUnit)
             }
         }
     }

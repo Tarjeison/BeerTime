@@ -8,36 +8,37 @@ import android.view.ViewGroup
 import android.widget.SeekBar
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.logEvent
 import com.pd.beertimer.R
 import com.pd.beertimer.feature.profile.ProfileViewModel
 import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.DrinkingCalculator
-import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.analytics.ktx.logEvent
 import com.pd.beertimer.util.toHourMinuteString
 import kotlinx.android.synthetic.main.fragment_startdrinking.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.LocalDateTime
 
-class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
+class StartDrinkingFragment : Fragment() {
 
     private var wantedBloodLevel = 0f
     private var finishDrinkingInHoursMinutes: Pair<Int, Int> = Pair(0, 0)
     private var preferredAlcoholUnit: AlcoholUnit? = null
     private var peakInHoursMinutes: Pair<Int, Int> = Pair(0, 0)
 
+    private val startDrinkingViewModel: StartDrinkingViewModel by viewModel()
     private val profileViewModel: ProfileViewModel by viewModel()
     private val firebaseAnalytics: FirebaseAnalytics by inject()
 
     private var hasSetPeakTime = false
 
     private lateinit var alcoholAdapter: AlcoholAdapterV2
-    private lateinit var startDrinkingViewModel: StartDrinkingViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,8 +51,10 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        startDrinkingViewModel = StartDrinkingViewModel()
-        alcoholAdapter = AlcoholAdapterV2(startDrinkingViewModel.getAlcoholUnits(), this)
+        startDrinkingViewModel.drinksLiveData.observe(viewLifecycleOwner, Observer {
+            alcoholAdapter.setData(it)
+        })
+        alcoholAdapter = AlcoholAdapterV2(mutableListOf())
         rvAlcoholUnit.layoutManager = LinearLayoutManager(context)
         rvAlcoholUnit.adapter = alcoholAdapter
         alcoholAdapter.notifyDataSetChanged()
@@ -150,7 +153,7 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
             return null
         }
 
-        val selectedPreferredAlcoholUnit = preferredAlcoholUnit ?: kotlin.run {
+        val selectedPreferredAlcoholUnit = alcoholAdapter.getSelectedUnit() ?: kotlin.run {
             createSnackBar(R.string.error_startdrinking_select_unit)
             return null
         }
@@ -232,19 +235,5 @@ class StartDrinkingFragment : Fragment(), AlcoholAdapterV2Callback {
         return context?.let {
             AlarmUtils(it).getExistingDrinkTimesFromSharedPref() != null
         } ?: false
-    }
-
-    override fun onItemSelected(name: String) {
-        val test = startDrinkingViewModel.getAlcoholUnits().apply {
-            this.forEach {
-                if (it.name == name) {
-                    preferredAlcoholUnit = it
-                    it.isSelected = true
-                } else {
-                    it.isSelected = false
-                }
-            }
-        }.toList()
-        alcoholAdapter.setData(test)
     }
 }

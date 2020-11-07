@@ -6,9 +6,9 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
-import androidx.appcompat.app.AppCompatActivity
 import android.view.MenuItem
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
@@ -29,6 +29,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setUpBottomBar()
         createNotificationChannel()
         setupToolbar()
+
 
         if (savedInstanceState == null) {
             if (AlarmUtils(this).getExistingDrinkTimesFromSharedPref() != null) {
