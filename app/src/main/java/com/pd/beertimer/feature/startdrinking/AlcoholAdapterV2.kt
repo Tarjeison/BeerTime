@@ -10,10 +10,11 @@ import com.pd.beertimer.models.AlcoholUnit
 import kotlinx.android.synthetic.main.item_drink_v2.view.*
 
 
-class AlcoholAdapterV2(private val alcoholUnits: MutableList<AlcoholUnit>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class AlcoholAdapterV2(private val alcoholUnits: MutableList<AlcoholUnit>) :
+    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return AlcoholViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.item_drink_v2, parent, false )
+            LayoutInflater.from(parent.context).inflate(R.layout.item_drink_v2, parent, false)
         )
     }
 
@@ -43,14 +44,13 @@ class AlcoholAdapterV2(private val alcoholUnits: MutableList<AlcoholUnit>) : Rec
     inner class AlcoholViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(alcoholUnit: AlcoholUnit) {
-            itemView.icDrink.setImageDrawable(
-                ContextCompat.getDrawable(itemView.context, alcoholUnit.iconId)
-            )
+
+            setIcon(alcoholUnit)
             itemView.tvDrinkName.text = alcoholUnit.name
             itemView.rbDrinkSelect.isChecked = alcoholUnit.isSelected
             itemView.tvPercentAndVolume.text = String.format(
                 itemView.context.getString(R.string.startdrinking_percent_volume_drink),
-                (alcoholUnit.percentage*100).toString(),
+                (alcoholUnit.percentage * 100).toString(),
                 alcoholUnit.volume.toString()
             )
             itemView.rbDrinkSelect.setOnClickListener {
@@ -58,6 +58,24 @@ class AlcoholAdapterV2(private val alcoholUnits: MutableList<AlcoholUnit>) : Rec
             }
             itemView.setOnClickListener {
                 setItemSelected(alcoholUnit)
+            }
+        }
+
+        private fun setIcon(alcoholUnit: AlcoholUnit) {
+            val iconResId = itemView.resources.getIdentifier(
+                alcoholUnit.iconName,
+                "drawable",
+                itemView.context.packageName
+            )
+
+            if (iconResId == 0) {
+                itemView.icDrink.setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, R.drawable.ic_beer)
+                )
+            } else {
+                itemView.icDrink.setImageDrawable(
+                    ContextCompat.getDrawable(itemView.context, iconResId)
+                )
             }
         }
     }

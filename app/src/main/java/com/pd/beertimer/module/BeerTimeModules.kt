@@ -57,7 +57,7 @@ fun getDrinkDao(database: AppDatabase): DrinkDao {
 fun getRoomDatabase(applicationContext: Context): AppDatabase {
     return Room.databaseBuilder(
         applicationContext,
-        AppDatabase::class.java, "database-name"
+        AppDatabase::class.java, "drinks-db"
     ).build()
 }
 

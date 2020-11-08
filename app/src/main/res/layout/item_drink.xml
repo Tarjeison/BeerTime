@@ -11,7 +11,7 @@
         android:layout_width="32dp"
         android:layout_height="32dp"
         android:layout_margin="@dimen/margin_small"
-        android:src="@drawable/ic_icon_beer"
+        android:src="@drawable/ic_beer"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

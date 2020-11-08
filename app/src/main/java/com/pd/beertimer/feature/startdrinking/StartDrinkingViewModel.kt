@@ -30,8 +30,8 @@ class StartDrinkingViewModel(private val drinkRepository: DrinkRepository) : Vie
     }
 
     private val alcoholUnits = arrayListOf(
-        AlcoholUnit("Small beer", 0.33F, 0.047F, R.drawable.ic_icon_beer),
-        AlcoholUnit("Large beer", 0.50F, 0.047F, R.drawable.ic_icon_beer),
-        AlcoholUnit("Wine", 0.150F, 0.125F, R.drawable.ic_wine)
+        AlcoholUnit("Small beer", 0.33F, 0.047F, "ic_beer"),
+        AlcoholUnit("Large beer", 0.50F, 0.047F, "ic_beer"),
+        AlcoholUnit("Wine", 0.150F, 0.125F, "ic_wine")
     )
 }

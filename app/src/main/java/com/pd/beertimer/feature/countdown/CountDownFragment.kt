@@ -6,7 +6,6 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.data.Entry
@@ -16,14 +15,11 @@ import com.github.mikephil.charting.formatter.IFillFormatter
 import com.pd.beertimer.R
 import com.pd.beertimer.feature.countdown.charts.ChartHelper
 import com.pd.beertimer.feature.profile.ProfileViewModel
-import com.pd.beertimer.models.AlcoholUnit
-import com.pd.beertimer.models.UserProfile
 import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.DrinkingCalculator
 import com.pd.beertimer.util.ifLet
 import com.pd.beertimer.util.ordinal
 import kotlinx.android.synthetic.main.fragment_timer.*
-import kotlinx.android.synthetic.main.item_drink_v2.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Duration
 import java.time.LocalDateTime
@@ -45,16 +41,30 @@ class CountDownFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_timer, container, false)
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
     private fun setViewsDrinkingStarted() {
         drinkingTimes?.let {
             drinkingCalculator?.preferredUnit?.let { unit ->
-                ivCurrentlyDrinking.setImageDrawable(context?.getDrawable(unit.iconId))
+                val resId = resources.getIdentifier(
+                    unit.iconName,
+                    "drawable",
+                    requireContext().packageName
+                )
+                if (resId != 0) {
+                    ivCurrentlyDrinking.setImageDrawable(
+                        ContextCompat.getDrawable(
+                            requireContext(),
+                            resId
+                        )
+                    )
+
+                }
             }
-            ivCountDownPineapple.setImageDrawable(context?.getDrawable(R.drawable.ic_pineapple_smile))
+            ivCountDownPineapple.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_pineapple_smile
+                )
+            )
             ivCountDownPineapple.visibility = View.VISIBLE
             clNumOfUnits.visibility = View.VISIBLE
 
@@ -159,17 +169,22 @@ class CountDownFragment : Fragment() {
             bacEstimates?.let { estimates ->
                 val bac: List<Entry> = estimates.map {
                     if (estimates.indexOf(it) == estimates.lastIndex) {
-
                         Entry(
                             estimates.indexOf(it).toFloat(),
                             it.first,
-                            requireContext().getDrawable(R.drawable.ic_finish_flag)
+                            ContextCompat.getDrawable(requireContext(), R.drawable.ic_finish_flag)
                         )
                     } else {
+                        var resId = resources.getIdentifier(
+                            drinkingCalculator.preferredUnit.iconName,
+                            "drawable",
+                            requireContext().packageName
+                        )
+                        if (resId == 0) resId = R.drawable.ic_beer
                         Entry(
                             estimates.indexOf(it).toFloat(),
                             it.first,
-                            requireContext().getDrawable(drinkingCalculator.preferredUnit.iconId)
+                            ContextCompat.getDrawable(requireContext(), resId)
                         )
 
                     }

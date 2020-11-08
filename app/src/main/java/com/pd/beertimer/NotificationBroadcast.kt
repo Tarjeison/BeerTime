@@ -20,7 +20,7 @@ class NotificationBroadcast : BroadcastReceiver() {
             val pendingIntent: PendingIntent = PendingIntent.getActivity(it, 0, intent, 0)
 
             val builder = NotificationCompat.Builder(it, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_icon_beer)
+                .setSmallIcon(R.drawable.ic_beer)
                 .setContentTitle(it.getText(R.string.notification_title))
                 .setContentText(it.getString(R.string.notification_text))
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
