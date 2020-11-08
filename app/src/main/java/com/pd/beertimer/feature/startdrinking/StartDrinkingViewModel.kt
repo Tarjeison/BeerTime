@@ -4,7 +4,6 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.pd.beertimer.R
 import com.pd.beertimer.feature.drinks.DrinkRepository
 import com.pd.beertimer.models.AlcoholUnit
 import kotlinx.coroutines.Dispatchers
@@ -15,10 +14,10 @@ class StartDrinkingViewModel(private val drinkRepository: DrinkRepository) : Vie
     private val _drinksLiveData = MutableLiveData<List<AlcoholUnit>>()
     val drinksLiveData: LiveData<List<AlcoholUnit>> get() = _drinksLiveData
 
-    init {
+    fun getDrinks(){
         viewModelScope.launch(Dispatchers.IO) {
             drinkRepository.getDrinks().let {
-                if (it.isEmpty()) {
+                if (it.isNullOrEmpty()) {
                     _drinksLiveData.postValue(alcoholUnits)
                 } else {
                     _drinksLiveData.postValue(it.map { drink ->

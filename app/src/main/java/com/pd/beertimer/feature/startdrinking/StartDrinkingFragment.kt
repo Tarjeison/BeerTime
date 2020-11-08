@@ -51,10 +51,11 @@ class StartDrinkingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        alcoholAdapter = AlcoholAdapterV2(mutableListOf())
+        startDrinkingViewModel.getDrinks()
         startDrinkingViewModel.drinksLiveData.observe(viewLifecycleOwner, Observer {
             alcoholAdapter.setData(it)
         })
-        alcoholAdapter = AlcoholAdapterV2(mutableListOf())
         rvAlcoholUnit.layoutManager = LinearLayoutManager(context)
         rvAlcoholUnit.adapter = alcoholAdapter
         alcoholAdapter.notifyDataSetChanged()
