@@ -29,7 +29,6 @@ class StartDrinkingFragment : Fragment() {
 
     private var wantedBloodLevel = 0f
     private var finishDrinkingInHoursMinutes: Pair<Int, Int> = Pair(0, 0)
-    private var preferredAlcoholUnit: AlcoholUnit? = null
     private var peakInHoursMinutes: Pair<Int, Int> = Pair(0, 0)
 
     private val startDrinkingViewModel: StartDrinkingViewModel by viewModel()
