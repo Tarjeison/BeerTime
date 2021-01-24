@@ -11,6 +11,7 @@ import com.pd.beertimer.feature.profile.ProfileViewModel
 import com.pd.beertimer.feature.startdrinking.StartDrinkingViewModel
 import com.pd.beertimer.room.AppDatabase
 import com.pd.beertimer.room.DrinkDao
+import com.pd.beertimer.util.ProfileStorage
 import com.pd.beertimer.util.SHARED_PREF_BEER_TIME
 import com.pd.beertimer.util.StorageHelper
 import org.koin.android.ext.koin.androidApplication
@@ -24,17 +25,29 @@ val beerTimeModules = module {
     }
 
     factory {
-        ProfileViewModel(androidApplication())
+        ProfileViewModel(profileStorage = get())
     }
 
     factory {
-        StorageHelper(androidApplication().getSharedPreferences(SHARED_PREF_BEER_TIME,
-            Context.MODE_PRIVATE)
+        StorageHelper(
+            androidApplication().getSharedPreferences(
+                SHARED_PREF_BEER_TIME,
+                Context.MODE_PRIVATE
+            )
         )
     }
 
     viewModel {
-        StartDrinkingViewModel(drinkRepository = get())
+        StartDrinkingViewModel(
+            drinkRepository = get(),
+            applicationContext = androidContext(),
+            profileStorage = get(),
+            firebaseAnalytics = get()
+        )
+    }
+
+    factory {
+        ProfileStorage(appContext = androidContext())
     }
 
     single {

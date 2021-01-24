@@ -1,15 +1,10 @@
 package com.pd.beertimer.feature.profile
 
-import android.app.Application
-import android.content.Context
-import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import com.pd.beertimer.models.Gender
+import androidx.lifecycle.ViewModel
 import com.pd.beertimer.models.UserProfile
-import java.io.FileNotFoundException
-import java.nio.charset.Charset
+import com.pd.beertimer.util.ProfileStorage
 
-class ProfileViewModel (application: Application): AndroidViewModel(application){
+class ProfileViewModel(private val profileStorage: ProfileStorage): ViewModel() {
 
     companion object {
         const val MODEL_TAG = "ProfileViewModel"
@@ -18,34 +13,11 @@ class ProfileViewModel (application: Application): AndroidViewModel(application)
         const val FILE_GENDER = "gender"
     }
 
-    private val appContext = getApplication<Application>().applicationContext
-
     fun getUserProfile(): UserProfile? {
-        return try {
-            val age = String(appContext.openFileInput(FILE_AGE).readBytes(), Charset.defaultCharset()).toInt()
-            val weight = String(appContext.openFileInput(FILE_WEIGHT).readBytes(), Charset.defaultCharset()).toInt()
-            val gender = Gender.stringToGender(String(appContext.openFileInput(FILE_GENDER).readBytes(),Charset.defaultCharset()))
-            UserProfile(age, gender, weight)
-        } catch (error: FileNotFoundException) {
-            Log.d(MODEL_TAG, error.message ?: "UserProfileLoadError")
-            null
-        }
+        return profileStorage.getUserProfile()
     }
 
-    fun saveUserProfile(context: Context?, userProfile: UserProfile) {
-        if (context == null) {
-            return
-        }
-        context.openFileOutput(FILE_AGE, Context.MODE_PRIVATE).use {
-            it.write(userProfile.age.toString().toByteArray(Charset.defaultCharset()))
-        }
-
-        context.openFileOutput(FILE_GENDER, Context.MODE_PRIVATE).use {
-            it.write(userProfile.gender.toString().toByteArray(Charset.defaultCharset()))
-        }
-
-        context.openFileOutput(FILE_WEIGHT, Context.MODE_PRIVATE).use {
-            it.write(userProfile.weight.toString().toByteArray(Charset.defaultCharset()))
-        }
+    fun saveUserProfile(userProfile: UserProfile) {
+        profileStorage.saveUserProfile(userProfile)
     }
 }

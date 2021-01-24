@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.pd.beertimer.R
 import com.pd.beertimer.models.Gender
 import com.pd.beertimer.models.UserProfile
-import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -69,7 +69,7 @@ class ProfileFragment : Fragment() {
                     etWeight.text?.toString()?.toInt() ?: 0
                 )
                 if (isValidUserProfile(profile)) {
-                    profileViewModel.saveUserProfile(view?.context, profile)
+                    profileViewModel.saveUserProfile(profile)
                     Snackbar.make(clProfile, R.string.profile_updated, Snackbar.LENGTH_SHORT).show()
                 }
             }
