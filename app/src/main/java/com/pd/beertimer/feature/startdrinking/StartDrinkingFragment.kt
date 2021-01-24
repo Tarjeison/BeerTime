@@ -14,9 +14,9 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.pd.beertimer.BuildConfig
 import com.pd.beertimer.R
 import com.pd.beertimer.feature.profile.ProfileViewModel
-import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.DrinkingCalculator
 import com.pd.beertimer.util.toHourMinuteString
@@ -58,6 +58,10 @@ class StartDrinkingFragment : Fragment() {
         rvAlcoholUnit.layoutManager = LinearLayoutManager(context)
         rvAlcoholUnit.adapter = alcoholAdapter
         alcoholAdapter.notifyDataSetChanged()
+
+        if (BuildConfig.DEBUG) {
+            sbBloodLevel.max = 60
+        }
 
         initSeekBars()
         initStartDrinkingButton()
