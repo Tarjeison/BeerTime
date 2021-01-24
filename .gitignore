@@ -1,1 +1,8 @@
-/build
+.idea/*
+.gradle/*
+app/.DS_Store
+app/build/*
+app/google-services.json
+app/release/*
+.DS_Store
+local.properties
