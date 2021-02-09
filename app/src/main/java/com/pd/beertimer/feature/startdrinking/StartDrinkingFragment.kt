@@ -14,7 +14,6 @@ import com.google.firebase.analytics.ktx.logEvent
 import com.pd.beertimer.BuildConfig
 import com.pd.beertimer.R
 import com.pd.beertimer.databinding.FragmentStartdrinkingBinding
-import com.pd.beertimer.feature.profile.ProfileViewModel
 import com.pd.beertimer.util.*
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -24,8 +23,8 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
     private val binding by viewBinding(FragmentStartdrinkingBinding::bind)
 
     private val startDrinkingViewModel: StartDrinkingViewModel by viewModel()
-    private val profileViewModel: ProfileViewModel by viewModel()
     private val firebaseAnalytics: FirebaseAnalytics by inject()
+    private val alarmUtils: AlarmUtils by inject()
 
 
     private lateinit var alcoholAdapter: AlcoholAdapterV2
@@ -169,8 +168,6 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
     }
 
     private fun isDrinking(): Boolean {
-        return context?.let {
-            AlarmUtils(it).getExistingDrinkTimesFromSharedPref() != null
-        } ?: false
+        return alarmUtils.getDrinkingCalculatorSharedPref() != null
     }
 }

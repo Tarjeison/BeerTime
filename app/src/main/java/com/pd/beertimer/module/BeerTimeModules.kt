@@ -11,6 +11,7 @@ import com.pd.beertimer.feature.profile.ProfileViewModel
 import com.pd.beertimer.feature.startdrinking.StartDrinkingViewModel
 import com.pd.beertimer.room.AppDatabase
 import com.pd.beertimer.room.DrinkDao
+import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.ProfileStorage
 import com.pd.beertimer.util.SHARED_PREF_BEER_TIME
 import com.pd.beertimer.util.StorageHelper
@@ -35,6 +36,10 @@ val beerTimeModules = module {
                 Context.MODE_PRIVATE
             )
         )
+    }
+
+    single {
+        AlarmUtils(androidContext())
     }
 
     viewModel {

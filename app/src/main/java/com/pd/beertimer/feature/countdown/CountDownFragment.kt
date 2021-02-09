@@ -6,6 +6,7 @@ import android.os.CountDownTimer
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.github.mikephil.charting.data.Entry
@@ -21,6 +22,7 @@ import com.pd.beertimer.util.ifLet
 import com.pd.beertimer.util.ordinal
 import kotlinx.android.synthetic.main.fragment_timer.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.android.ext.android.inject
 import java.time.Duration
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
@@ -32,6 +34,7 @@ class CountDownFragment : Fragment() {
     private var drinkingTimes: List<LocalDateTime>? = null
     private var drinkingCalculator: DrinkingCalculator? = null
     private val profileViewModel: ProfileViewModel by viewModel()
+    private val alarmUtils: AlarmUtils by inject()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -92,7 +95,7 @@ class CountDownFragment : Fragment() {
                 .setPositiveButton(
                     R.string.yes
                 ) { _, _ ->
-                    AlarmUtils(requireContext()).deleteExistingAlarms()
+                    alarmUtils.deleteExistingAlarms()
                     setViewsDrinkingNotStarted()
                 }
                 .setNegativeButton(R.string.no, null)
@@ -238,7 +241,12 @@ class CountDownFragment : Fragment() {
         ivCurrentlyDrinking.visibility = View.GONE
         chartBac.visibility = View.GONE
         bStopDrinking.visibility = View.GONE
-        ivCountDownPineapple.setImageDrawable(context?.getDrawable(R.drawable.ic_pineapple_sleeping))
+        ivCountDownPineapple.setImageDrawable(
+            AppCompatResources.getDrawable(
+                requireContext(),
+                R.drawable.ic_pineapple_sleeping
+            )
+        )
         clNumOfUnits.visibility = View.INVISIBLE
     }
 
@@ -255,11 +263,8 @@ class CountDownFragment : Fragment() {
 
     override fun onResume() {
         super.onResume()
-        context?.let {
-            val alarmUtils = AlarmUtils(it)
-            drinkingTimes = alarmUtils.getExistingDrinkTimesFromSharedPref()
-            drinkingCalculator = alarmUtils.getDrinkingCalculatorSharedPref()
-        }
+        drinkingTimes = alarmUtils.getExistingDrinkTimesFromSharedPref()
+        drinkingCalculator = alarmUtils.getDrinkingCalculatorSharedPref()
         if (drinkingTimes == null) {
             setViewsDrinkingNotStarted()
         } else {
