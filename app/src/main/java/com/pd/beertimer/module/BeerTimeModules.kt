@@ -30,11 +30,15 @@ val beerTimeModules = module {
     }
 
     factory {
+        androidApplication().getSharedPreferences(
+            SHARED_PREF_BEER_TIME,
+            Context.MODE_PRIVATE
+        )
+    }
+
+    factory {
         StorageHelper(
-            androidApplication().getSharedPreferences(
-                SHARED_PREF_BEER_TIME,
-                Context.MODE_PRIVATE
-            )
+            sharedPreferences = get()
         )
     }
 
@@ -83,7 +87,7 @@ fun getDrinkDao(database: AppDatabase): DrinkDao {
 fun getRoomDatabase(applicationContext: Context): AppDatabase {
     return Room.databaseBuilder(
         applicationContext,
-        AppDatabase::class.java, "drinks-db"
+        AppDatabase::class.java, "drink"
     ).build()
 }
 

@@ -3,6 +3,7 @@ package com.pd.beertimer
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.SharedPreferences
 import android.os.Build
 import android.os.Bundle
 import android.view.Menu
@@ -12,14 +13,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import com.pd.beertimer.room.Drink
+import com.pd.beertimer.room.DrinkDao
 import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.CHANNEL_ID
+import com.pd.beertimer.util.SHARED_PREF_ROOM_INIT
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import nl.joery.animatedbottombar.AnimatedBottomBar
+import org.koin.android.ext.android.getKoin
+import org.koin.android.ext.android.inject
 
 class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedListener {
 
     private var menu: Menu? = null
+    private val sharedPreferences: SharedPreferences by inject()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -29,6 +39,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         setUpBottomBar()
         createNotificationChannel()
         setupToolbar()
+        initRoom()
 
 
         if (savedInstanceState == null) {
@@ -76,6 +87,34 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         supportActionBar?.setDisplayShowTitleEnabled(false)
         toolbar.setNavigationOnClickListener {
             findNavController(R.id.nav_host_fragment).popBackStack()
+        }
+    }
+
+    private fun initRoom() {
+        if (!sharedPreferences.getBoolean(SHARED_PREF_ROOM_INIT, false)) {
+            GlobalScope.launch {
+            getKoin().get<DrinkDao>().insertAll(
+                Drink(
+                    name = "Small Beer",
+                    volume = 0.33F,
+                    percentage = 0.047F,
+                    iconName = "ic_beer_small"
+                ),
+                Drink(
+                    name = "Large Beer",
+                    volume = 0.50F,
+                    percentage = 0.047F,
+                    iconName = "ic_beer"
+                ),
+                Drink(
+                    name = "Wine",
+                    volume = 0.150F,
+                    percentage = 0.125F,
+                    iconName = "ic_wine"
+                )
+            )
+            }
+            sharedPreferences.edit().putBoolean(SHARED_PREF_ROOM_INIT, true).apply()
         }
     }
 

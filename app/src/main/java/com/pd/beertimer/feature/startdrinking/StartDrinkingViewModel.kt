@@ -11,8 +11,9 @@ import com.pd.beertimer.R
 import com.pd.beertimer.feature.drinks.DrinkRepository
 import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.util.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
 
 class StartDrinkingViewModel(
@@ -39,25 +40,14 @@ class StartDrinkingViewModel(
     private val _wantedBloodLevelLiveData = MutableLiveData<String>()
     val wantedBloodLevelLiveData: LiveData<String> get() = _wantedBloodLevelLiveData
 
+    @ExperimentalCoroutinesApi
     fun getDrinks() {
-        viewModelScope.launch(Dispatchers.IO) {
-            drinkRepository.getDrinks().let {
-                if (it.isNullOrEmpty()) {
-                    _drinksLiveData.postValue(alcoholUnits)
-                } else {
-                    _drinksLiveData.postValue(it.map { drink ->
-                        drink.toAlcoholUnit()
-                    })
-                }
-            }
-        }
+        drinkRepository.getDrinks().onEach {
+            _drinksLiveData.postValue(it.map { drink ->
+                drink.toAlcoholUnit()
+            })
+        }.launchIn(viewModelScope)
     }
-
-    private val alcoholUnits = arrayListOf(
-        AlcoholUnit("Small beer", 0.33F, 0.047F, "ic_beer"),
-        AlcoholUnit("Large beer", 0.50F, 0.047F, "ic_beer"),
-        AlcoholUnit("Wine", 0.150F, 0.125F, "ic_wine")
-    )
 
     fun setWantedBloodLevel(wantedBloodLevelProgress: Int) {
         this.wantedBloodLevel = (wantedBloodLevelProgress.toFloat() / 100)

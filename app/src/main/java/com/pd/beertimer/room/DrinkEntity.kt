@@ -15,7 +15,7 @@ data class Drink(
     @ColumnInfo(name = "drink_icon_res_id") val iconName: String
 ) {
     constructor(name: String, volume: Float, percentage: Float, iconName: String):
-            this(Int.MIN_VALUE, name, volume, percentage, iconName)
+            this(id = 0, name = name, volume = volume, percentage = percentage, iconName = iconName)
     fun toAlcoholUnit(): AlcoholUnit {
         return AlcoholUnit(
             name=name,
