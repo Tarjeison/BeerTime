@@ -41,7 +41,9 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         // Inflate the menu; this adds items to the action bar if it is present.
         menuInflater.inflate(R.menu.menu_main, menu)
-        menu.findItem(R.id.action_info).iconTintList = this.getColorStateList(R.color.selector)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            menu.findItem(R.id.action_info).iconTintList = this.getColorStateList(R.color.selector)
+        }
         this.menu = menu
         return true
     }
@@ -88,7 +90,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
                 when (newTab.id) {
                     R.id.tab_home -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_startDrinkingFragment)
                     R.id.tab_timer -> findNavController(R.id.nav_host_fragment).navigate(R.id.countDownFragment)
-                    R.id.tab_profile -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_profileFragment)
+                    R.id.tab_profile -> findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_meFragment)
                     else -> throw ClassNotFoundException()
                 }
             }
@@ -127,7 +129,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         when (destination.id) {
             R.id.countDownFragment -> bottom_bar.selectTabById(R.id.tab_timer)
             R.id.startDrinkingFragment -> bottom_bar.selectTabById(R.id.tab_home)
-            R.id.profileFragment -> bottom_bar.selectTabById(R.id.tab_profile)
+            R.id.meFragment -> bottom_bar.selectTabById(R.id.tab_profile)
             R.id.infoFragment -> {
                 this.menu?.findItem(R.id.action_info)?.isVisible = false
                 bottom_bar.visibility = View.GONE

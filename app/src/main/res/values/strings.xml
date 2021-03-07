@@ -65,4 +65,6 @@
     <string name="startdrinking_peak_time">Wanted BAC will be reached at</string>
     <string name="stop_drinking">Stop drinking</string>
     <string name="countdown_stopdrinking_toast">You will lose your current progress and all alarms will be deleted</string>
+    <string name="me_drinks">My drinks</string>
+    <string name="me">Me</string>
 </resources>

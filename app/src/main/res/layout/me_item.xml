@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="115dp"
+    android:layout_margin="0.5dp"
+    android:background="@color/colorWhite">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/itemMe"
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:layout_gravity="center_horizontal"
+        android:background="?attr/selectableItemBackground">
+
+        <ImageView
+            android:id="@+id/ivMe"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginBottom="@dimen/margin_small"
+            app:layout_constraintBottom_toTopOf="@id/tvMe"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_chainStyle="packed"
+            tools:src="@drawable/ic_beer" />
+
+        <TextView
+            android:id="@+id/tvMe"
+            style="@style/TodoStyleTextSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ivMe"
+            tools:text="My drinks" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</FrameLayout>

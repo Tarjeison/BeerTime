@@ -17,9 +17,6 @@
     <action
         android:id="@+id/action_global_countDownFragment"
         app:destination="@id/countDownFragment" />
-    <action
-        android:id="@+id/action_global_profileFragment"
-        app:destination="@id/profileFragment" />
     <fragment
         android:id="@+id/startDrinkingFragment"
         android:name="com.pd.beertimer.feature.startdrinking.StartDrinkingFragment"
@@ -39,4 +36,13 @@
         app:exitAnim="@anim/nav_default_exit_anim"
         app:popEnterAnim="@anim/nav_default_pop_enter_anim"
         app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    <fragment
+        android:id="@+id/meFragment"
+        android:name="com.pd.beertimer.feature.me.MeFragment"
+        android:label="MeFragment" >
+        <action
+            android:id="@+id/action_meFragment_to_profileFragment"
+            app:destination="@id/profileFragment" />
+    </fragment>
+    <action android:id="@+id/action_global_meFragment" app:destination="@id/meFragment" />
 </navigation>
