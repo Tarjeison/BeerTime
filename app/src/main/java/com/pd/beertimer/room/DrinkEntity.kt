@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.pd.beertimer.models.AlcoholUnit
+import com.pd.beertimer.models.MyDrinkItem
 
 
 @Entity
@@ -23,6 +24,15 @@ data class Drink(
             percentage = percentage,
             iconName = iconName,
             isSelected = false
+        )
+    }
+
+    fun toDrinkItem(): MyDrinkItem {
+        return MyDrinkItem(
+            name = name,
+            volume = volume,
+            percentage = percentage,
+            iconName = iconName
         )
     }
 }

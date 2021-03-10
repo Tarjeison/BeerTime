@@ -169,7 +169,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             R.id.countDownFragment -> bottom_bar.selectTabById(R.id.tab_timer)
             R.id.startDrinkingFragment -> bottom_bar.selectTabById(R.id.tab_home)
             R.id.meFragment -> bottom_bar.selectTabById(R.id.tab_profile)
-            R.id.infoFragment -> {
+            R.id.infoFragment, R.id.profileFragment, R.id.myDrinksFragment -> {
                 this.menu?.findItem(R.id.action_info)?.isVisible = false
                 bottom_bar.visibility = View.GONE
                 supportActionBar?.setDisplayHomeAsUpEnabled(true)

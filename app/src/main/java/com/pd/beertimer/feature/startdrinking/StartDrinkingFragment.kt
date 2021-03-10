@@ -15,6 +15,7 @@ import com.pd.beertimer.BuildConfig
 import com.pd.beertimer.R
 import com.pd.beertimer.databinding.FragmentStartdrinkingBinding
 import com.pd.beertimer.util.*
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -30,12 +31,14 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
     private lateinit var alcoholAdapter: AlcoholAdapterV2
 
 
+    @ExperimentalCoroutinesApi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         startDrinkingViewModel.getDrinks()
 
         observe(startDrinkingViewModel.drinksLiveData) {
             getAlcoholAdapter().setData(it)
+            binding.bStartDrinking.visibility = View.VISIBLE
         }
         observe(startDrinkingViewModel.finishBarLiveData) {
             binding.tvHoursValue.text = it.displayString
@@ -122,7 +125,8 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
                 createSnackBar(R.string.error_startdrinking_select_unit)
                 return@setOnClickListener
             }
-            val calculationResult = startDrinkingViewModel.validateValuesAndCreateCalculation(selectedUnit)
+            val calculationResult =
+                startDrinkingViewModel.validateValuesAndCreateCalculation(selectedUnit)
             when (calculationResult) {
                 is Success -> {
                     // TODO: Fix this shit

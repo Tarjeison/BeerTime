@@ -9,7 +9,7 @@
         android:id="@+id/profileFragment"
         android:name="com.pd.beertimer.feature.profile.ProfileFragment"
         android:label="Profile"
-        tools:layout="@layout/fragment_profile"/>
+        tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/countDownFragment"
         android:name="com.pd.beertimer.feature.countdown.CountDownFragment"
@@ -20,11 +20,14 @@
     <fragment
         android:id="@+id/startDrinkingFragment"
         android:name="com.pd.beertimer.feature.startdrinking.StartDrinkingFragment"
-        android:label="StartDrinkingFragment" >
+        android:label="StartDrinkingFragment">
         <action
             android:id="@+id/action_startDrinkingFragment_to_countDownFragment"
             app:destination="@id/countDownFragment" />
-    </fragment><action android:id="@+id/action_global_startDrinkingFragment" app:destination="@id/startDrinkingFragment"/>
+    </fragment>
+    <action
+        android:id="@+id/action_global_startDrinkingFragment"
+        app:destination="@id/startDrinkingFragment" />
     <fragment
         android:id="@+id/infoFragment"
         android:name="com.pd.beertimer.feature.info.InfoFragment"
@@ -39,10 +42,19 @@
     <fragment
         android:id="@+id/meFragment"
         android:name="com.pd.beertimer.feature.me.MeFragment"
-        android:label="MeFragment" >
+        android:label="MeFragment">
         <action
             android:id="@+id/action_meFragment_to_profileFragment"
             app:destination="@id/profileFragment" />
+        <action
+            android:id="@+id/action_meFragment_to_myDrinksFragment"
+            app:destination="@id/myDrinksFragment" />
     </fragment>
-    <action android:id="@+id/action_global_meFragment" app:destination="@id/meFragment" />
+    <action
+        android:id="@+id/action_global_meFragment"
+        app:destination="@id/meFragment" />
+    <fragment
+        android:id="@+id/myDrinksFragment"
+        android:name="com.pd.beertimer.feature.drinks.MyDrinksFragment"
+        android:label="MyDrinksFragment" />
 </navigation>

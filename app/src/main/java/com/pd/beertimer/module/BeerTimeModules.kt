@@ -6,6 +6,7 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
 import com.pd.beertimer.feature.drinks.DrinkRepository
+import com.pd.beertimer.feature.drinks.MyDrinksViewModel
 import com.pd.beertimer.feature.info.InfoViewModel
 import com.pd.beertimer.feature.profile.ProfileViewModel
 import com.pd.beertimer.feature.startdrinking.StartDrinkingViewModel
@@ -62,6 +63,8 @@ val beerTimeModules = module {
     single {
         getFirebaseAnalytics()
     }
+
+    viewModel { MyDrinksViewModel(drinkRepository = get()) }
 
     factory {
         DrinkRepository(drinkDb = get())
