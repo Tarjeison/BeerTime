@@ -3,6 +3,7 @@ package com.pd.beertimer.feature.drinks
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.pd.beertimer.R
@@ -27,6 +28,10 @@ class MyDrinksFragment : Fragment(R.layout.fragment_my_drinks) {
         )
         observe(viewModel.drinksLiveData) {
             getMyDrinksAdapter().setData(it)
+        }
+
+        binding.addDrinkFab.setOnClickListener {
+            findNavController().navigate(R.id.action_myDrinksFragment_to_addDrinkFragment)
         }
     }
 

@@ -13,4 +13,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/addDrinkFab"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:foregroundTint="@color/colorPrimaryDark"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_plus"
+        android:tint="@color/colorWhite"
+        android:layout_margin="16dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -67,4 +67,7 @@
     <string name="countdown_stopdrinking_toast">You will lose your current progress and all alarms will be deleted</string>
     <string name="me_drinks">My drinks</string>
     <string name="me">Me</string>
+    <string name="add_drink_name_desc">What would you like to name your drink?</string>
+    <string name="add_percentage_desc">How strong is your drink in alcohol %?</string>
+    <string name="add_volume_desc">How large is your drink in liters?</string>
 </resources>

@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.analytics
 import com.google.firebase.ktx.Firebase
+import com.pd.beertimer.feature.drinks.AddDrinkViewModel
 import com.pd.beertimer.feature.drinks.DrinkRepository
 import com.pd.beertimer.feature.drinks.MyDrinksViewModel
 import com.pd.beertimer.feature.info.InfoViewModel
@@ -65,6 +66,8 @@ val beerTimeModules = module {
     }
 
     viewModel { MyDrinksViewModel(drinkRepository = get()) }
+
+    viewModel { AddDrinkViewModel() }
 
     factory {
         DrinkRepository(drinkDb = get())
