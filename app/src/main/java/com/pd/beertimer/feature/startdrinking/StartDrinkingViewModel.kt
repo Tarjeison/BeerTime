@@ -129,6 +129,5 @@ class StartDrinkingViewModel(
                 preferredUnit = selectedUnit
             )
         )
-
     }
 }
