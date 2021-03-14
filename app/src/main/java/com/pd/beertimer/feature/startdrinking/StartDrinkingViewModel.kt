@@ -15,6 +15,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
+import kotlin.math.min
 
 class StartDrinkingViewModel(
     private val applicationContext: Context,
@@ -54,14 +55,15 @@ class StartDrinkingViewModel(
         _wantedBloodLevelLiveData.postValue(
             String.format(
                 applicationContext.getString(R.string.startdrinking_permille),
-                (wantedBloodLevel.toPermille()).toString()
+                (wantedBloodLevelProgress.toFloat() / 10).toString()
             )
         )
     }
 
     fun setFinishDrinkingInHoursMinutes(seekBarValue: Int) {
-        val hoursDrinking = (seekBarValue / 60)
-        val minutesDrinking = (seekBarValue - (hoursDrinking * 60))
+        val hoursDrinking = (seekBarValue / 60) + 1
+        var minutesDrinking = (seekBarValue - ((seekBarValue / 60) * 60) + (10 - seekBarValue%10))
+        minutesDrinking -= LocalDateTime.now().minute % 10
         finishDrinkingInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
         val seekBarUIModel = SeekBarUIModel(
             displayString = LocalDateTime.now().plusHours(hoursDrinking.toLong())
@@ -72,8 +74,10 @@ class StartDrinkingViewModel(
 
     fun setPeakTimeInHoursMinutes(seekBarValue: Int) {
         hasSetPeakTime = true
-        val hoursDrinking = (seekBarValue / 60)
-        val minutesDrinking = (seekBarValue - (hoursDrinking * 60))
+        val hoursDrinking = (seekBarValue / 60) + 1
+        var minutesDrinking = (seekBarValue - ((seekBarValue / 60) * 60)) + (10 - seekBarValue%10)
+        minutesDrinking -= LocalDateTime.now().minute % 10
+
         peakInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
         val seekBarUIModel = SeekBarUIModel(
             displayString = LocalDateTime.now().plusHours(hoursDrinking.toLong())
