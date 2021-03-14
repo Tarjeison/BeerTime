@@ -53,8 +53,8 @@ class StartDrinkingViewModel(
         this.wantedBloodLevel = (wantedBloodLevelProgress.toFloat() / 100)
         _wantedBloodLevelLiveData.postValue(
             String.format(
-                applicationContext.getString(R.string.startdrinking_percentage),
-                wantedBloodLevel.toString()
+                applicationContext.getString(R.string.startdrinking_permille),
+                (wantedBloodLevel.toPermille()).toString()
             )
         )
     }

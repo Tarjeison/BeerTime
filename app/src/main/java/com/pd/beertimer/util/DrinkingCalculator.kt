@@ -70,7 +70,7 @@ data class DrinkingCalculator(
             } else {
                 bacEstimations.add(
                     Pair(
-                        calculateBac(Duration.between(startTime, drinkingTimes[i]), i),
+                        calculateBac(Duration.between(startTime, drinkingTimes[i]), i).toPermille(),
                         drinkingTimes[i]
                     )
                 )
@@ -79,7 +79,7 @@ data class DrinkingCalculator(
         val lastDateTime = endTime
         bacEstimations.add(
             Pair(
-                calculateBac(Duration.between(startTime, lastDateTime), drinkingTimes.size),
+                calculateBac(Duration.between(startTime, lastDateTime), drinkingTimes.size).toPermille(),
                 lastDateTime
             )
         )

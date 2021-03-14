@@ -21,8 +21,8 @@ import com.pd.beertimer.util.DrinkingCalculator
 import com.pd.beertimer.util.ifLet
 import com.pd.beertimer.util.ordinal
 import kotlinx.android.synthetic.main.fragment_timer.*
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.time.Duration
 import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
@@ -213,9 +213,9 @@ class CountDownFragment : Fragment() {
 
                 chartBac.xAxis.valueFormatter = axisFormatter
                 chartBac.xAxis.granularity = 1f
-                chartBac.axisLeft.addLimitLine(chartHelper.createLimitLine(drinkingCalculator.wantedBloodLevel))
+                chartBac.axisLeft.addLimitLine(chartHelper.createLimitLine(drinkingCalculator.wantedBloodLevel * 10F))
                 chartBac.axisLeft.axisMinimum = 0f
-                chartBac.axisLeft.axisMaximum = (drinkingCalculator.wantedBloodLevel) + 0.02f
+                chartBac.axisLeft.axisMaximum = (bacEstimates.maxOf { it.first }) + 0.2f
                 chartBac.axisRight.setDrawGridLines(false)
                 chartBac.axisRight.setDrawLabels(false)
                 chartBac.description.isEnabled = false
