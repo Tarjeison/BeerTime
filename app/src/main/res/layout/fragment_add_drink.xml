@@ -64,9 +64,23 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvDrinkIcons"
         android:layout_width="match_parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tiVolume"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/margin_medium"
-        android:layout_height="wrap_content"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tiVolume" />
+
+    <Button
+        android:id="@+id/bAddDrink"
+        android:layout_width="128dp"
+        android:layout_height="48dp"
+        android:layout_margin="@dimen/margin_large"
+        android:background="@drawable/button_selector"
+        android:textAllCaps="false"
+        android:text="@string/add"
+        android:textColor="@color/colorWhite"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

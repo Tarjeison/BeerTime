@@ -70,4 +70,10 @@
     <string name="add_drink_name_desc">What would you like to name your drink?</string>
     <string name="add_percentage_desc">How strong is your drink in alcohol %?</string>
     <string name="add_volume_desc">How large is your drink in liters?</string>
+    <string name="add">Add</string>
+    <string name="add_drink_missing_name">You\'ll need to add a name for your drink</string>
+    <string name="add_drink_missing_percentage">If the drink is without alcohol, I recommend just drinking it normally without this app.</string>
+    <string name="add_drink_to_strong">Whao! Over 100%? That\'s too much my friend.</string>
+    <string name="add_drink_missing_volume">"If you can't win by reason, go for volume. "</string>
+    <string name="add_drink_success">"A new day, a new drink! "</string>
 </resources>

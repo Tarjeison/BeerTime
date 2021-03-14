@@ -24,6 +24,10 @@ class DrinkIconAdapter(
         return (holder as DrinkIconViewHolder).bind(drinkIconItems[position])
     }
 
+    fun getSelectedDrinkName(): String? {
+        return drinkIconItems.firstOrNull { it.selected }?.iconString
+    }
+
     inner class DrinkIconViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(drinkIconItem: DrinkIconItem) {

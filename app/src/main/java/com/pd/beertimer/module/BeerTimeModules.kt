@@ -67,7 +67,7 @@ val beerTimeModules = module {
 
     viewModel { MyDrinksViewModel(drinkRepository = get()) }
 
-    viewModel { AddDrinkViewModel() }
+    viewModel { AddDrinkViewModel(drinkRepository = get()) }
 
     factory {
         DrinkRepository(drinkDb = get())
