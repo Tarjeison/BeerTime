@@ -146,6 +146,10 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
     private fun startDrinking(calculator: DrinkingCalculator) {
         context?.let {
             val drinkingTimes = calculator.calculateDrinkingTimes()
+            if (drinkingTimes.isEmpty()) {
+                createSnackBar(R.string.startdrinking_nothing_to_drink)
+                return
+            }
             val alarmUtils = AlarmUtils(it)
             alarmUtils.deleteExistingAlarms()
             alarmUtils.setAlarmsAndStoreTimesToSharedPref(

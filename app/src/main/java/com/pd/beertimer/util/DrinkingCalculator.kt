@@ -1,6 +1,5 @@
 package com.pd.beertimer.util
 
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
@@ -48,7 +47,8 @@ data class DrinkingCalculator(
         val neededGrams =
             ((wantedBloodLevel + 0.015 * drinkingDuration.toMinutes() / 60f) * ((userProfile.weight * 1000 * genderConst))) / 100
         val numberOfUnitsToDrink = (neededGrams / preferredUnit.gramPerUnit).roundToInt()
-
+        if (numberOfUnitsToDrink > 85) return mutableListOf() // TODO: Make this return proper errors
+        if (numberOfUnitsToDrink == 0) return mutableListOf() // Nothing to drink
         val dDuration = drinkingDuration.dividedBy(numberOfUnitsToDrink.toLong())
         val drinkingTimes = mutableListOf<LocalDateTime>()
         for (i in 0 until numberOfUnitsToDrink) {

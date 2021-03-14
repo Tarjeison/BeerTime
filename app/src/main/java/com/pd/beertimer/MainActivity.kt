@@ -43,7 +43,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
 
 
         if (savedInstanceState == null) {
-            if (AlarmUtils(this).getExistingDrinkTimesFromSharedPref() != null) {
+            if (!AlarmUtils(this).getExistingDrinkTimesFromSharedPref().isNullOrEmpty()) {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_countDownFragment)
             }
         }

@@ -74,22 +74,47 @@ class AddDrinkViewModel(private val drinkRepository: DrinkRepository) : ViewMode
             )
             return null
         }
-        return if (drinkPercentageNonNullFloat > 100F) {
-            _addDrinkResultLiveData.postValue(Failure(
-                Pair(AddDrinkInputField.DRINK_PERCENTAGE, R.string.add_drink_to_strong))
-            )
-            null
-        } else {
-            drinkPercentageNonNullFloat
+        return when {
+            drinkPercentageNonNullFloat > 100F -> {
+                _addDrinkResultLiveData.postValue(Failure(
+                    Pair(AddDrinkInputField.DRINK_PERCENTAGE, R.string.add_drink_to_strong))
+                )
+                null
+            }
+            drinkPercentageNonNullFloat < 2F -> {
+                _addDrinkResultLiveData.postValue(Failure(
+                    Pair(AddDrinkInputField.DRINK_PERCENTAGE, R.string.add_drink_to_weak))
+                )
+                null
+            }
+            else -> {
+                drinkPercentageNonNullFloat / 100F
+            }
         }
     }
 
     private fun validateDrinkVolume(drinkVolume: String?): Float? {
-        return drinkVolume?.toFloatOrNull() ?: run {
+        val drinkValidFormat =  drinkVolume?.toFloatOrNull() ?: run {
             _addDrinkResultLiveData.postValue(Failure(
                 Pair(AddDrinkInputField.DRINK_VOLUME, R.string.add_drink_missing_volume))
             )
             return null
+        }
+        return when {
+            drinkValidFormat < 0.02F -> {
+                _addDrinkResultLiveData.postValue(Failure(
+                    Pair(AddDrinkInputField.DRINK_VOLUME, R.string.add_drink_volume_too_low))
+                )
+                null
+            }
+            drinkValidFormat > 1F -> {
+                _addDrinkResultLiveData.postValue(Failure(
+                    Pair(AddDrinkInputField.DRINK_VOLUME, R.string.add_drink_volume_too_high))
+                )
+                null
+            } else -> {
+                drinkValidFormat
+            }
         }
     }
 }

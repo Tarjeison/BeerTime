@@ -76,4 +76,8 @@
     <string name="add_drink_to_strong">Whao! Over 100%? That\'s too much my friend.</string>
     <string name="add_drink_missing_volume">"If you can't win by reason, go for volume. "</string>
     <string name="add_drink_success">"A new day, a new drink! "</string>
+    <string name="startdrinking_nothing_to_drink">"Whops! It seems like you will have to drink nothing based on your selected unit and wanted BAC. "</string>
+    <string name="add_drink_to_weak">Are drinks really drinks if they\'re under 2%?</string>
+    <string name="add_drink_volume_too_low">What\'s this volume? A baby shot? Please have your drink larger than 0.02L</string>
+    <string name="add_drink_volume_too_high">Whao, take it easy. Drinks over 1L is too much for this app to handle.</string>
 </resources>

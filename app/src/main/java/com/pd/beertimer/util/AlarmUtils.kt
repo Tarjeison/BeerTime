@@ -9,11 +9,8 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.pd.beertimer.NotificationBroadcast
-import com.pd.beertimer.models.AlcoholUnit
-import java.text.DateFormat
 import java.time.LocalDateTime
 import java.time.ZoneId
-import java.time.format.DateTimeFormatter
 
 class AlarmUtils(context: Context) : ContextWrapper(context) {
 
@@ -72,6 +69,7 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
         sharedPref.getString(SHARED_PREF_DRINKING_TIMES, null)?.let {
             var drinkingTimesString = it.trim('[', ']')
+            if (drinkingTimesString.isEmpty()) return null
             drinkingTimesString = drinkingTimesString.replace(" ", "")
             val drinkingTimesStringArray = drinkingTimesString.split(",")
             val drinkingLocalDateTimes = drinkingTimesStringArray.map { drinkingTimeString ->
