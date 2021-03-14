@@ -32,7 +32,8 @@ data class Drink(
             name = name,
             volume = volume,
             percentage = percentage,
-            iconName = iconName
+            iconName = iconName,
+            id = id
         )
     }
 }

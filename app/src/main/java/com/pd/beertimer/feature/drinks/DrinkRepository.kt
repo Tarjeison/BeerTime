@@ -18,4 +18,8 @@ class DrinkRepository(private val drinkDb: DrinkDao) {
             emit(1L)
         }.flowOn(Dispatchers.IO)
     }
+
+    fun delete(drinkId: Int) {
+        drinkDb.delete(drinkId)
+    }
 }

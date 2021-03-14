@@ -12,4 +12,8 @@ interface DrinkDao {
 
     @Insert
     fun insertAll(vararg users: Drink)
+
+    @Query("DELETE FROM Drink where id = :drinkId")
+    fun delete(drinkId: Int)
+
 }

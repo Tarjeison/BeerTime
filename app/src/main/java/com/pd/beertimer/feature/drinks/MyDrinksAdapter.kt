@@ -7,9 +7,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pd.beertimer.R
 import com.pd.beertimer.models.MyDrinkItem
-import kotlinx.android.synthetic.main.item_drink_v2.view.*
+import kotlinx.android.synthetic.main.item_drink_v2.view.icDrink
+import kotlinx.android.synthetic.main.item_drink_v2.view.tvDrinkName
+import kotlinx.android.synthetic.main.item_drink_v2.view.tvPercentAndVolume
+import kotlinx.android.synthetic.main.item_my_drink.view.*
 
-class MyDrinksAdapter(private val drinkList: MutableList<MyDrinkItem>) :
+class MyDrinksAdapter(
+    private val drinkList: MutableList<MyDrinkItem>,
+    private val onDeleteClick: (Int) -> Unit
+) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return DrinkViewHolder(
@@ -32,7 +38,6 @@ class MyDrinksAdapter(private val drinkList: MutableList<MyDrinkItem>) :
     inner class DrinkViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         fun bind(drinkItem: MyDrinkItem) {
-
             setIcon(drinkItem.iconName)
             itemView.tvDrinkName.text = drinkItem.name
             itemView.tvPercentAndVolume.text = String.format(
@@ -40,6 +45,9 @@ class MyDrinksAdapter(private val drinkList: MutableList<MyDrinkItem>) :
                 (drinkItem.percentage * 100).toString(),
                 drinkItem.volume.toString()
             )
+            itemView.ivDelete.setOnClickListener {
+                onDeleteClick.invoke(drinkItem.id)
+            }
         }
 
         private fun setIcon(iconName: String) {

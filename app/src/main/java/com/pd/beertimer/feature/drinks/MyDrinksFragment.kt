@@ -37,8 +37,12 @@ class MyDrinksFragment : Fragment(R.layout.fragment_my_drinks) {
 
     private fun getMyDrinksAdapter(): MyDrinksAdapter {
         if (!this::drinksAdapter.isInitialized) {
-            drinksAdapter = MyDrinksAdapter(mutableListOf())
+            drinksAdapter = MyDrinksAdapter(mutableListOf(), onDeleteAction)
         }
         return drinksAdapter
+    }
+
+    private val onDeleteAction = { drinkId: Int ->
+        viewModel.deleteDrink(drinkId)
     }
 }

@@ -5,10 +5,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.pd.beertimer.models.MyDrinkItem
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 
-class MyDrinksViewModel(drinkRepository: DrinkRepository): ViewModel() {
+class MyDrinksViewModel(private val drinkRepository: DrinkRepository): ViewModel() {
 
     private val _drinksLiveData = MutableLiveData<List<MyDrinkItem>>()
     val drinksLiveData: LiveData<List<MyDrinkItem>> = _drinksLiveData
@@ -17,5 +19,11 @@ class MyDrinksViewModel(drinkRepository: DrinkRepository): ViewModel() {
         drinkRepository.getDrinks().onEach { drinkList ->
             _drinksLiveData.postValue(drinkList.map { it.toDrinkItem() })
         }.launchIn(viewModelScope)
+    }
+
+    fun deleteDrink(drinkId: Int) {
+        viewModelScope.launch(Dispatchers.IO) {
+            drinkRepository.delete(drinkId)
+        }
     }
 }

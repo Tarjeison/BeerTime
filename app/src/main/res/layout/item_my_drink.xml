@@ -43,6 +43,7 @@
         tools:text="4.8%, 0.5L" />
 
     <ImageView
+        android:id="@+id/ivDelete"
         android:layout_width="22dp"
         android:layout_height="22dp"
         android:layout_margin="@dimen/margin_small"
