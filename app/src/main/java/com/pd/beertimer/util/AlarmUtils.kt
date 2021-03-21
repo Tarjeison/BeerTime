@@ -9,6 +9,7 @@ import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import com.pd.beertimer.NotificationBroadcast
+import com.pd.beertimer.R
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -26,8 +27,14 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
             val millisTriggerTime =
                 alarmTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
+            val alarmMessage = if (i == aManagers.lastIndex) {
+                getString(R.string.notification_last)
+            } else {
+                getString(R.string.notification_text)
+            }
+
             val alarmIntent = Intent(baseContext, NotificationBroadcast::class.java).let { intent ->
-                intent.putExtra("NOT", "WOOOW")
+                intent.putExtra(INTENT_EXTRA_NOTIFICATION_MESSAGE, alarmMessage)
                 PendingIntent.getBroadcast(baseContext, millisTriggerTime.toInt(), intent, 0)
             }
 

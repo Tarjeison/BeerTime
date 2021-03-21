@@ -27,6 +27,9 @@ data class DrinkingCalculator(
         Gender.FEMALE -> 0.55
     }
 
+    // Two intervals are added (startTime-peakTime) and (peakTime-endTime). endTime is added to the
+    // end as it is used to generate notification to that it's time to go home
+
     fun calculateDrinkingTimes(): MutableList<LocalDateTime> {
 
         val startTime = LocalDateTime.now()
@@ -36,6 +39,8 @@ data class DrinkingCalculator(
         if (Duration.between(peakTime, endTime).toMinutes() > 30F) {
             drinkingTimes.addAll(calculateDrinkInterval(peakTime, endTime, 0F))
         }
+
+        drinkingTimes.add(endTime)
 
         return drinkingTimes
     }
@@ -76,13 +81,6 @@ data class DrinkingCalculator(
                 )
             }
         }
-        val lastDateTime = endTime
-        bacEstimations.add(
-            Pair(
-                calculateBac(Duration.between(startTime, lastDateTime), drinkingTimes.size).toPermille(),
-                lastDateTime
-            )
-        )
         return bacEstimations
     }
 

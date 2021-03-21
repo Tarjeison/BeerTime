@@ -80,4 +80,5 @@
     <string name="add_drink_to_weak">Are drinks really drinks if they\'re under 2%?</string>
     <string name="add_drink_volume_too_low">What\'s this volume? A baby shot? Please have your drink larger than 0.02L</string>
     <string name="add_drink_volume_too_high">Whao, take it easy. Drinks over 1L is too much for this app to handle.</string>
+    <string name="notification_last">In a sober state of mind, this is when you wanted to end your night! Time to go home?</string>
 </resources>

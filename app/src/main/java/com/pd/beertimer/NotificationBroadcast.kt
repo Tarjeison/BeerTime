@@ -7,6 +7,7 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.pd.beertimer.util.CHANNEL_ID
+import com.pd.beertimer.util.INTENT_EXTRA_NOTIFICATION_MESSAGE
 import com.pd.beertimer.util.NOTIFICATION_ID
 
 class NotificationBroadcast : BroadcastReceiver() {
@@ -22,7 +23,10 @@ class NotificationBroadcast : BroadcastReceiver() {
             val builder = NotificationCompat.Builder(it, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_beer)
                 .setContentTitle(it.getText(R.string.notification_title))
-                .setContentText(it.getString(R.string.notification_text))
+                .setContentText(
+                    p1?.extras?.getString(INTENT_EXTRA_NOTIFICATION_MESSAGE)
+                        ?: it.getString(R.string.notification_text)
+                )
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setWhen(System.currentTimeMillis())
                 .setContentIntent(pendingIntent)
