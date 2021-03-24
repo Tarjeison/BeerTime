@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
-            android:max="20"
+            android:max="15"
             android:thumbTint="@color/colorGreen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -51,9 +51,9 @@
             style="@style/TodoStyleTextLarge"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/margin_medium"
             app:layout_constraintEnd_toEndOf="@id/sbBloodLevel"
-            app:layout_constraintStart_toEndOf="@id/tvBloodLevel"
-            app:layout_constraintTop_toBottomOf="@id/sbBloodLevel"
+            app:layout_constraintBottom_toTopOf="@id/sbBloodLevel"
             tools:text="0.6%" />
 
         <ImageView
@@ -64,7 +64,7 @@
             android:src="@drawable/ic_hourglass"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tvBloodLevelValue"
+            app:layout_constraintTop_toBottomOf="@id/tvBloodLevel"
             tools:ignore="ContentDescription" />
 
         <SeekBar
@@ -97,8 +97,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/sbHours"
-            app:layout_constraintStart_toEndOf="@id/tvHours"
-            app:layout_constraintTop_toBottomOf="@id/sbHours"
+            android:layout_marginEnd="@dimen/margin_medium"
+            app:layout_constraintBottom_toTopOf="@id/sbHours"
             tools:text="12h" />
 
         <SeekBar
@@ -133,8 +133,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/sbPeak"
-            app:layout_constraintStart_toEndOf="@id/tvPeak"
-            app:layout_constraintTop_toBottomOf="@id/sbPeak"
+            android:layout_marginEnd="@dimen/margin_medium"
+            app:layout_constraintBottom_toTopOf="@id/sbPeak"
             tools:text="12h" />
 
 

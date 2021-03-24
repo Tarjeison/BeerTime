@@ -31,7 +31,7 @@
     <string name="select_hours_to_drink">How long will you be drinking?</string>
     <string name="profile_blank_age">Age field cannot be empty</string>
     <string name="profile_blank_weight">Weight field cannt be empty</string>
-    <string name="blood_alcohol_level">Blood alcohol content</string>
+    <string name="blood_alcohol_level">Wanted blood alcohol content (BAC)</string>
     <string name="error_drinking_not_started">Start a drinking sessions in the \"Home\" page</string>
     <string name="error_no_user_profile_found">An error occurred getting your user profile. Try setting it in the \"Profile\" page.</string>
     <string name="error_startdrinking_wanted_level_0">You\'ll have to set the blood level to something else than one to drink…</string>
@@ -50,7 +50,7 @@
 
     <string name="action_info">Info</string>
     <string name="info_what_is_bac_title">What is Blood Alcohol Content (BAC)?</string>
-    <string name="info_what_is_bac_text">BAC is a measurement of the alcohol percentage present in 100mL of blood. A BAC of 0.10% indicates that a person has 0.10g per 100mL of blood. BAC is usually measured in percent or permille depening on the country. This app uses percent and 0.1% = 1‰. \n \n https://en.wikipedia.org/wiki/Blood_alcohol_content</string>
+    <string name="info_what_is_bac_text">BAC is a measurement of the alcohol percentage present in 100mL of blood. A BAC of 0.10% indicates that a person has 0.10g per 100mL of blood. BAC is usually measured in percent or permille depening on the country. This app uses permille and 0.1% = 1‰. \n \n https://en.wikipedia.org/wiki/Blood_alcohol_content</string>
     <string name="info_how_calculator_title">How does the calculator work?</string>
     <string name="info_how_calculator_text">The number of grams of alcohol needed to achieve a certain blood alcohol content (BAC) can be calculated by using ones biological gender and weight. This app uses the Widmark-Forumla as the basis for the computation, solving for the number of units needed based on wanted BAC and estimated time. \n\n This gives the following equation:\n Needed Grams = (BAC + 0.015*Hours)*(Weight*GenderConstant) \n The amount of alcohol in your selected unit will then be used to see how many units will give the closest value, below or equal, to the grams calculated in the formula above. \n\n https://www.wikihow.com/Calculate-Blood-Alcohol-Content-(Widmark-Formula)</string>
     <string name="info_custom_drinks_title">Can I add my favorite drinks to the app?</string>
@@ -62,7 +62,7 @@
     <string name="startdrinking_what_will_you_drink">What will you be drinking?</string>
     <string name="timer">Timer</string>
     <string name="countdown_estimated_bac">Estimated BAC during your night</string>
-    <string name="startdrinking_peak_time">Wanted BAC will be reached at</string>
+    <string name="startdrinking_peak_time">When do you want to reach your BAC target?</string>
     <string name="stop_drinking">Stop drinking</string>
     <string name="countdown_stopdrinking_toast">You will lose your current progress and all alarms will be deleted</string>
     <string name="me_drinks">My drinks</string>
@@ -81,4 +81,6 @@
     <string name="add_drink_volume_too_low">What\'s this volume? A baby shot? Please have your drink larger than 0.02L</string>
     <string name="add_drink_volume_too_high">Whao, take it easy. Drinks over 1L is too much for this app to handle.</string>
     <string name="notification_last">Time to go home?</string>
+    <string name="info_how_does_this_app_work">How does this app work?</string>
+    <string name="info_how_does_this_app_work_text">Before you start drinking you will have to select the following values: \n\n - Wanted blood alcohol content (BAC) \n\n - How long you will be drinking \n\n - When you want to reach you\'r BAC target \n\n - The drink you\'re planning to drink.  \n\nFor instance, say you\'re planning to drink for 7 hours and reach a BAC of 1‰. You might also want to reach your BAC target before the 7 hours has gone, no problem; just set the time for when you want to reach your BAC taget to e.g. 3 hours. \n\nSelecting a drink might seem difficult, what if you want to switch between different drinks? Well, honestly, it doesn\'t matter that much. The calculation made based on the grams of alcohol in your selected drink, so e.g. if you swap a small beer with a glass of wine you probably won\'t be that of (unless your glass fits a bottle of wine that is). You could find a \"standard\" unit for your country and select that as your drink for the night. \n\nEnjoy!</string>
 </resources>

@@ -13,6 +13,11 @@ class InfoViewModel(applicationContext: Context): ViewModel() {
 
     private val infoDtos = listOf(
         InfoDto(
+            title = applicationContext.getString(R.string.info_how_does_this_app_work),
+            infoText = applicationContext.getString(R.string.info_how_does_this_app_work_text),
+            iconId = R.drawable.ic_superhero_pineapple
+        ),
+        InfoDto(
             title = applicationContext.getString(R.string.info_what_is_bac_title),
             infoText = applicationContext.getString(R.string.info_what_is_bac_text),
             iconId = R.drawable.ic_pineapple_thinking
