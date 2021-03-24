@@ -19,8 +19,10 @@
 }
 -keepattributes InnerClasses,Signature,*Annotation*,EnclosingMethod
 -keepclasseswithmembers class * {
-    @com.squareup.moshi.* <methods>;
+    @com.fasterxml.jackson.* <methods>;
 }
+-dontwarn kotlin.reflect.**
+-keep class kotlin.reflect.* { *; }
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
