@@ -1,5 +1,6 @@
 package com.pd.beertimer.util
 
+import androidx.annotation.Keep
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
@@ -11,6 +12,7 @@ import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
+@Keep
 data class DrinkingCalculator(
     val userProfile: UserProfile,
     val wantedBloodLevel: Float,
