@@ -1,7 +1,9 @@
 package com.pd.beertimer.models
 
 import com.pd.beertimer.room.Drink
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class AlcoholUnit(
     val name: String,
     val volume: Float,

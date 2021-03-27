@@ -1,24 +1,20 @@
 package com.pd.beertimer.util
 
-import com.fasterxml.jackson.databind.annotation.JsonDeserialize
-import com.fasterxml.jackson.databind.annotation.JsonSerialize
-import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer
-import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer
 import com.pd.beertimer.models.AlcoholUnit
 import com.pd.beertimer.models.Gender
 import com.pd.beertimer.models.UserProfile
+import kotlinx.serialization.Serializable
 import java.time.Duration
 import java.time.LocalDateTime
 import kotlin.math.roundToInt
 
+@Serializable
 data class DrinkingCalculator(
     val userProfile: UserProfile,
     val wantedBloodLevel: Float,
-    @JsonSerialize(using = LocalDateTimeSerializer::class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
+    @Serializable(with = LocalDateTimeSerializer::class)
     val peakTime: LocalDateTime,
-    @JsonSerialize(using = LocalDateTimeSerializer::class)
-    @JsonDeserialize(using = LocalDateTimeDeserializer::class)
+    @Serializable(with = LocalDateTimeSerializer::class)
     val endTime: LocalDateTime,
     val preferredUnit: AlcoholUnit
 ) {

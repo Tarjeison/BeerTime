@@ -4,6 +4,8 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'kotlinx-serialization'
+
 apply plugin: 'kotlin-android-extensions'
 
 apply plugin: "androidx.navigation.safeargs.kotlin"
@@ -11,8 +13,6 @@ apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.gms.google-services'
 
 apply plugin: 'com.google.firebase.crashlytics'
-
-
 
 android {
     compileSdkVersion 30
@@ -78,9 +78,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-analytics-ktx:18.0.2'
     implementation 'com.google.firebase:firebase-crashlytics-ktx:17.4.0'
 
-    // Jackson
-    implementation "com.fasterxml.jackson.module:jackson-module-kotlin:2.11.2"
-    implementation "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.9.4"
+    // Serilililiz
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0'
 
     // Graph
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'

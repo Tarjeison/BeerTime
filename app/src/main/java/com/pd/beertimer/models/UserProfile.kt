@@ -1,7 +1,8 @@
 package com.pd.beertimer.models
 
-import java.lang.Exception
+import kotlinx.serialization.Serializable
 
+@Serializable
 data class UserProfile(var age: Int,
                        var gender: Gender,
                        var weight: Int) {

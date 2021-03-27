@@ -5,11 +5,11 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import com.fasterxml.jackson.module.kotlin.readValue
 import com.pd.beertimer.NotificationBroadcast
 import com.pd.beertimer.R
+import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import java.time.LocalDateTime
 import java.time.ZoneId
 
@@ -113,8 +113,7 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
         val sharedPref =
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
         sharedPref.getString(SHARED_PREF_DRINKING_CALCULATOR, null)?.let {
-            return jacksonObjectMapper().registerModule(JavaTimeModule())
-                .readValue<DrinkingCalculator>(it)
+            return Json.decodeFromString<DrinkingCalculator>(it)
         }
         return null
     }
@@ -132,14 +131,11 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
         drinkingTimes: List<LocalDateTime>,
         calculator: DrinkingCalculator
     ) {
-        val mapper = jacksonObjectMapper()
-        mapper.registerModule(JavaTimeModule())
-        val calculatorAsJson = jacksonObjectMapper().writeValueAsString(calculator)
         val sharedPref =
             baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
         with(sharedPref.edit()) {
             putString(SHARED_PREF_DRINKING_TIMES, drinkingTimes.toString())
-            putString(SHARED_PREF_DRINKING_CALCULATOR, calculatorAsJson)
+            putString(SHARED_PREF_DRINKING_CALCULATOR, Json.encodeToString(calculator))
         }.apply()
     }
 }
