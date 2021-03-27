@@ -20,8 +20,8 @@ android {
         applicationId "com.pd.beertimer"
         minSdkVersion 22
         targetSdkVersion 30
-        versionCode 13
-        versionName "3.0.10"
+        versionCode 14
+        versionName "3.0.11"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         javaCompileOptions {
             annotationProcessorOptions {
