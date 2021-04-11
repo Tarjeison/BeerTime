@@ -36,6 +36,11 @@ class InfoViewModel(applicationContext: Context): ViewModel() {
             title = applicationContext.getString(R.string.info_why_not_more_title),
             infoText = applicationContext.getString(R.string.info_why_not_more_text),
             iconId = R.drawable.ic_pineapple_confused
+        ),
+        InfoDto(
+            title = applicationContext.getString(R.string.where_does_icons_come_from),
+            infoText = applicationContext.getString(R.string.where_does_icons_come_from_info),
+            iconId = R.drawable.ic_pineapple_sunbathing
         )
     )
 }
