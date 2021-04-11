@@ -12,11 +12,10 @@ class ProfileStorage(private val appContext: Context) {
 
     fun getUserProfile(): UserProfile? {
         return try {
-            val age = String(appContext.openFileInput(ProfileViewModel.FILE_AGE).readBytes(), Charset.defaultCharset()).toInt()
             val weight = String(appContext.openFileInput(ProfileViewModel.FILE_WEIGHT).readBytes(), Charset.defaultCharset()).toInt()
             val gender = Gender.stringToGender(String(appContext.openFileInput(ProfileViewModel.FILE_GENDER).readBytes(),
                 Charset.defaultCharset()))
-            UserProfile(age, gender, weight)
+            UserProfile(gender, weight)
         } catch (error: FileNotFoundException) {
             Log.d(ProfileViewModel.MODEL_TAG, error.message ?: "UserProfileLoadError")
             null
@@ -24,10 +23,6 @@ class ProfileStorage(private val appContext: Context) {
     }
 
     fun saveUserProfile(userProfile: UserProfile) {
-        appContext.openFileOutput(ProfileViewModel.FILE_AGE, Context.MODE_PRIVATE).use {
-            it.write(userProfile.age.toString().toByteArray(Charset.defaultCharset()))
-        }
-
         appContext.openFileOutput(ProfileViewModel.FILE_GENDER, Context.MODE_PRIVATE).use {
             it.write(userProfile.gender.toString().toByteArray(Charset.defaultCharset()))
         }

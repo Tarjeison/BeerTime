@@ -3,17 +3,8 @@ package com.pd.beertimer.models
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class UserProfile(var age: Int,
-                       var gender: Gender,
-                       var weight: Int) {
-    fun validAge(): Boolean {
-        return age >= 18
-    }
-
-    fun validWeight(): Boolean {
-        return weight >= 40
-    }
-}
+data class UserProfile(var gender: Gender,
+                       var weight: Int)
 
 enum class Gender {
     MALE,
