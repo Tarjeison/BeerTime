@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">BeerTimer</string>
+    <string name="app_name">BeerTime</string>
     <string name="action_settings">Settings</string>
     <string name="age">Age</string>
     <string name="gender">Gender</string>
@@ -83,4 +83,6 @@
     <string name="notification_last">Time to go home?</string>
     <string name="info_how_does_this_app_work">How does this app work?</string>
     <string name="info_how_does_this_app_work_text">Before you start drinking you will have to select the following values: \n\n - Wanted blood alcohol content (BAC) \n\n - How long you will be drinking \n\n - When you want to reach your BAC target \n\n - The drink you\'re planning to drink.  \n\nFor instance, say you\'re planning to drink for 7 hours and reach a BAC of 1‰. You might also want to reach your BAC target before the 7 hours has gone, no problem; just set the time for when you want to reach your BAC taget to e.g. 3 hours. \n\nSelecting a drink might seem difficult, what if you want to switch between different drinks? Well, honestly, it doesn\'t matter that much. The calculation made based on the grams of alcohol in your selected drink, so e.g. if you swap a small beer with a glass of wine you probably won\'t be that of (unless your glass fits a bottle of wine that is). You could find a \"standard\" unit for your country and select that as your drink for the night. \n\nEnjoy!</string>
+    <string name="where_does_icons_come_from">I really like your icons! Did you make them yourself?</string>
+    <string name="where_does_icons_come_from_info">"Me too, and I wish I did make them. However, I'm just a developer and I can't do everything. The icons are made by Freepick from www.flaticon.com"</string>
 </resources>

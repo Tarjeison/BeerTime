@@ -5,7 +5,7 @@
 
     <application
         android:name="com.pd.beertimer.BeerTimerApplication"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@drawable/ic_pineapple_smile"
         android:label="@string/app_name"
         android:allowBackup="true"
         android:roundIcon="@mipmap/ic_launcher_round"
