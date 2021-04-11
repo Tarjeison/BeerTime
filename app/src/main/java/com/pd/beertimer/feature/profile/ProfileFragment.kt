@@ -6,10 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import com.google.android.material.snackbar.Snackbar
 import com.pd.beertimer.R
 import com.pd.beertimer.models.Gender
 import com.pd.beertimer.models.UserProfile
+import com.pd.beertimer.util.ToastHelper
 import kotlinx.android.synthetic.main.fragment_profile.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -70,7 +70,12 @@ class ProfileFragment : Fragment() {
                 )
                 if (isValidUserProfile(profile)) {
                     profileViewModel.saveUserProfile(profile)
-                    Snackbar.make(clProfile, R.string.profile_updated, Snackbar.LENGTH_SHORT).show()
+                    ToastHelper.createToast(
+                        layoutInflater,
+                        context,
+                        R.string.profile_updated,
+                        R.drawable.ic_superhero_pineapple
+                    )
                 }
             }
 
@@ -79,13 +84,28 @@ class ProfileFragment : Fragment() {
 
     private fun fieldsAreSet(): Boolean {
         return if (!(ibMale.isSelected || ibFemale.isSelected)) {
-            Snackbar.make(clProfile, R.string.profile_error_no_gender, Snackbar.LENGTH_LONG).show()
+            ToastHelper.createToast(
+                layoutInflater,
+                context,
+                R.string.profile_error_no_gender,
+                R.drawable.ic_pineapple_confused
+            )
             false
         } else if (etAge.text.isEmpty()) {
-            Snackbar.make(clProfile, R.string.profile_blank_age, Snackbar.LENGTH_LONG).show()
+            ToastHelper.createToast(
+                layoutInflater,
+                context,
+                R.string.profile_blank_age,
+                R.drawable.ic_pineapple_confused
+            )
             false
         } else if (etWeight.text.isEmpty()) {
-            Snackbar.make(clProfile, R.string.profile_blank_weight, Snackbar.LENGTH_LONG).show()
+            ToastHelper.createToast(
+                layoutInflater,
+                context,
+                R.string.profile_blank_weight,
+                R.drawable.ic_pineapple_confused
+            )
             false
         } else {
             true
@@ -94,10 +114,20 @@ class ProfileFragment : Fragment() {
 
     private fun isValidUserProfile(userProfile: UserProfile): Boolean {
         return if (!userProfile.validAge()) {
-            Snackbar.make(clProfile, R.string.profile_error_age, Snackbar.LENGTH_LONG).show()
+            ToastHelper.createToast(
+                layoutInflater,
+                context,
+                R.string.profile_error_age,
+                R.drawable.ic_pineapple_confused
+            )
             false
         } else if (!userProfile.validWeight()) {
-            Snackbar.make(clProfile, R.string.profile_error_weight, Snackbar.LENGTH_LONG).show()
+            ToastHelper.createToast(
+                layoutInflater,
+                context,
+                R.string.profile_error_weight,
+                R.drawable.ic_pineapple_confused
+            )
             false
         } else {
             true

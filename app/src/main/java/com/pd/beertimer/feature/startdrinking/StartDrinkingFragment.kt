@@ -4,11 +4,9 @@ import android.app.AlertDialog
 import android.os.Bundle
 import android.view.View
 import android.widget.SeekBar
-import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
 import com.pd.beertimer.BuildConfig
@@ -110,19 +108,16 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
         })
     }
 
-    private fun createSnackBar(@StringRes resId: Int) {
-        Snackbar.make(
-            binding.clStartDrinking,
-            resId,
-            Snackbar.LENGTH_LONG
-        ).show()
-    }
-
     private fun initStartDrinkingButton() {
         binding.bStartDrinking.setOnClickListener {
             val selectedUnit = getAlcoholAdapter().getSelectedUnit()
             if (selectedUnit == null) {
-                createSnackBar(R.string.error_startdrinking_select_unit)
+                ToastHelper.createToast(
+                    layoutInflater,
+                    context,
+                    R.string.error_startdrinking_select_unit,
+                    R.drawable.ic_pineapple_confused
+                )
                 return@setOnClickListener
             }
             val calculationResult =
@@ -137,7 +132,11 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
                     }
                 }
                 is Failure -> {
-                    createSnackBar(calculationResult.reason)
+                    ToastHelper.createToast(
+                        layoutInflater,
+                        context,
+                        calculationResult.reason,
+                        R.drawable.ic_pineapple_confused)
                 }
             }
         }
@@ -147,7 +146,12 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
         context?.let {
             val drinkingTimes = calculator.calculateDrinkingTimes()
             if (drinkingTimes.isEmpty()) {
-                createSnackBar(R.string.startdrinking_nothing_to_drink)
+                ToastHelper.createToast(
+                    layoutInflater,
+                    context,
+                    R.string.startdrinking_nothing_to_drink,
+                    R.drawable.ic_pineapple_confused
+                )
                 return
             }
             val alarmUtils = AlarmUtils(it)

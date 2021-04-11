@@ -30,11 +30,11 @@
     <string name="select_alcohol_level">Select wanted blood alcohol level (%)</string>
     <string name="select_hours_to_drink">How long will you be drinking?</string>
     <string name="profile_blank_age">Age field cannot be empty</string>
-    <string name="profile_blank_weight">Weight field cannt be empty</string>
+    <string name="profile_blank_weight">Weight field cannot be empty</string>
     <string name="blood_alcohol_level">Wanted blood alcohol content (BAC)</string>
     <string name="error_drinking_not_started">Start a drinking sessions in the \"Home\" page</string>
     <string name="error_no_user_profile_found">An error occurred getting your user profile. Try setting it in the \"Profile\" page.</string>
-    <string name="error_startdrinking_wanted_level_0">You\'ll have to set the blood level to something else than one to drink…</string>
+    <string name="error_startdrinking_wanted_level_0">You have to set your wanted blood level before starting</string>
     <string name="error_startdrinking_hours_drinking_0">You can\'t possibly drink that in 0 hours?!</string>
     <string name="error_startdrinking_select_unit">You cannot possibly drink without selecting an alcohol type?</string>
     <string name="startdrinking_are_you_sure">Are you sure?</string>
