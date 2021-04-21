@@ -38,11 +38,19 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
                 PendingIntent.getBroadcast(baseContext, millisTriggerTime.toInt(), intent, 0)
             }
 
-            aManagers[i].setExact(
-                AlarmManager.RTC_WAKEUP,
-                alarmTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                alarmIntent
-            )
+            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
+                aManagers[i].setExactAndAllowWhileIdle(
+                    AlarmManager.RTC_WAKEUP,
+                    alarmTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                    alarmIntent
+                )
+            } else {
+                aManagers[i].setExact(
+                    AlarmManager.RTC_WAKEUP,
+                    alarmTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
+                    alarmIntent
+                )
+            }
         }
     }
 
