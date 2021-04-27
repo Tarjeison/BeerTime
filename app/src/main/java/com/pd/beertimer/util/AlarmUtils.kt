@@ -6,7 +6,6 @@ import android.content.Context
 import android.content.ContextWrapper
 import android.content.Intent
 import com.pd.beertimer.NotificationBroadcast
-import com.pd.beertimer.R
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -26,19 +25,13 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
         // Drop first time as it is when the user started drinking
         localDateTimes.getOrNull(1)?.let {
             val millisTriggerTime = it.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-            val alarmMessage = if (localDateTimes.indexOf(it) == localDateTimes.lastIndex) {
-                getString(R.string.notification_last)
-            } else {
-                getString(R.string.notification_text)
-            }
-            scheduleAlarmClock(millisTriggerTime, alarmMessage)
+            scheduleAlarmClock(millisTriggerTime)
         }
     }
 
-    fun scheduleAlarmClock(triggerTimeInMs: Long, message: String) {
+    fun scheduleAlarmClock(triggerTimeInMs: Long) {
         val am = baseContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
         val alarmIntent = Intent(baseContext, NotificationBroadcast::class.java).let { intent ->
-            intent.putExtra(INTENT_EXTRA_NOTIFICATION_MESSAGE, message)
             PendingIntent.getBroadcast(
                 baseContext, REQUEST_CODE,
                 intent,

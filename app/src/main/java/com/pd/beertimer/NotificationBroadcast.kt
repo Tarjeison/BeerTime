@@ -8,7 +8,6 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.CHANNEL_ID
-import com.pd.beertimer.util.INTENT_EXTRA_NOTIFICATION_MESSAGE
 import com.pd.beertimer.util.NOTIFICATION_ID
 import java.time.ZoneId
 
@@ -21,18 +20,15 @@ class NotificationBroadcast : BroadcastReceiver() {
             }
 
             val alarmUtils = AlarmUtils(context)
+            var isLastAlarm = true
             alarmUtils.getNextDrinkingTimeFromSharedPref()?.let { nextDrinkingTimeAndLastIndicator ->
-                val message = if (nextDrinkingTimeAndLastIndicator.second) {
-                    context.getString(R.string.notification_last)
-                } else {
-                    context.getString(R.string.notification_text)
-                }
+                isLastAlarm = false
                 val triggerTimeInMs =
                     nextDrinkingTimeAndLastIndicator.first
                         .atZone(ZoneId.systemDefault())
                         .toInstant()
                         .toEpochMilli()
-                alarmUtils.scheduleAlarmClock(triggerTimeInMs, message)
+                alarmUtils.scheduleAlarmClock(triggerTimeInMs)
             }
             val pendingIntent: PendingIntent = PendingIntent.getActivity(it, 0, intent, 0)
 
@@ -40,8 +36,12 @@ class NotificationBroadcast : BroadcastReceiver() {
                 .setSmallIcon(R.drawable.ic_beer)
                 .setContentTitle(it.getText(R.string.notification_title))
                 .setContentText(
-                    p1?.extras?.getString(INTENT_EXTRA_NOTIFICATION_MESSAGE)
-                        ?: it.getString(R.string.notification_text)
+                    // Setting info in PendingIntent was a hassle, so this is a lazy implementation
+                    if (isLastAlarm) {
+                        it.getString(R.string.notification_last)
+                    } else {
+                        it.getString(R.string.notification_text)
+                    }
                 )
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                 .setWhen(System.currentTimeMillis())

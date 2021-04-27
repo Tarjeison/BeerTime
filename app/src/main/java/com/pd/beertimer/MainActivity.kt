@@ -13,10 +13,12 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
 import androidx.navigation.findNavController
+import com.pd.beertimer.feature.welcome.WelcomeFragment
 import com.pd.beertimer.room.Drink
 import com.pd.beertimer.room.DrinkDao
 import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.CHANNEL_ID
+import com.pd.beertimer.util.SHARED_PREF_FIRST_TIME_LAUNCH
 import com.pd.beertimer.util.SHARED_PREF_ROOM_INIT
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.coroutines.GlobalScope
@@ -40,12 +42,21 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         createNotificationChannel()
         setupToolbar()
         initRoom()
-
-
+        checkForFirstTimeLaunch()
         if (savedInstanceState == null) {
             if (!AlarmUtils(this).getExistingDrinkTimesFromSharedPref().isNullOrEmpty()) {
                 findNavController(R.id.nav_host_fragment).navigate(R.id.action_global_countDownFragment)
             }
+        }
+    }
+
+    private fun checkForFirstTimeLaunch() {
+        if (sharedPreferences.getBoolean(SHARED_PREF_FIRST_TIME_LAUNCH, true)) {
+            sharedPreferences.edit().putBoolean(SHARED_PREF_FIRST_TIME_LAUNCH, false).apply()
+            supportFragmentManager.beginTransaction().apply {
+                replace(R.id.activityFragmentContainer, WelcomeFragment())
+                addToBackStack(null)
+            }.commit()
         }
     }
 
@@ -56,6 +67,7 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
             menu.findItem(R.id.action_info).iconTintList = this.getColorStateList(R.color.selector)
         }
         this.menu = menu
+        if (supportFragmentManager.fragments.isNotEmpty()) menu.findItem(R.id.action_info)?.isVisible = false
         return true
     }
 
@@ -81,6 +93,10 @@ class MainActivity : AppCompatActivity(), NavController.OnDestinationChangedList
         super.onStop()
         findNavController(R.id.nav_host_fragment).removeOnDestinationChangedListener(this)
 
+    }
+
+    fun onWelcomeScreenDismissed() {
+        menu?.findItem(R.id.action_info)?.isVisible = true
     }
 
     private fun setupToolbar() {

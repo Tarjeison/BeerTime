@@ -71,4 +71,8 @@
         android:name="com.pd.beertimer.feature.drinks.AddDrinkFragment"
         android:label="AddDrinkFragment"
         tools:layout="@layout/fragment_add_drink"/>
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="com.pd.beertimer.feature.welcome.WelcomeFragment"
+        android:label="WelcomeFragment" /><action android:id="@+id/action_global_welcomeFragment" app:destination="@id/welcomeFragment"/>
 </navigation>
