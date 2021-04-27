@@ -27,12 +27,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
+            android:padding="@dimen/margin_small"
             android:max="15"
             android:thumbTint="@color/colorGreen"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/ivBloodLevel"
-            tools:progress="50" />
+            tools:progress="12" />
 
         <TextView
             android:id="@+id/tvBloodLevel"
@@ -70,6 +71,7 @@
         <SeekBar
             android:id="@+id/sbHours"
             android:layout_width="match_parent"
+            android:padding="@dimen/margin_small"
             android:layout_height="wrap_content"
             android:layout_margin="@dimen/margin_medium"
             android:max="720"
@@ -108,6 +110,7 @@
             android:layout_marginStart="@dimen/margin_medium"
             android:layout_marginTop="@dimen/margin_large"
             android:layout_marginEnd="@dimen/margin_medium"
+            android:padding="@dimen/margin_small"
             android:max="720"
             android:thumbTint="@color/colorGreen"
             app:layout_constraintEnd_toEndOf="parent"
