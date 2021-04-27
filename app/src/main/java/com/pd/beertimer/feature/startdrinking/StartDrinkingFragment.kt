@@ -155,8 +155,8 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
                 return
             }
             val alarmUtils = AlarmUtils(it)
-            alarmUtils.deleteExistingAlarms()
-            alarmUtils.setAlarmsAndStoreTimesToSharedPref(
+            alarmUtils.deleteNextAlarm()
+            alarmUtils.setFirstAlarmAndStoreTimesToSharedPref(
                 drinkingTimes,
                 calculator
             )
@@ -180,6 +180,6 @@ class StartDrinkingFragment : Fragment(R.layout.fragment_startdrinking) {
     }
 
     private fun isDrinking(): Boolean {
-        return alarmUtils.getDrinkingCalculatorSharedPref() != null
+        return alarmUtils.getExistingDrinkTimesFromSharedPref() != null
     }
 }

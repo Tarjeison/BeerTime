@@ -13,68 +13,54 @@ import kotlinx.serialization.json.Json
 import java.time.LocalDateTime
 import java.time.ZoneId
 
+private const val REQUEST_CODE: Int = 1337727272
+
 class AlarmUtils(context: Context) : ContextWrapper(context) {
 
-    fun setAlarmsAndStoreTimesToSharedPref(
+    fun setFirstAlarmAndStoreTimesToSharedPref(
         localDateTimes: List<LocalDateTime>,
         calculator: DrinkingCalculator
     ) {
         saveDrinkingValuesToSharedPref(localDateTimes, calculator)
-        val alarmTimes = localDateTimes.slice(1..localDateTimes.lastIndex)
-        val aManagers =
-            List(alarmTimes.size) { baseContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager }
-        for (i in aManagers.indices) {
-            val millisTriggerTime =
-                alarmTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
 
-            val alarmMessage = if (i == aManagers.lastIndex) {
+        // Drop first time as it is when the user started drinking
+        localDateTimes.getOrNull(1)?.let {
+            val millisTriggerTime = it.atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
+            val alarmMessage = if (localDateTimes.indexOf(it) == localDateTimes.lastIndex) {
                 getString(R.string.notification_last)
             } else {
                 getString(R.string.notification_text)
             }
-
-            val alarmIntent = Intent(baseContext, NotificationBroadcast::class.java).let { intent ->
-                intent.putExtra(INTENT_EXTRA_NOTIFICATION_MESSAGE, alarmMessage)
-                PendingIntent.getBroadcast(baseContext, millisTriggerTime.toInt(), intent, 0)
-            }
-
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.M) {
-                aManagers[i].setExactAndAllowWhileIdle(
-                    AlarmManager.RTC_WAKEUP,
-                    alarmTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                    alarmIntent
-                )
-            } else {
-                aManagers[i].setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    alarmTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli(),
-                    alarmIntent
-                )
-            }
+            scheduleAlarmClock(millisTriggerTime, alarmMessage)
         }
     }
 
-    fun deleteExistingAlarms(): Boolean {
-        val localDateTimes = getExistingDrinkTimesFromSharedPref() ?: return false
-        val aManagers =
-            List(localDateTimes.size) { baseContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager }
-        val now = LocalDateTime.now()
-        for (i in aManagers.indices) {
-            if (localDateTimes[i] > now) {
-                val millisTriggerTime =
-                    localDateTimes[i].atZone(ZoneId.systemDefault()).toInstant().toEpochMilli()
-                val alarmIntent =
-                    Intent(applicationContext, NotificationBroadcast::class.java).let { intent ->
-                        PendingIntent.getBroadcast(
-                            baseContext,
-                            millisTriggerTime.toInt(),
-                            intent,
-                            PendingIntent.FLAG_CANCEL_CURRENT
-                        )
-                    }
-                aManagers[i].cancel(alarmIntent)
-            }
+    fun scheduleAlarmClock(triggerTimeInMs: Long, message: String) {
+        val am = baseContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent = Intent(baseContext, NotificationBroadcast::class.java).let { intent ->
+            intent.putExtra(INTENT_EXTRA_NOTIFICATION_MESSAGE, message)
+            PendingIntent.getBroadcast(
+                baseContext, REQUEST_CODE,
+                intent,
+                0
+            )
         }
+        val alarmClockInfo = AlarmManager.AlarmClockInfo(triggerTimeInMs, alarmIntent)
+        am.setAlarmClock(alarmClockInfo, alarmIntent)
+    }
+
+    fun deleteNextAlarm(): Boolean {
+        val am = baseContext.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val alarmIntent =
+            Intent(applicationContext, NotificationBroadcast::class.java).let { intent ->
+                PendingIntent.getBroadcast(
+                    baseContext,
+                    REQUEST_CODE,
+                    intent,
+                    PendingIntent.FLAG_CANCEL_CURRENT
+                )
+            }
+        am.cancel(alarmIntent)
         clearDrinkingValuesSharedPref()
         return true
     }
@@ -97,25 +83,26 @@ class AlarmUtils(context: Context) : ContextWrapper(context) {
         return null
     }
 
-//    fun getCurrentlyDrinkingAlcoholUnitSharedPref(): AlcoholUnit? {
-//        val sharedPref =
-//            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-//        sharedPref.getString(SHARED_PREF_DRINKING_UNIT, null)?.let {
-//            return jacksonObjectMapper().readValue<AlcoholUnit>(it)
-//        }
-//        return null
-//    }
-//
-//    fun getWantedBloodLevelSharedPref(): Float? {
-//        val sharedPref =
-//            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
-//        sharedPref.getFloat(SHARED_PREF_DRINKING_WANTED_BLOOD_LEVEL, -1F).let {
-//            if (it != -1F) {
-//                return it
-//            }
-//        }
-//        return null
-//    }
+    fun getNextDrinkingTimeFromSharedPref(): Pair<LocalDateTime, Boolean>? {
+        val sharedPref =
+            baseContext.getSharedPreferences(SHARED_PREF_BEER_TIME, Context.MODE_PRIVATE)
+        sharedPref.getString(SHARED_PREF_DRINKING_TIMES, null)?.let { drinkingTimesFromSharedPref ->
+            var drinkingTimesString = drinkingTimesFromSharedPref.trim('[', ']')
+            if (drinkingTimesString.isEmpty()) return null
+            drinkingTimesString = drinkingTimesString.replace(" ", "")
+            val drinkingTimesStringArray = drinkingTimesString.split(",")
+            val drinkingLocalDateTimes = drinkingTimesStringArray.map { drinkingTimeString ->
+                LocalDateTime.parse(drinkingTimeString)
+            }
+            val currentTime = LocalDateTime.now().plusSeconds(10) // Give some leeway
+            val nextDrinkingTime =
+                drinkingLocalDateTimes.firstOrNull { it > currentTime } ?: return null
+            val isLast =
+                drinkingLocalDateTimes.indexOf(nextDrinkingTime) == drinkingLocalDateTimes.lastIndex
+            return Pair(nextDrinkingTime, isLast)
+        }
+        return null
+    }
 
     fun getDrinkingCalculatorSharedPref(): DrinkingCalculator? {
         val sharedPref =

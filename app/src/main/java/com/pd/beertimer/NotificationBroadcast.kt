@@ -6,9 +6,11 @@ import android.content.Context
 import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
+import com.pd.beertimer.util.AlarmUtils
 import com.pd.beertimer.util.CHANNEL_ID
 import com.pd.beertimer.util.INTENT_EXTRA_NOTIFICATION_MESSAGE
 import com.pd.beertimer.util.NOTIFICATION_ID
+import java.time.ZoneId
 
 class NotificationBroadcast : BroadcastReceiver() {
     override fun onReceive(context: Context?, p1: Intent?) {
@@ -18,6 +20,20 @@ class NotificationBroadcast : BroadcastReceiver() {
                 flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             }
 
+            val alarmUtils = AlarmUtils(context)
+            alarmUtils.getNextDrinkingTimeFromSharedPref()?.let { nextDrinkingTimeAndLastIndicator ->
+                val message = if (nextDrinkingTimeAndLastIndicator.second) {
+                    context.getString(R.string.notification_last)
+                } else {
+                    context.getString(R.string.notification_text)
+                }
+                val triggerTimeInMs =
+                    nextDrinkingTimeAndLastIndicator.first
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant()
+                        .toEpochMilli()
+                alarmUtils.scheduleAlarmClock(triggerTimeInMs, message)
+            }
             val pendingIntent: PendingIntent = PendingIntent.getActivity(it, 0, intent, 0)
 
             val builder = NotificationCompat.Builder(it, CHANNEL_ID)
