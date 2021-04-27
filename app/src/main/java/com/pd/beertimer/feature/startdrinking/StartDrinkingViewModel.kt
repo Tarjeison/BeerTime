@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.analytics.ktx.logEvent
+import com.pd.beertimer.BuildConfig
 import com.pd.beertimer.R
 import com.pd.beertimer.feature.drinks.DrinkRepository
 import com.pd.beertimer.models.AlcoholUnit
@@ -61,7 +62,8 @@ class StartDrinkingViewModel(
     }
 
     fun setFinishDrinkingInHoursMinutes(seekBarValue: Int) {
-        val hoursDrinking = (seekBarValue / 60) + 1
+        val minDrinkingTimeInHours = if (BuildConfig.DEBUG) 0 else 1
+        val hoursDrinking = (seekBarValue / 60) + minDrinkingTimeInHours
         var minutesDrinking = (seekBarValue - ((seekBarValue / 60) * 60) + (10 - seekBarValue%10))
         minutesDrinking -= LocalDateTime.now().minute % 10
         finishDrinkingInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
@@ -74,7 +76,8 @@ class StartDrinkingViewModel(
 
     fun setPeakTimeInHoursMinutes(seekBarValue: Int) {
         hasSetPeakTime = true
-        val hoursDrinking = (seekBarValue / 60) + 1
+        val minDrinkingTimeInHours = if (BuildConfig.DEBUG) 0 else 1
+        val hoursDrinking = (seekBarValue / 60) + minDrinkingTimeInHours
         var minutesDrinking = (seekBarValue - ((seekBarValue / 60) * 60)) + (10 - seekBarValue%10)
         minutesDrinking -= LocalDateTime.now().minute % 10
 
@@ -98,13 +101,13 @@ class StartDrinkingViewModel(
             return Failure(R.string.error_startdrinking_wanted_level_0)
         }
 
-        val selectedHoursDrinking = if (finishDrinkingInHoursMinutes.first != 0) {
+        val selectedHoursDrinking = if (finishDrinkingInHoursMinutes.first != 0 || BuildConfig.DEBUG) {
             finishDrinkingInHoursMinutes
         } else {
             return Failure(R.string.error_startdrinking_hours_drinking_0)
         }
 
-        val selectedPeakHour = if (peakInHoursMinutes.first != 0) {
+        val selectedPeakHour = if (peakInHoursMinutes.first != 0 || BuildConfig.DEBUG) {
             peakInHoursMinutes
         } else {
             return Failure(R.string.error_startdrinking_hours_drinking_0)
