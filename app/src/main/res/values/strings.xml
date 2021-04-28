@@ -86,6 +86,6 @@
     <string name="where_does_icons_come_from">I really like your icons! Did you make them yourself?</string>
     <string name="where_does_icons_come_from_info">"Me too, and I wish I did make them. However, I'm just a developer and I can't do everything. The icons are made by Freepick from www.flaticon.com"</string>
     <string name="welcome">Welcome!</string>
-    <string name="welcome_text">I guess I should have some legal stuff here? Anyway, the calculations made by this app will never be completely correct. Never use it before driving and other activities which should not be associated with intoxication.\n\nIf you\'re wondering how it works, check out the information page which can be found in the top right. You\'ll also need to set your weight and gender in the profile section before we begin, as it is required for the calculation. Enjoy!</string>
+    <string name="welcome_text">Thank you for installing the app!\n\nYou\'ll need to set your weight and gender in the profile section before we begin, as it is required for the calculation. If you\'re wondering how it works, check out the information page which can be found in the top right.\n\nDISCLAIMER: The calculations made by this app will never be completely correct. Never use it before driving and other activities which should not be associated with intoxication.</string>
     <string name="welcome_finish">Got it!</string>
 </resources>
