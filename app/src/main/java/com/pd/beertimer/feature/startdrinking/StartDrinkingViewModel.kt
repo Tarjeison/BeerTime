@@ -1,6 +1,6 @@
 package com.pd.beertimer.feature.startdrinking
 
-import android.content.Context
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -16,10 +16,9 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import java.time.LocalDateTime
-import kotlin.math.min
 
 class StartDrinkingViewModel(
-    private val applicationContext: Context,
+    private val applicationContext: Application,
     private val drinkRepository: DrinkRepository,
     private val profileStorage: ProfileStorage,
     private val firebaseAnalytics: FirebaseAnalytics
@@ -69,7 +68,7 @@ class StartDrinkingViewModel(
         finishDrinkingInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
         val seekBarUIModel = SeekBarUIModel(
             displayString = LocalDateTime.now().plusHours(hoursDrinking.toLong())
-                .plusMinutes(minutesDrinking.toLong()).toHourMinuteString()
+                .plusMinutes(minutesDrinking.toLong()).toHourMinuteString(applicationContext, true)
         )
         _finishBarLiveData.postValue(seekBarUIModel)
     }
@@ -84,7 +83,7 @@ class StartDrinkingViewModel(
         peakInHoursMinutes = Pair(hoursDrinking, minutesDrinking)
         val seekBarUIModel = SeekBarUIModel(
             displayString = LocalDateTime.now().plusHours(hoursDrinking.toLong())
-                .plusMinutes(minutesDrinking.toLong()).toHourMinuteString()
+                .plusMinutes(minutesDrinking.toLong()).toHourMinuteString(applicationContext, true)
         )
         _peakHourLiveData.postValue(seekBarUIModel)
     }

@@ -1,5 +1,7 @@
 package com.pd.beertimer.feature.drinks
 
+import android.content.SharedPreferences
+import androidx.annotation.StringRes
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -7,14 +9,12 @@ import androidx.lifecycle.viewModelScope
 import com.pd.beertimer.R
 import com.pd.beertimer.models.DrinkIconItem
 import com.pd.beertimer.room.Drink
-import com.pd.beertimer.util.Failure
-import com.pd.beertimer.util.Result
-import com.pd.beertimer.util.Success
+import com.pd.beertimer.util.*
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.take
 
-class AddDrinkViewModel(private val drinkRepository: DrinkRepository) : ViewModel() {
+class AddDrinkViewModel(private val drinkRepository: DrinkRepository, private val sharedPreferences: SharedPreferences) : ViewModel() {
 
     private val _addDrinkResultLiveData = MutableLiveData<Result<Int, Pair<AddDrinkInputField, Int>>>()
     val addDrinkResultLiveData: LiveData<Result<Int, Pair<AddDrinkInputField, Int>>> = _addDrinkResultLiveData
@@ -94,26 +94,38 @@ class AddDrinkViewModel(private val drinkRepository: DrinkRepository) : ViewMode
     }
 
     private fun validateDrinkVolume(drinkVolume: String?): Float? {
+        val isUsingLiters = sharedPreferences.getBoolean(SHARED_PREF_USES_LITERS, true)
         val drinkValidFormat =  drinkVolume?.toFloatOrNull() ?: run {
             _addDrinkResultLiveData.postValue(Failure(
                 Pair(AddDrinkInputField.DRINK_VOLUME, R.string.add_drink_missing_volume))
             )
             return null
         }
+        val drinkInLiters = if (isUsingLiters) drinkValidFormat else drinkValidFormat / LITER_TO_OZ_RATIO
         return when {
-            drinkValidFormat < 0.02F -> {
+            drinkInLiters < 0.02F -> {
+                @StringRes val errorRes = if (isUsingLiters) {
+                    R.string.add_drink_volume_too_low_liter
+                } else {
+                    R.string.add_drink_volume_too_low_ounce
+                }
                 _addDrinkResultLiveData.postValue(Failure(
-                    Pair(AddDrinkInputField.DRINK_VOLUME, R.string.add_drink_volume_too_low))
+                    Pair(AddDrinkInputField.DRINK_VOLUME, errorRes))
                 )
                 null
             }
-            drinkValidFormat > 1F -> {
+            drinkInLiters > 1F -> {
+                @StringRes val errorRes = if (isUsingLiters) {
+                    R.string.add_drink_volume_too_high_liter
+                } else {
+                    R.string.add_drink_volume_too_high_ounce
+                }
                 _addDrinkResultLiveData.postValue(Failure(
-                    Pair(AddDrinkInputField.DRINK_VOLUME, R.string.add_drink_volume_too_high))
+                    Pair(AddDrinkInputField.DRINK_VOLUME, errorRes))
                 )
                 null
             } else -> {
-                drinkValidFormat
+                drinkInLiters
             }
         }
     }

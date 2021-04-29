@@ -49,7 +49,7 @@
 
         <TextView
             android:id="@+id/tvBloodLevelValue"
-            style="@style/TodoStyleTextLarge"
+            style="@style/TodoStyleTextMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/margin_medium"
@@ -95,7 +95,7 @@
 
         <TextView
             android:id="@+id/tvHoursValue"
-            style="@style/TodoStyleTextLarge"
+            style="@style/TodoStyleTextMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/sbHours"
@@ -132,7 +132,7 @@
 
         <TextView
             android:id="@+id/tvPeakValue"
-            style="@style/TodoStyleTextLarge"
+            style="@style/TodoStyleTextMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:layout_constraintEnd_toEndOf="@id/sbPeak"

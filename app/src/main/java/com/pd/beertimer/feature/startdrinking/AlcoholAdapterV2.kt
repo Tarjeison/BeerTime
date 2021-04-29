@@ -7,11 +7,15 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pd.beertimer.R
 import com.pd.beertimer.models.AlcoholUnit
+import com.pd.beertimer.util.VolumeConverter
 import kotlinx.android.synthetic.main.item_drink_v2.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 
 class AlcoholAdapterV2(private val alcoholUnits: MutableList<AlcoholUnit>) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), KoinComponent {
+    private val volumeConverter: VolumeConverter by inject()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return AlcoholViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_drink_v2, parent, false)
@@ -51,7 +55,7 @@ class AlcoholAdapterV2(private val alcoholUnits: MutableList<AlcoholUnit>) :
             itemView.tvPercentAndVolume.text = String.format(
                 itemView.context.getString(R.string.startdrinking_percent_volume_drink),
                 (alcoholUnit.percentage * 100).toString(),
-                alcoholUnit.volume.toString()
+                volumeConverter.floatLiterToVolumeString(alcoholUnit.volume)
             )
             itemView.rbDrinkSelect.setOnClickListener {
                 setItemSelected(alcoholUnit)

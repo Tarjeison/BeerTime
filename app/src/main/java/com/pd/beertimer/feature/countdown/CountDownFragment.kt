@@ -208,7 +208,8 @@ class CountDownFragment : Fragment() {
                 val axisFormatter = chartHelper.createAxisLabelFormatterFromLocalDateTimeList(
                     bacEstimates.map {
                         it.second
-                    }
+                    },
+                    requireContext()
                 )
 
                 chartBac.xAxis.valueFormatter = axisFormatter

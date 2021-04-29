@@ -3,12 +3,12 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/clProfile"
-    android:clickable="true"
-    android:focusable="true"
-    android:focusableInTouchMode="true"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground">
+    android:background="@color/colorBackground"
+    android:clickable="true"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <ImageView
         android:id="@+id/ivPineappleSuperman"
@@ -93,12 +93,11 @@
         android:id="@+id/etWeight"
         style="@style/TodoStyleText"
         android:layout_width="32dp"
+        android:layout_height="wrap_content"
         android:inputType="number"
         android:maxLength="3"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="200dp"
         app:layout_constraintBottom_toBottomOf="@id/tvWeight"
-        app:layout_constraintStart_toEndOf="@id/tvWeight"
+        app:layout_constraintStart_toStartOf="@id/ibFemale"
         app:layout_constraintTop_toTopOf="@id/tvWeight"
         tools:ignore="Autofill,LabelFor" />
 
@@ -122,18 +121,63 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tvWeight" />
 
+    <TextView
+        android:id="@+id/tvUnit"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/margin_medium"
+        android:text="@string/unit"
+        android:textColor="@color/colorBlack"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toStartOf="@id/rUnit"
+        app:layout_constraintHorizontal_bias="0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/vSeparator3" />
+
+
+    <RadioGroup
+        android:id="@+id/rUnit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="@id/tvUnit"
+        app:layout_constraintStart_toStartOf="@id/ibFemale"
+        app:layout_constraintTop_toTopOf="@id/tvUnit">
+
+        <RadioButton
+            android:id="@+id/bLiter"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Liter" />
+
+        <RadioButton
+            android:id="@+id/bOunce"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ounce" />
+    </RadioGroup>
+
 
     <Button
         android:id="@+id/bSave"
         android:layout_width="128dp"
         android:layout_height="48dp"
         android:layout_margin="@dimen/margin_large"
-        android:textAllCaps="false"
         android:background="@drawable/button_selector"
         android:text="@string/profile_update"
+        android:textAllCaps="false"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <View
+        android:id="@+id/vSeparator4"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="@dimen/margin_medium"
+        android:background="@color/colorBlack"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvUnit" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

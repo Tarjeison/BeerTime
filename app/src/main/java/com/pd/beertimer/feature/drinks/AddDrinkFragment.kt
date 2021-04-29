@@ -1,22 +1,19 @@
 package com.pd.beertimer.feature.drinks
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.content.Context.INPUT_METHOD_SERVICE
+import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.MotionEvent
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import com.pd.beertimer.R
 import com.pd.beertimer.databinding.FragmentAddDrinkBinding
-import com.pd.beertimer.util.Failure
-import com.pd.beertimer.util.Success
-import com.pd.beertimer.util.observe
-import com.pd.beertimer.util.viewBinding
+import com.pd.beertimer.util.*
+import kotlinx.android.synthetic.main.fragment_add_drink.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -24,12 +21,14 @@ class AddDrinkFragment : Fragment(R.layout.fragment_add_drink) {
 
     private val binding by viewBinding(FragmentAddDrinkBinding::bind)
     private val viewModel by viewModel<AddDrinkViewModel>()
+    private val sharedPreferences: SharedPreferences by inject()
     private lateinit var iconAdapter: DrinkIconAdapter
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val isUsingLiters = sharedPreferences.getBoolean(SHARED_PREF_USES_LITERS, true)
+        tiVolume.setHint(if (isUsingLiters) R.string.add_volume_desc_liter else R.string.add_volume_desc_ounce)
         binding.clAddDrink.setOnTouchListener { v, _ ->
             val imm = context?.getSystemService(INPUT_METHOD_SERVICE) as? InputMethodManager
             imm?.hideSoftInputFromWindow(v?.windowToken, 0)

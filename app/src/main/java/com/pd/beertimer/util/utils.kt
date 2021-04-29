@@ -1,6 +1,9 @@
 package com.pd.beertimer.util
 
+import android.content.Context
+import android.text.format.DateFormat
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 inline fun <T : Any> ifLet(vararg elements: T?, closure: (List<T>) -> Unit) {
     if (elements.all { it != null }) {
@@ -16,17 +19,11 @@ fun ordinal(i: Int): String {
     }
 }
 
-fun LocalDateTime.toHourMinuteString(): String {
-    val minute = if (this.minute > 9) {
-        "${this.minute}"
+fun LocalDateTime.toHourMinuteString(context: Context, showAmPm: Boolean = false): String {
+    val pattern = if (DateFormat.is24HourFormat(context)) {
+        "HH:mm"
     } else {
-        "0${this.minute}"
+        if (showAmPm) "hh:mm a" else "hh:mm"
     }
-
-    val hour = if (this.hour > 9) {
-        "${this.hour}"
-    } else {
-        "0${this.hour}"
-    }
-    return "${hour}:${minute}"
+    return this.format(DateTimeFormatter.ofPattern(pattern)).replace(" ", "")
 }

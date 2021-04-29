@@ -7,16 +7,22 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.pd.beertimer.R
 import com.pd.beertimer.models.MyDrinkItem
+import com.pd.beertimer.util.VolumeConverter
 import kotlinx.android.synthetic.main.item_drink_v2.view.icDrink
 import kotlinx.android.synthetic.main.item_drink_v2.view.tvDrinkName
 import kotlinx.android.synthetic.main.item_drink_v2.view.tvPercentAndVolume
 import kotlinx.android.synthetic.main.item_my_drink.view.*
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 
 class MyDrinksAdapter(
     private val drinkList: MutableList<MyDrinkItem>,
     private val onDeleteClick: (Int) -> Unit
 ) :
-    RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    RecyclerView.Adapter<RecyclerView.ViewHolder>(), KoinComponent {
+
+    private val volumeConverter: VolumeConverter by inject()
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return DrinkViewHolder(
             LayoutInflater.from(parent.context).inflate(R.layout.item_my_drink, parent, false)
@@ -43,7 +49,7 @@ class MyDrinksAdapter(
             itemView.tvPercentAndVolume.text = String.format(
                 itemView.context.getString(R.string.startdrinking_percent_volume_drink),
                 (drinkItem.percentage * 100).toString(),
-                drinkItem.volume.toString()
+                volumeConverter.floatLiterToVolumeString(drinkItem.volume)
             )
             itemView.ivDelete.setOnClickListener {
                 onDeleteClick.invoke(drinkItem.id)

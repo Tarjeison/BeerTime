@@ -1,12 +1,11 @@
 package com.pd.beertimer.feature.countdown.charts
 
+import android.content.Context
 import android.graphics.Color
-import com.github.mikephil.charting.charts.LineChart
 import com.github.mikephil.charting.components.LimitLine
 import com.github.mikephil.charting.data.LineDataSet
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter
 import com.pd.beertimer.util.toHourMinuteString
-import kotlinx.android.synthetic.main.fragment_timer.*
 import java.time.LocalDateTime
 
 class ChartHelper {
@@ -44,9 +43,9 @@ class ChartHelper {
         return limitLine
     }
 
-    fun createAxisLabelFormatterFromLocalDateTimeList(list: List<LocalDateTime>): IndexAxisValueFormatter {
+    fun createAxisLabelFormatterFromLocalDateTimeList(list: List<LocalDateTime>, context: Context): IndexAxisValueFormatter {
         val labels = list.map {
-            it.toHourMinuteString()
+            it.toHourMinuteString(context)
         }
         return IndexAxisValueFormatter(labels)
     }

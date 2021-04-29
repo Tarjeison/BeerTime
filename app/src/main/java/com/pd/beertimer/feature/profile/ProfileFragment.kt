@@ -2,6 +2,7 @@ package com.pd.beertimer.feature.profile
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -11,15 +12,19 @@ import com.pd.beertimer.R
 import com.pd.beertimer.databinding.FragmentProfileBinding
 import com.pd.beertimer.models.Gender
 import com.pd.beertimer.models.UserProfile
+import com.pd.beertimer.util.SHARED_PREF_USES_LITERS
 import com.pd.beertimer.util.ToastHelper
 import com.pd.beertimer.util.viewBinding
 import kotlinx.android.synthetic.main.fragment_profile.*
+import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ProfileFragment : Fragment(R.layout.fragment_profile) {
 
     private val profileViewModel: ProfileViewModel by viewModel()
     private val binding by viewBinding(FragmentProfileBinding::bind)
+    private val sharedPreferences: SharedPreferences by inject()
+
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -58,6 +63,22 @@ class ProfileFragment : Fragment(R.layout.fragment_profile) {
             binding.ibMale.setBackgroundColor(Color.WHITE)
             binding.ibMale.isSelected = false
         }
+        setupRadioGroup()
+    }
+
+    private fun setupRadioGroup() {
+        val isUsingLiters = sharedPreferences.getBoolean(SHARED_PREF_USES_LITERS, true)
+        binding.rUnit.check(if (isUsingLiters) R.id.bLiter else R.id.bOunce)
+        binding.rUnit.setOnCheckedChangeListener { _, checkedId ->
+            when (checkedId) {
+                R.id.bLiter -> saveUnitToSharedPreferences(true)
+                R.id.bOunce -> saveUnitToSharedPreferences(false)
+            }
+        }
+    }
+
+    private fun saveUnitToSharedPreferences(isLiters: Boolean) {
+        sharedPreferences.edit().putBoolean(SHARED_PREF_USES_LITERS, isLiters).apply()
     }
 
     private fun createSaveClickListener(): View.OnClickListener {
